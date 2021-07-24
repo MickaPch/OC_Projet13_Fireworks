@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import os
 
 from pathlib import Path
 
@@ -19,8 +20,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d^9a9%-oo)_2lp$dc=v$=##m)k4mje(45nyo2z2w(^n9#bt8a3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -70,6 +69,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myJOB.wsgi.application'
 
+# TODO: Test environnement + production env
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-d^9a9%-oo)_2lp$dc=v$=##m)k4mje(45nyo2z2w(^n9#bt8a3'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -80,6 +83,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_ROOT, "static/")
 
 
 # Password validation
@@ -119,6 +125,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIR = [
+    os.path.join(BASE_DIR, "static/"),
+    os.path.join(BASE_DIR, "user/static/user/"),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

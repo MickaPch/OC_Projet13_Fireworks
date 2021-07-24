@@ -1,3 +1,8 @@
-from django.shortcuts import render
+"""Module user.views"""
+from django.views.generic import TemplateView
 
-# Create your views here.
+
+class UserView(TemplateView):
+    """User view"""
+
+    template_name = "user/user.html"
