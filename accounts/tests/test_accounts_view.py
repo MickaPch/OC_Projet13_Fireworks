@@ -54,6 +54,17 @@ class AccountsViewTest(TestCase):
         self.assertFalse(SESSION_KEY in self.client.session)
         self.assertIn(b'>Log In</a>', response.content)
 
+    def test_user_can_logout(self):
+
+        self.client.login(
+            username='test',
+            password='testpassword'
+        )
+        response = self.client.get('/accounts/home/')
+
+        self.assertTrue(SESSION_KEY in self.client.session)
+        self.assertIn(b'>Log Out</a>', response.content)
+
     def test_login_user(self):
 
         self.client.get('/accounts/login/')
@@ -84,3 +95,5 @@ class AccountsViewTest(TestCase):
             }
         )
         self.assertRedirects(response, "/accounts/profile/")
+
+    
