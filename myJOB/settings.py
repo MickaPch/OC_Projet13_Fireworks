@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'dashboard',
+    'contacts',
 ]
 
 MIDDLEWARE = [
@@ -133,6 +134,7 @@ STATICFILES_DIR = [
     os.path.join(BASE_DIR, "static/"),
     os.path.join(BASE_DIR, "accounts/static/accounts/"),
     os.path.join(BASE_DIR, "dashboard/static/dashboard/"),
+    os.path.join(BASE_DIR, "contacts/static/contacts/"),
 ]
 
 # Default primary key field type
