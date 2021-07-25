@@ -25,7 +25,7 @@ class UserViewTest(TestCase):
         response = self.client.get('/user/home/')
 
         self.assertIn(
-            b'User home',
+            b'<title>Home',
             response.content
         )
 
