@@ -4,5 +4,5 @@ from contacts import views
 
 
 urlpatterns = [
-    path('', views.ContactsHomeView.as_view(), name="contacts_home_page"),
+    path('', views.ContactsHomeView.as_view(), name="contacts_home"),
 ]
