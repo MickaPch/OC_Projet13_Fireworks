@@ -25,11 +25,11 @@ class UserViewTest(TestCase):
         response = self.client.get('/user/home/')
 
         self.assertIn(
-            b'<title>Home',
+            b'<title>MyJOB - Home',
             response.content
         )
 
-    def test_user_form_is_present(self):
+    def test_user_form_exists(self):
 
         response = self.client.get('/user/login/')
 
@@ -39,6 +39,17 @@ class UserViewTest(TestCase):
         )
 
     def test_user_can_login(self):
+
+        response = self.client.get('/user/home/')
+        user = User.objects.create_user(
+            'test',
+            'test@mailtest.com',
+            'testpassword'
+        )
+        self.assertFalse(SESSION_KEY in self.client.session)
+        self.assertIn(b'>Log In</a>', response.content)
+
+    def test_login_user(self):
 
         response = self.client.get('/user/login/')
         user = User.objects.create_user(
@@ -53,3 +64,12 @@ class UserViewTest(TestCase):
             password='testpassword'
         )
         self.assertTrue(SESSION_KEY in self.client.session)
+
+    def test_user_loginpage_from_base(self):
+
+        response = self.client.get('/user/login/')
+
+        self.assertIn(
+            b'<title>MyJOB - Log In',
+            response.content
+        )

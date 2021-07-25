@@ -1,1 +1,7 @@
-User home
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock  %}
+
+{% block content %}
+    <a href="{% url 'login' %}">Log In</a>
+{% endblock  %}
