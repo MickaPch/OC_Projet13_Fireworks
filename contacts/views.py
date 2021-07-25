@@ -1,7 +1,9 @@
 """Module user.views"""
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.urls.base import reverse
 from django.views.generic import TemplateView
-
+from django.views.generic.edit import FormView
 from contacts.models import Company
 from contacts.forms import CompanyAddForm
 
@@ -16,7 +18,6 @@ class ContactsHomeView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         context["contacts"] = self.get_queryset_contacts()
-        context["company_form"] = self.get_company_form()
 
         return context
 
@@ -25,7 +26,14 @@ class ContactsHomeView(LoginRequiredMixin, TemplateView):
 
         return contacts
 
-    def get_company_form(self):
-        company_form = CompanyAddForm()
 
-        return company_form
+class ContactsAddCompanyFormView(FormView):
+    template_name = 'contacts/form_add_company.html'
+    form_class = CompanyAddForm
+    success_url = reverse_lazy('contacts_home')
+
+    def form_valid(self, form):
+
+        form.add_company(self.request.user)
+
+        return super().form_valid(form)

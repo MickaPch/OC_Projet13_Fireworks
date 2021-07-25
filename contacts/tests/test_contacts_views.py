@@ -111,7 +111,7 @@ class ContactsViewTest(TestCase):
             password= 'testpassword'
         )
 
-        self.client.post(
+        response = self.client.post(
             reverse('add_company'),
             data={
                 "name": "COMPANY TEST",
@@ -121,6 +121,24 @@ class ContactsViewTest(TestCase):
                 "city": "TOULOUSE"
             }
         )
-        response = self.client.get(reverse('contacts_home'))
 
+        self.assertRedirects(response, reverse('contacts_home'))
+
+        response = self.client.get(reverse('contacts_home'))
         self.assertIn(b'COMPANY TEST', response.content)
+
+    def test_user_add_new_company_invalid_form(self):
+        self.client.login(
+            username= 'test1',
+            password= 'testpassword'
+        )
+
+        response = self.client.post(
+            reverse('add_company'),
+            data={
+                "name": "COMPANY TEST"
+            }
+        )
+        # response = self.client.get(reverse('contacts_home'))
+
+        self.assertNotIn(b'COMPANY TEST', response.content)
