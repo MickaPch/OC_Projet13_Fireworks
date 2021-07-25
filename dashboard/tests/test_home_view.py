@@ -31,6 +31,16 @@ class DashboardViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_home_user_can_login(self):
+        """Test accounts view"""
+
+        response = self.client.get(reverse('home'))
+
+        self.assertFalse(SESSION_KEY in self.client.session)
+        self.assertIn(b'>Log In', response.content)
+
+
+
     # def test_user_html_status(self):
     #     """Test accounts view"""
 
