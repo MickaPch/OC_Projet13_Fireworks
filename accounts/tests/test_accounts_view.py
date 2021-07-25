@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import SESSION_KEY
 from django.http import response
 from django.test import TestCase
+from django.urls import reverse
 
 
 class AccountsViewTest(TestCase):
@@ -19,20 +20,20 @@ class AccountsViewTest(TestCase):
     def test_user_template_used(self):
         """Test accounts view"""
 
-        self.client.get('/accounts/home/')
+        self.client.get(reverse("accounts_home_page"))
 
         self.assertTemplateUsed('accounts.html')
 
     def test_user_html_status(self):
         """Test accounts view"""
 
-        response = self.client.get('/accounts/home/')
+        response = self.client.get(reverse("accounts_home_page"))
 
         self.assertEqual(response.status_code, 200)
 
     def test_user_page_shows_User_home(self):
 
-        response = self.client.get('/accounts/home/')
+        response = self.client.get(reverse("accounts_home_page"))
 
         self.assertIn(
             b'<title>MyJOB - Home',
@@ -41,7 +42,7 @@ class AccountsViewTest(TestCase):
 
     def test_user_form_exists(self):
 
-        response = self.client.get('/accounts/login/')
+        response = self.client.get(reverse('login'))
 
         self.assertIn(
             b'<input',
@@ -50,7 +51,7 @@ class AccountsViewTest(TestCase):
 
     def test_user_can_login(self):
 
-        response = self.client.get('/accounts/home/')
+        response = self.client.get(reverse("accounts_home_page"))
         self.assertFalse(SESSION_KEY in self.client.session)
         self.assertIn(b'>Log In</a>', response.content)
 
@@ -60,14 +61,14 @@ class AccountsViewTest(TestCase):
             username='test',
             password='testpassword'
         )
-        response = self.client.get('/accounts/home/')
+        response = self.client.get(reverse("accounts_home_page"))
 
         self.assertTrue(SESSION_KEY in self.client.session)
         self.assertIn(b'>Log Out</a>', response.content)
 
     def test_login_user(self):
 
-        self.client.get('/accounts/login/')
+        self.client.get(reverse('login'))
         self.assertFalse(SESSION_KEY in self.client.session)
 
         self.client.login(
@@ -78,7 +79,7 @@ class AccountsViewTest(TestCase):
 
     def test_user_loginpage_from_base(self):
 
-        response = self.client.get('/accounts/login/')
+        response = self.client.get(reverse('login'))
 
         self.assertIn(
             b'<title>MyJOB - Log In',
@@ -88,10 +89,10 @@ class AccountsViewTest(TestCase):
     def test_form_login_redirects_user(self):
 
         response = self.client.post(
-            "/accounts/login/",
+            reverse('login'),
             data={
                 "username": "test",
                 "password": "testpassword"
             }
         )
-        self.assertRedirects(response, "/accounts/profile/")
+        self.assertRedirects(response, reverse("accounts_profile_page"))

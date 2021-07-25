@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import SESSION_KEY
 from django.http import response
 from django.test import TestCase
+from django.urls import reverse
 
 
 class DashboardViewTest(TestCase):
@@ -19,9 +20,16 @@ class DashboardViewTest(TestCase):
     def test_home_template_used(self):
         """Test accounts view"""
 
-        self.client.get('home')
+        self.client.get(reverse('home'))
 
         self.assertTemplateUsed('home.html')
+
+    def test_home_html_status(self):
+        """Test accounts view"""
+
+        response = self.client.get(reverse('home'))
+
+        self.assertEqual(response.status_code, 200)
 
     # def test_user_html_status(self):
     #     """Test accounts view"""
