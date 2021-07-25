@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
@@ -131,6 +132,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIR = [
     os.path.join(BASE_DIR, "static/"),
     os.path.join(BASE_DIR, "accounts/static/accounts/"),
+    os.path.join(BASE_DIR, "dashboard/static/dashboard/"),
 ]
 
 # Default primary key field type

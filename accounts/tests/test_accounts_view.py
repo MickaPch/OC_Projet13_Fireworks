@@ -4,6 +4,7 @@ from django.contrib.auth import SESSION_KEY
 from django.http import response
 from django.test import TestCase
 
+
 class AccountsViewTest(TestCase):
     """Testing accounts view"""
 
@@ -14,7 +15,6 @@ class AccountsViewTest(TestCase):
             'test@mailtest.com',
             'testpassword'
         )
-
 
     def test_user_template_used(self):
         """Test accounts view"""
@@ -29,7 +29,7 @@ class AccountsViewTest(TestCase):
         response = self.client.get('/accounts/home/')
 
         self.assertEqual(response.status_code, 200)
-    
+
     def test_user_page_shows_User_home(self):
 
         response = self.client.get('/accounts/home/')
@@ -95,5 +95,3 @@ class AccountsViewTest(TestCase):
             }
         )
         self.assertRedirects(response, "/accounts/profile/")
-
-    
