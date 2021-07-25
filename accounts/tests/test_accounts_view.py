@@ -96,3 +96,4 @@ class AccountsViewTest(TestCase):
             }
         )
         self.assertRedirects(response, reverse("accounts_profile_page"))
+        self.assertTrue(SESSION_KEY in self.client.session)
