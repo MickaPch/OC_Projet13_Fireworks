@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
+{% load tag_user %}
 
 {% block title %}Home{% endblock  %}
 
 {% block content %}
     <h2>Home page</h2>
+    {% user_homeview user %}
 {% endblock  %}

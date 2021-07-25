@@ -22,7 +22,7 @@ class AccountsViewTest(TestCase):
 
         self.client.get(reverse("accounts_home_page"))
 
-        self.assertTemplateUsed('accounts.html')
+        self.assertTemplateUsed('accounts/accounts.html')
 
     def test_user_html_status(self):
         """Test accounts view"""
@@ -36,7 +36,7 @@ class AccountsViewTest(TestCase):
         response = self.client.get(reverse("accounts_home_page"))
 
         self.assertIn(
-            b'<title>MyJOB - Home',
+            b'>Log',
             response.content
         )
 
