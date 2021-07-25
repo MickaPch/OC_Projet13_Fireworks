@@ -1,28 +1,28 @@
-"""Test user views"""
+"""Test accounts views"""
 from django.contrib.auth.models import User
 from django.contrib.auth import SESSION_KEY
 from django.test import TestCase
 
-class UserViewTest(TestCase):
-    """Testing user view"""
+class AccountsViewTest(TestCase):
+    """Testing accounts view"""
 
     def test_user_template_used(self):
-        """Test user view"""
+        """Test accounts view"""
 
-        self.client.get('/user/home/')
+        self.client.get('/accounts/home/')
 
-        self.assertTemplateUsed('user.html')
+        self.assertTemplateUsed('accounts.html')
 
     def test_user_html_status(self):
-        """Test user view"""
+        """Test accounts view"""
 
-        response = self.client.get('/user/home/')
+        response = self.client.get('/accounts/home/')
 
         self.assertEqual(response.status_code, 200)
     
     def test_user_page_shows_User_home(self):
 
-        response = self.client.get('/user/home/')
+        response = self.client.get('/accounts/home/')
 
         self.assertIn(
             b'<title>MyJOB - Home',
@@ -31,7 +31,7 @@ class UserViewTest(TestCase):
 
     def test_user_form_exists(self):
 
-        response = self.client.get('/user/login/')
+        response = self.client.get('/accounts/login/')
 
         self.assertIn(
             b'<input',
@@ -40,8 +40,8 @@ class UserViewTest(TestCase):
 
     def test_user_can_login(self):
 
-        response = self.client.get('/user/home/')
-        user = User.objects.create_user(
+        response = self.client.get('/accounts/home/')
+        User.objects.create_user(
             'test',
             'test@mailtest.com',
             'testpassword'
@@ -51,8 +51,8 @@ class UserViewTest(TestCase):
 
     def test_login_user(self):
 
-        response = self.client.get('/user/login/')
-        user = User.objects.create_user(
+        self.client.get('/accounts/login/')
+        User.objects.create_user(
             'test',
             'test@mailtest.com',
             'testpassword'
@@ -67,7 +67,7 @@ class UserViewTest(TestCase):
 
     def test_user_loginpage_from_base(self):
 
-        response = self.client.get('/user/login/')
+        response = self.client.get('/accounts/login/')
 
         self.assertIn(
             b'<title>MyJOB - Log In',
