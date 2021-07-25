@@ -1,10 +1,20 @@
 """Test accounts views"""
 from django.contrib.auth.models import User
 from django.contrib.auth import SESSION_KEY
+from django.http import response
 from django.test import TestCase
 
 class AccountsViewTest(TestCase):
     """Testing accounts view"""
+
+    def setUp(self):
+
+        self.user = User.objects.create_user(
+            'test',
+            'test@mailtest.com',
+            'testpassword'
+        )
+
 
     def test_user_template_used(self):
         """Test accounts view"""
@@ -41,22 +51,12 @@ class AccountsViewTest(TestCase):
     def test_user_can_login(self):
 
         response = self.client.get('/accounts/home/')
-        User.objects.create_user(
-            'test',
-            'test@mailtest.com',
-            'testpassword'
-        )
         self.assertFalse(SESSION_KEY in self.client.session)
         self.assertIn(b'>Log In</a>', response.content)
 
     def test_login_user(self):
 
         self.client.get('/accounts/login/')
-        User.objects.create_user(
-            'test',
-            'test@mailtest.com',
-            'testpassword'
-        )
         self.assertFalse(SESSION_KEY in self.client.session)
 
         self.client.login(
@@ -73,3 +73,14 @@ class AccountsViewTest(TestCase):
             b'<title>MyJOB - Log In',
             response.content
         )
+
+    def test_form_login_redirects_user(self):
+
+        response = self.client.post(
+            "/accounts/login/",
+            data={
+                "username": "test",
+                "password": "testpassword"
+            }
+        )
+        self.assertRedirects(response, "/accounts/profile/")
