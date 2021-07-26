@@ -5,9 +5,16 @@
 
 {% block content %}
     <h3>My contacts</h3>
-    {% for contact in contacts %}
-        <p class="contact-item">{{ contact.name }}</p>
+    {% for company in companies %}
+        <p class="company-item">{{ company.name }}</p>
+        {% form_add_contact_member company.name %}
+        {% for contact in contacts %}
+            {% if contact.company == company %}
+                <p class="contact-item">{{ contact.last_name }}</p>
+            {% endif %}
+        {% endfor %}
     {% endfor %}
 
-    {% add_company user %}
+    {% form_add_company user %}
+
 {% endblock  %}

@@ -4,8 +4,8 @@ from django.urls import reverse_lazy
 from django.urls.base import reverse
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
-from contacts.models import Company
-from contacts.forms import CompanyAddForm
+from contacts.models import Company, ContactMember
+from contacts.forms import CompanyAddForm, ContactMemberAddForm, MissionAddForm
 
 
 class ContactsHomeView(LoginRequiredMixin, TemplateView):
@@ -17,12 +17,19 @@ class ContactsHomeView(LoginRequiredMixin, TemplateView):
 
         context = super().get_context_data(**kwargs)
 
-        context["contacts"] = self.get_queryset_contacts()
+        companies = self.get_queryset_companies()
+        context["companies"] = companies
+        context["contacts"] = self.get_queryset_contacts(companies)
 
         return context
 
-    def get_queryset_contacts(self):
-        contacts = Company.objects.filter(user=self.request.user)
+    def get_queryset_companies(self):
+        companies = Company.objects.filter(user=self.request.user)
+
+        return companies
+
+    def get_queryset_contacts(self, companies):
+        contacts = ContactMember.objects.filter(company__in=companies)
 
         return contacts
 
@@ -35,5 +42,27 @@ class ContactsAddCompanyFormView(FormView):
     def form_valid(self, form):
 
         form.add_company(self.request.user)
+
+        return super().form_valid(form)
+
+class ContactsAddContactMemberFormView(FormView):
+    template_name = 'contacts/form_add_contact_member.html'
+    form_class = ContactMemberAddForm
+    success_url = reverse_lazy('contacts_home')
+
+    def form_valid(self, form):
+
+        form.add_contact_member()
+
+        return super().form_valid(form)
+
+class ContactsAddMissionFormView(FormView):
+    template_name = 'contacts/form_add_mission.html'
+    form_class = MissionAddForm
+    success_url = reverse_lazy('contacts_home')
+
+    def form_valid(self, form):
+
+        form.add_mission(self.request.user)
 
         return super().form_valid(form)

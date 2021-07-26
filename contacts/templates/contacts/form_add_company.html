@@ -1,4 +1,4 @@
-<form method="post" action={% url 'add_company' %}>
+<form method="post" action={% url 'add_company' %} id="id_form_add_company">
     {% csrf_token %}
     {{ company_form.as_p }}
     <button type="submit">Add company</button>

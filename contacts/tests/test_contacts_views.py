@@ -5,7 +5,7 @@ from django.http import response
 from django.test import TestCase
 from django.urls import reverse
 
-from contacts.models import Company
+from contacts.models import Company, ContactMember
 
 
 class ContactsViewTest(TestCase):
@@ -23,14 +23,26 @@ class ContactsViewTest(TestCase):
             'test2@mailtest.com',
             'testpassword'
         )
-        self.contact1 = Company.objects.create(
-            name="Contact1"
+        self.company1 = Company.objects.create(
+            name="Company1"
         )
-        self.contact2 = Company.objects.create(
-            name="Contact2"
+        self.company2 = Company.objects.create(
+            name="Company2"
         )
-        self.contact1.user.add(self.user1, self.user2)
-        self.contact2.user.add(self.user2)
+        self.company1.user.add(self.user1, self.user2)
+        self.company2.user.add(self.user2)
+
+        self.contact1 = ContactMember.objects.create(
+            first_name='TestFirstName1',
+            last_name='TestLastName1',
+            company=self.company1
+        )
+        self.contact2 = ContactMember.objects.create(
+            first_name='TestFirstName2',
+            last_name='TestLastName2',
+            company=self.company2
+        )
+        
 
     def test_contacts_only_for_connected(self):
         response = self.client.get(reverse('contacts_home'))
@@ -82,8 +94,8 @@ class ContactsViewTest(TestCase):
         )
         response = self.client.get(reverse('contacts_home'))
 
-        self.assertIn(b'Contact1', response.content)
-        self.assertNotIn(b'Contact2', response.content)
+        self.assertIn(b'company-item">Company1', response.content)
+        self.assertNotIn(b'company-item">Company2', response.content)
 
     def test_contacts_homeview_show_user_contacts_manyfield(self):
         self.client.login(
@@ -92,8 +104,8 @@ class ContactsViewTest(TestCase):
         )
         response = self.client.get(reverse('contacts_home'))
 
-        self.assertIn(b'Contact1', response.content)
-        self.assertIn(b'Contact2', response.content)
+        self.assertIn(b'company-item">Company1', response.content)
+        self.assertIn(b'company-item">Company2', response.content)
 
     def test_user_can_add_new_company(self):
         self.client.login(
@@ -102,7 +114,7 @@ class ContactsViewTest(TestCase):
         )
         response = self.client.get(reverse('contacts_home'))
 
-        self.assertIn(b'<form', response.content)
+        self.assertIn(b'id_form_add_company', response.content)
         self.assertIn(b'id_city', response.content)
 
     def test_user_add_new_company(self):
@@ -139,6 +151,142 @@ class ContactsViewTest(TestCase):
                 "name": "COMPANY TEST"
             }
         )
-        # response = self.client.get(reverse('contacts_home'))
 
         self.assertNotIn(b'COMPANY TEST', response.content)
+
+    def test_contact_member_related_to_companies(self):
+
+        contacts_company1 = ContactMember.objects.filter(company=self.company1)
+        contacts_company2 = ContactMember.objects.filter(company=self.company2)
+        
+        self.assertIn(self.contact1, contacts_company1)
+        self.assertIn(self.contact2, contacts_company2)
+        self.assertNotIn(self.contact1, contacts_company2)
+        self.assertNotIn(self.contact2, contacts_company1)
+
+    def test_user_can_add_contact_member_to_companies(self):
+        self.client.login(
+            username= 'test1',
+            password= 'testpassword'
+        )
+
+        response = self.client.post(
+            reverse('add_contact_member'),
+            data={
+                "first_name": "TestFirstName3",
+                "last_name": "TestLastName3",
+                "company": "2"
+            }
+        )
+
+        new_contact = ContactMember.objects.get(
+            first_name='TestFirstName3'
+        )
+
+        contacts_company1 = ContactMember.objects.filter(company=self.company1)
+        contacts_company2 = ContactMember.objects.filter(company=self.company2)
+
+        self.assertIn(new_contact, contacts_company2)
+        self.assertNotIn(new_contact, contacts_company1)
+
+    def test_contacts_homeview_show_companies_and_contacts(self):
+        self.client.login(
+            username= 'test1',
+            password= 'testpassword'
+        )
+        response = self.client.get(reverse('contacts_home'))
+
+        self.assertIn(b'company-item">Company1', response.content)
+        self.assertIn(b'contact-item">TestLastName1', response.content)
+        self.assertNotIn(b'company-item">Company2', response.content)
+
+    def test_contacts_homeview_show_contact_add_form(self):
+        self.client.login(
+            username= 'test1',
+            password= 'testpassword'
+        )
+        response = self.client.get(reverse('contacts_home'))
+
+        self.assertIn(b'id_form_add_contact_member', response.content)
+        self.assertIn(b'id_last_name', response.content)
+
+
+
+
+
+    # def test_mission_related_to_companies(self):
+
+    #     missions_company1 = Missions.objects.filter(company=self.company1)
+    #     missions_company2 = Missions.objects.filter(company=self.company2)
+        
+    #     self.assertIn(self.mission1, missions_company1)
+    #     self.assertIn(self.mission2, missions_company2)
+    #     self.assertNotIn(self.mission1, missions_company2)
+    #     self.assertNotIn(self.mission2, missions_company1)
+
+    def test_user_can_add_mission_to_companies(self):
+        self.client.login(
+            username= 'test1',
+            password= 'testpassword'
+        )
+
+        response = self.client.post(
+            reverse('add_mission'),
+            data={
+                "title": "TestMission",
+                "description": "description_test",
+                "company": "2"
+            }
+        )
+
+        company = Company.objects.get(name="Company2")
+        user1 = User.objects.get(username='test1')
+        user2 = User.objects.get(username='test2')
+
+        new_mission = Mission.objects.get(
+            company=company,
+            user=user1
+        )
+
+        missions_company1 = Mission.objects.filter(
+            company=self.company1,
+            user=user1
+        )
+        missions_company2 = Mission.objects.filter(
+            company=self.company2,
+            user=user1
+        )
+        missions_company3 = Mission.objects.filter(
+            company=self.company1,
+            user=user2
+        )
+        missions_company4 = Mission.objects.filter(
+            company=self.company2,
+            user=user2
+        )
+
+        self.assertNotIn(new_mission, missions_company1)
+        self.assertIn(new_mission, missions_company2)
+        self.assertNotIn(new_mission, missions_company3)
+        self.assertNotIn(new_mission, missions_company4)
+
+    # def test_contacts_homeview_show_companies_and_contacts(self):
+    #     self.client.login(
+    #         username= 'test1',
+    #         password= 'testpassword'
+    #     )
+    #     response = self.client.get(reverse('contacts_home'))
+
+    #     self.assertIn(b'company-item">Company1', response.content)
+    #     self.assertIn(b'contact-item">TestLastName1', response.content)
+    #     self.assertNotIn(b'company-item">Company2', response.content)
+
+    # def test_contacts_homeview_show_contact_add_form(self):
+    #     self.client.login(
+    #         username= 'test1',
+    #         password= 'testpassword'
+    #     )
+    #     response = self.client.get(reverse('contacts_home'))
+
+    #     self.assertIn(b'id_form_add_mission', response.content)
+    #     self.assertIn(b'id_last_name', response.content)

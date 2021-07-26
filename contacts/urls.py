@@ -6,4 +6,6 @@ from contacts import views
 urlpatterns = [
     path('', views.ContactsHomeView.as_view(), name="contacts_home"),
     path('add_company', views.ContactsAddCompanyFormView.as_view(), name="add_company"),
+    path('add_contact_member', views.ContactsAddContactMemberFormView.as_view(), name="add_contact_member"),
+    path('add_mission', views.ContactsAddMissionFormView.as_view(), name="add_mission"),
 ]
