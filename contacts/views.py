@@ -4,8 +4,8 @@ from django.urls import reverse_lazy
 from django.urls.base import reverse
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
-from contacts.models import Company, ContactMember
-from contacts.forms import CompanyAddForm, ContactMemberAddForm, MissionAddForm
+from contacts.models import Company, ContactMember, Mission
+from contacts.forms import CompanyAddForm, ContactMemberAddForm, MissionAddForm, MissionDeleteForm
 
 
 class ContactsHomeView(LoginRequiredMixin, TemplateView):
@@ -20,6 +20,7 @@ class ContactsHomeView(LoginRequiredMixin, TemplateView):
         companies = self.get_queryset_companies()
         context["companies"] = companies
         context["contacts"] = self.get_queryset_contacts(companies)
+        context["missions"] = self.get_queryset_missions(companies)
 
         return context
 
@@ -32,6 +33,14 @@ class ContactsHomeView(LoginRequiredMixin, TemplateView):
         contacts = ContactMember.objects.filter(company__in=companies)
 
         return contacts
+
+    def get_queryset_missions(self, companies):
+        missions = Mission.objects.filter(
+            company__in=companies,
+            user=self.request.user
+        )
+
+        return missions
 
 
 class ContactsAddCompanyFormView(FormView):
@@ -64,5 +73,16 @@ class ContactsAddMissionFormView(FormView):
     def form_valid(self, form):
 
         form.add_mission(self.request.user)
+
+        return super().form_valid(form)
+
+class ContactsDeleteMissionFormView(FormView):
+    template_name = 'contacts/form_delete_mission.html'
+    form_class = MissionDeleteForm
+    success_url = reverse_lazy('contacts_home')
+
+    def form_valid(self, form):
+
+        form.delete_mission(self.request.user)
 
         return super().form_valid(form)

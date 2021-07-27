@@ -5,6 +5,8 @@
 
 {% block content %}
     <h3>My contacts</h3>
+    {% form_add_company user %}
+
     {% for company in companies %}
         <p class="company-item">{{ company.name }}</p>
         {% form_add_contact_member company.name %}
@@ -13,8 +15,14 @@
                 <p class="contact-item">{{ contact.last_name }}</p>
             {% endif %}
         {% endfor %}
+        {% form_add_mission company.name %}
+        {% for mission in missions %}
+            {% if mission.company == company %}
+                <p class="mission-item">{{ mission.title }}</p>
+                {% form_delete_mission mission.title company.name %}
+            {% endif %}
+        {% endfor %}
     {% endfor %}
 
-    {% form_add_company user %}
 
 {% endblock  %}

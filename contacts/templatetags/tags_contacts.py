@@ -1,5 +1,5 @@
 from django import template
-from contacts.forms import CompanyAddForm, ContactMemberAddForm
+from contacts.forms import CompanyAddForm, ContactMemberAddForm, MissionAddForm, MissionDeleteForm
 
 register = template.Library()
 
@@ -20,4 +20,25 @@ def form_add_contact_member(context, company):
     return {
         'contact_member_form': contact_member_form,
         'company': company
+    }
+
+@register.inclusion_tag('contacts/form_add_mission.html', takes_context=True)
+def form_add_mission(context, company):
+    add_mission_form = MissionAddForm()
+    
+    return {
+        'add_mission_form': add_mission_form,
+        'company': company
+    }
+
+@register.inclusion_tag('contacts/form_delete_mission.html', takes_context=True)
+def form_delete_mission(context, mission_title, company):
+    data = {
+        'title': mission_title,
+        'company': company
+    }
+    delete_mission_form = MissionDeleteForm(data=data)
+    
+    return {
+        'delete_mission_form': delete_mission_form
     }

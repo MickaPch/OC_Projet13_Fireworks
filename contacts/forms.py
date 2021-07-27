@@ -1,10 +1,10 @@
 """Contacts forms"""
-from django.forms import ModelForm
+from django import forms
 
 from contacts.models import Company, ContactMember, Mission
 
 
-class CompanyAddForm(ModelForm):
+class CompanyAddForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CompanyAddForm, self).__init__(*args, **kwargs)
         self.fields['address2'].required = False
@@ -29,7 +29,7 @@ class CompanyAddForm(ModelForm):
         )
         new_company.user.add(user)
 
-class ContactMemberAddForm(ModelForm):
+class ContactMemberAddForm(forms.ModelForm):
 
     class Meta:
         model = ContactMember
@@ -49,7 +49,7 @@ class ContactMemberAddForm(ModelForm):
             company=company
         )
 
-class MissionAddForm(ModelForm):
+class MissionAddForm(forms.ModelForm):
 
     class Meta:
         model = Mission
@@ -57,7 +57,6 @@ class MissionAddForm(ModelForm):
             'title',
             'description',
             'company',
-            'user',
         ]
 
     def add_mission(self, user):
@@ -70,3 +69,28 @@ class MissionAddForm(ModelForm):
             company=company,
             user=user
         )
+
+class MissionDeleteForm(forms.ModelForm):
+
+    class Meta:
+        model = Mission
+        fields = [
+            'title',
+            'company',
+        ]
+
+        widgets = {
+            'title': forms.HiddenInput(),
+            'company': forms.HiddenInput()
+        }
+
+    def delete_mission(self, user):
+        company = Company.objects.get(
+            name=self.cleaned_data['company']
+        )
+        mission_to_delete = Mission.objects.get(
+            title=self.cleaned_data['title'],
+            company=company,
+            user=user
+        )
+        mission_to_delete.delete()

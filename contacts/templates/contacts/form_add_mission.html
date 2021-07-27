@@ -1,0 +1,5 @@
+<form method="post" action={% url 'add_mission' %} id="id_form_add_mission">
+    {% csrf_token %}
+    {{ add_mission_form.as_p }}
+    <button type="submit">Add mission</button>
+</form>
