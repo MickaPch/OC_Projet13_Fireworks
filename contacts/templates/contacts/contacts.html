@@ -19,7 +19,7 @@
         {% for mission in missions %}
             {% if mission.company == company %}
                 <p class="mission-item">{{ mission.title }}</p>
-                {% form_delete_mission mission.title company.name %}
+                {% form_delete_mission mission.title company.pk %}
             {% endif %}
         {% endfor %}
     {% endfor %}

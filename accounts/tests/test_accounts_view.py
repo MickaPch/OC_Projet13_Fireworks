@@ -9,13 +9,7 @@ from django.urls import reverse
 class AccountsViewTest(TestCase):
     """Testing accounts view"""
 
-    def setUp(self):
-
-        self.user = User.objects.create_user(
-            'test',
-            'test@mailtest.com',
-            'testpassword'
-        )
+    fixtures = ['users.json']
 
     def test_user_template_used(self):
         """Test accounts view"""
@@ -58,8 +52,8 @@ class AccountsViewTest(TestCase):
     def test_user_can_logout(self):
 
         self.client.login(
-            username='test',
-            password='testpassword'
+            username='User1',
+            password='pwd$User1'
         )
         response = self.client.get(reverse("accounts_home_page"))
 
@@ -72,8 +66,8 @@ class AccountsViewTest(TestCase):
         self.assertFalse(SESSION_KEY in self.client.session)
 
         self.client.login(
-            username='test',
-            password='testpassword'
+            username='User1',
+            password='pwd$User1'
         )
         self.assertTrue(SESSION_KEY in self.client.session)
 
@@ -91,8 +85,8 @@ class AccountsViewTest(TestCase):
         response = self.client.post(
             reverse('login'),
             data={
-                "username": "test",
-                "password": "testpassword"
+                "username": "User1",
+                "password": "pwd$User1"
             }
         )
         self.assertRedirects(response, reverse("accounts_profile_page"))
