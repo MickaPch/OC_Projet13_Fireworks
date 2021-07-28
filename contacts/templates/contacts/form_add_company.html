@@ -1,5 +1,13 @@
 <form method="post" action={% url 'add_company' %} id="id_form_add_company">
     {% csrf_token %}
+    {% for error_field, error_list in company_form_errors.items %}
+        <p>{{ error_field }}</p>
+        <ul>
+        {% for error in error_list %}
+            <li>{{error}}</li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
     {{ company_form.as_p }}
-    <button type="submit">Add company</button>
+    <button type="submit" class="btn btn-success">Add company</button>
 </form>

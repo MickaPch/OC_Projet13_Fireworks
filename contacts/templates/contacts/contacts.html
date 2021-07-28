@@ -7,6 +7,7 @@
     <h3>My contacts</h3>
 
     <!-- List companies -->
+    <!-- TODO : Convert in Bootstrap cards -->
     <h5>Companies</h5>
     <ul class="list-companies">
     {% for company in companies %}
@@ -17,7 +18,7 @@
         <ul class="list-contact_members">
         {% for contact in contacts %}
             {% if contact.company == company %}
-                <li class="contact-item">{{ contact.last_name }}</li>
+                <li class="contact-item">{{ contact.first_name }} {{ contact.last_name }}</li>
             {% endif %}
         {% endfor %}
         </ul>
@@ -28,7 +29,7 @@
         {% for mission in missions %}
             {% if mission.company == company %}
                 <li class="mission-item">{{ mission.title }}</li>
-                {% form_delete_mission mission.title company.pk %}
+                {% form_delete_mission mission.title company.pk user %}
             {% endif %}
         {% endfor %}
         </ul>
@@ -42,10 +43,10 @@
     
     <!-- Form add contact_member -->
     <h5>Add contact_member</h5>
-    {% form_add_contact_member company.name %}
+    {% form_add_contact_member %}
 
     <!-- Form add mission -->
     <h5>Add mission</h5>
-    {% form_add_mission company.name %}
+    {% form_add_mission user %}
 
 {% endblock  %}

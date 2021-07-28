@@ -1,11 +1,13 @@
 """Module user.views"""
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.urls.base import reverse
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
-from contacts.models import Company, ContactMember, Mission
+from contacts.models.models import Company, ContactMember, Mission
 from contacts.forms import CompanyAddForm, ContactMemberAddForm, MissionAddForm, MissionDeleteForm
+from django.shortcuts import redirect, render
 
 
 class ContactsHomeView(LoginRequiredMixin, TemplateView):
@@ -50,9 +52,24 @@ class ContactsAddCompanyFormView(FormView):
 
     def form_valid(self, form):
 
+        if 'company_form_errors' in self.request.session:
+            del self.request.session['company_form_errors']
+        if 'company_form_data' in self.request.session:
+            del self.request.session['company_form_data']
         form.add_company(self.request.user)
 
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+
+        print(form.data)
+
+        self.request.session['company_form_errors'] = form.errors
+        self.request.session['company_form_data'] = form.cleaned_data
+
+
+        return redirect(reverse('contacts_home'))
+
 
 class ContactsAddContactMemberFormView(FormView):
     template_name = 'contacts/form_add_contact_member.html'
@@ -65,6 +82,7 @@ class ContactsAddContactMemberFormView(FormView):
 
         return super().form_valid(form)
 
+
 class ContactsAddMissionFormView(FormView):
     template_name = 'contacts/form_add_mission.html'
     form_class = MissionAddForm
@@ -75,6 +93,13 @@ class ContactsAddMissionFormView(FormView):
         form.add_mission(self.request.user)
 
         return super().form_valid(form)
+    
+    def form_invalid(self, form):
+
+        print(form)
+
+        return super().form_invalid(form)
+
 
 class ContactsDeleteMissionFormView(FormView):
     template_name = 'contacts/form_delete_mission.html'

@@ -1,15 +1,16 @@
 """Test accounts views"""
 from django.contrib.auth.models import User
 from django.contrib.auth import SESSION_KEY
+from django.core.exceptions import ValidationError
 from django.http import response
 from django.test import TestCase
 from django.urls import reverse
 
-from contacts.models import Company, ContactMember, Mission
+from contacts.models.models import Company, ContactMember, Mission
 
 
-class ContactsViewTest(TestCase):
-    """Testing contacts view"""
+class ContactsTest(TestCase):
+    """Settings for contacts tests"""
 
     fixtures = [
         'users.json',
@@ -28,7 +29,9 @@ class ContactsViewTest(TestCase):
 
         self.mission1 = Mission.objects.get(pk=1)
         self.mission2 = Mission.objects.get(pk=6)
-        
+
+class ContactsViewTest(ContactsTest):
+    """Testing contacts view"""
 
     def test_contacts_only_for_connected(self):
         response = self.client.get(reverse('contacts_home'))
@@ -40,16 +43,16 @@ class ContactsViewTest(TestCase):
 
     def test_contacts_homeview(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
         response = self.client.get(reverse('contacts_home'))
         self.assertEqual(response.status_code, 200)
 
     def test_contacts_homeview_show(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
         response = self.client.get(reverse('contacts_home'))
 
@@ -57,8 +60,8 @@ class ContactsViewTest(TestCase):
 
     def test_contacts_homeview_show_user_contacts(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
         response = self.client.get(reverse('contacts_home'))
 
@@ -66,8 +69,8 @@ class ContactsViewTest(TestCase):
 
     def test_contacts_homeview_show_contacts(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
         response = self.client.get(reverse('contacts_home'))
 
@@ -75,8 +78,8 @@ class ContactsViewTest(TestCase):
 
     def test_contacts_homeview_show_only_user_contacts(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
         response = self.client.get(reverse('contacts_home'))
 
@@ -85,18 +88,21 @@ class ContactsViewTest(TestCase):
 
     def test_contacts_homeview_show_user_contacts_manyfield(self):
         self.client.login(
-            username= 'User2',
-            password= 'pwd$User2'
+            username='User2',
+            password='pwd$User2'
         )
         response = self.client.get(reverse('contacts_home'))
 
         self.assertIn(b'company-item">Company4', response.content)
         self.assertIn(b'company-item">Company2', response.content)
 
+class AddCompanyTest(ContactsTest):
+    """Test add companies"""
+
     def test_user_can_add_new_company(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
         response = self.client.get(reverse('contacts_home'))
 
@@ -105,8 +111,8 @@ class ContactsViewTest(TestCase):
 
     def test_user_add_new_company(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
 
         response = self.client.post(
@@ -127,24 +133,32 @@ class ContactsViewTest(TestCase):
 
     def test_user_add_new_company_invalid_form(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
 
         response = self.client.post(
             reverse('add_company'),
             data={
-                "name": "COMPANY TEST"
+                "name": "COMPANY TEST",
+                "address1": "COMPANY address",
+                "zipcode": "012",
+                "city": "COMPANY CITY"
             }
         )
 
+        self.assertRaises(ValidationError)
         self.assertNotIn(b'COMPANY TEST', response.content)
+
+
+class AddContactMemberTest(ContactsTest):
+    """Test add contact member"""
 
     def test_contact_member_related_to_companies(self):
 
         contacts_company1 = ContactMember.objects.filter(company=self.company1)
         contacts_company2 = ContactMember.objects.filter(company=self.company2)
-        
+
         self.assertIn(self.contact1, contacts_company1)
         self.assertIn(self.contact2, contacts_company2)
         self.assertNotIn(self.contact1, contacts_company2)
@@ -152,8 +166,8 @@ class ContactsViewTest(TestCase):
 
     def test_user_can_add_contact_member_to_companies(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
 
         company_pk = str(Company.objects.get(name="Company2").pk)
@@ -179,25 +193,28 @@ class ContactsViewTest(TestCase):
 
     def test_contacts_homeview_show_companies_and_contacts(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
         response = self.client.get(reverse('contacts_home'))
 
         self.assertIn(b'company-item">Company1', response.content)
-        self.assertIn(b'contact-item">Thomas', response.content)
+        self.assertIn(b'contact-item">Alain Thomas', response.content)
         self.assertNotIn(b'company-item">Company2', response.content)
 
     def test_contacts_homeview_show_contact_add_form(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
         response = self.client.get(reverse('contacts_home'))
 
         self.assertIn(b'id_form_add_contact_member', response.content)
         self.assertIn(b'id_last_name', response.content)
 
+
+class AddMissionTest(ContactsTest):
+    """Test add mission"""
 
     def test_mission_related_to_companies(self):
 
@@ -217,7 +234,7 @@ class ContactsViewTest(TestCase):
             company=self.company2,
             user=self.user2
         )
-        
+
         self.assertIn(self.mission1, missions_company1)
         self.assertNotIn(self.mission1, missions_company2)
         self.assertNotIn(self.mission1, missions_company3)
@@ -228,11 +245,10 @@ class ContactsViewTest(TestCase):
         self.assertNotIn(self.mission2, missions_company3)
         self.assertIn(self.mission2, missions_company4)
 
-
     def test_user_can_add_mission_to_companies(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
 
         company = Company.objects.get(name="Company2")
@@ -278,8 +294,8 @@ class ContactsViewTest(TestCase):
 
     def test_contacts_homeview_show_companies_and_missions_for_user(self):
         self.client.login(
-            username= 'User2',
-            password= 'pwd$User2'
+            username='User2',
+            password='pwd$User2'
         )
 
         company_pk = str(Company.objects.get(name="Company2").pk)
@@ -300,8 +316,8 @@ class ContactsViewTest(TestCase):
 
     def test_contacts_homeview_show_contact_add_form_mission(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
         response = self.client.get(reverse('contacts_home'))
 
@@ -309,10 +325,13 @@ class ContactsViewTest(TestCase):
         self.assertIn(b'id_title', response.content)
 
 
+class DeleteMissionTest(ContactsTest):
+    """Test delete missions"""
+
     def test_user_can_delete_mission(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
 
         company = Company.objects.get(name="Company1")
@@ -322,7 +341,7 @@ class ContactsViewTest(TestCase):
             company=company,
             user=user1
         )
-        
+
         company_pk = str(company.pk)
 
         response = self.client.post(
@@ -359,8 +378,8 @@ class ContactsViewTest(TestCase):
 
     def test_contacts_homeview_show_contact_delete_form_mission(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
         response = self.client.get(reverse('contacts_home'))
 
@@ -368,8 +387,8 @@ class ContactsViewTest(TestCase):
 
     def test_contacts_homeview_show_prepopulate_delete_mission_form(self):
         self.client.login(
-            username= 'User1',
-            password= 'pwd$User1'
+            username='User1',
+            password='pwd$User1'
         )
         response = self.client.get(reverse('contacts_home'))
 

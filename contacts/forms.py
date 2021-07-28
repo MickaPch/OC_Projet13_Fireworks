@@ -1,7 +1,7 @@
 """Contacts forms"""
 from django import forms
 
-from contacts.models import Company, ContactMember, Mission
+from contacts.models.models import Company, ContactMember, Mission
 
 
 class CompanyAddForm(forms.ModelForm):
