@@ -40,5 +40,6 @@ def form_delete_mission(context, mission_title, company):
     delete_mission_form = MissionDeleteForm(data=data)
     
     return {
-        'delete_mission_form': delete_mission_form
+        'delete_mission_form': delete_mission_form,
+        'mission_title': mission_title
     }

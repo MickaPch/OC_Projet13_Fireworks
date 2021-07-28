@@ -5,24 +5,47 @@
 
 {% block content %}
     <h3>My contacts</h3>
-    {% form_add_company user %}
 
+    <!-- List companies -->
+    <h5>Companies</h5>
+    <ul class="list-companies">
     {% for company in companies %}
-        <p class="company-item">{{ company.name }}</p>
-        {% form_add_contact_member company.name %}
+        <li class="company-item">{{ company.name }}</li>
+        
+        <!-- List contact members -->
+        <h5>Contacts</h5>
+        <ul class="list-contact_members">
         {% for contact in contacts %}
             {% if contact.company == company %}
-                <p class="contact-item">{{ contact.last_name }}</p>
+                <li class="contact-item">{{ contact.last_name }}</li>
             {% endif %}
         {% endfor %}
-        {% form_add_mission company.name %}
+        </ul>
+
+        <!-- List missions -->
+        <h5>Missions</h5>
+        <ul class="list-missions">
         {% for mission in missions %}
             {% if mission.company == company %}
-                <p class="mission-item">{{ mission.title }}</p>
+                <li class="mission-item">{{ mission.title }}</li>
                 {% form_delete_mission mission.title company.pk %}
             {% endif %}
         {% endfor %}
-    {% endfor %}
+        </ul>
 
+    {% endfor %}
+    </ul>
+
+    <!-- Form add company -->
+    <h5>Add company</h5>
+    {% form_add_company user %}
+    
+    <!-- Form add contact_member -->
+    <h5>Add contact_member</h5>
+    {% form_add_contact_member company.name %}
+
+    <!-- Form add mission -->
+    <h5>Add mission</h5>
+    {% form_add_mission company.name %}
 
 {% endblock  %}

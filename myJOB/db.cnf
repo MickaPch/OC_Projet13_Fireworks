@@ -1,0 +1,5 @@
+[client]
+database = my_job
+user = my_job_user
+password = 
+default-character-set = utf8

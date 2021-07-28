@@ -83,8 +83,15 @@ SECRET_KEY = 'django-insecure-d^9a9%-oo)_2lp$dc=v$=##m)k4mje(45nyo2z2w(^n9#bt8a3
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file': os.path.join(
+                BASE_DIR,
+                'myJOB',
+                'db.cnf'
+            ),
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        },
     }
 }
 

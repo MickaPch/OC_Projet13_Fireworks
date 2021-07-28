@@ -2,5 +2,5 @@
     {% csrf_token %}
     <!-- TODO Champs auto-remplis (title + company ou PK) -->
     {{ delete_mission_form.as_p }}
-    <button type="submit">Delete mission {{mission.title}}</button>
+    <button type="submit">Delete {{mission_title}}</button>
 </form>
