@@ -1,52 +1,73 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load tags_contacts %}
 
 {% block title %}Contacts{% endblock  %}
 
 {% block content %}
+
     <h3>My contacts</h3>
 
     <!-- List companies -->
     <!-- TODO : Convert in Bootstrap cards -->
-    <h5>Companies</h5>
-    <ul class="list-companies">
-    {% for company in companies %}
-        <li class="company-item">{{ company.name }}</li>
-        
-        <!-- List contact members -->
-        <h5>Contacts</h5>
-        <ul class="list-contact_members">
-        {% for contact in contacts %}
-            {% if contact.company == company %}
-                <li class="contact-item">{{ contact.first_name }} {{ contact.last_name }}</li>
-            {% endif %}
-        {% endfor %}
-        </ul>
+    <div class="container">
+        <div class="row">
+            <h5>Companies</h5>
+        </div>
+        <div class="row">
+            {% for company in companies %}
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <!-- Card Company -->
+                    {% comment %} <div class="card" style="width: 18rem;"> {% endcomment %}
+                    <div class="card card-company my-2">
+                        {% comment %} <img class="card-img-top" src="..." alt="Card image cap"> {% endcomment %}
+                        <div class="card-body">
+                            <h5 class="card-title company-item">{{ company.name }}</h5>
+                        </div>
+                        <ul class="list-group list-group-flush card-missions">
+                        {% for mission in missions %}
+                            {% if mission.company == company %}
+                                <li class="list-group-item">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-10 mission-item">{{ mission.title }}</div>
+                                            <div class="col-2">{% form_delete_mission mission.title company.pk user %}</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        </ul>
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="row">
+                                    {% for contact in contacts %}
+                                        {% if contact.company == company %}
+                                            <div class="col-lg-4 col-md-6 col-sm-12 px-0">
+                                                <!-- Card Contact -->
+                                                {% comment %} <div class="card" style="width: 18rem;"> {% endcomment %}
+                                                <div class="card card-contact my-2 w-100">
+                                                    <img class="card-img-top" src="{% static 'contacts/profile_user.png' %}" alt="Profile image">
+                                                    <div class="card-body">
+                                                        <div class="container">
+                                                            <div class="row">
+                                                                <p class="contact-item">{{ contact.first_name }} {{ contact.last_name }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-        <!-- List missions -->
-        <h5>Missions</h5>
-        <ul class="list-missions">
-        {% for mission in missions %}
-            {% if mission.company == company %}
-                <li class="mission-item">{{ mission.title }}</li>
-                {% form_delete_mission mission.title company.pk user %}
-            {% endif %}
-        {% endfor %}
-        </ul>
 
-    {% endfor %}
-    </ul>
+                </div>
+            {% endfor %}
+        </div>
 
-    <!-- Form add company -->
-    <h5>Add company</h5>
-    {% form_add_company user %}
-    
-    <!-- Form add contact_member -->
-    <h5>Add contact_member</h5>
-    {% form_add_contact_member %}
-
-    <!-- Form add mission -->
-    <h5>Add mission</h5>
-    {% form_add_mission user %}
 
 {% endblock  %}

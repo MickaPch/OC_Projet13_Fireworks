@@ -1,13 +1,65 @@
-<form method="post" action={% url 'add_company' %} id="id_form_add_company">
-    {% csrf_token %}
-    {% for error_field, error_list in company_form_errors.items %}
-        <p>{{ error_field }}</p>
-        <ul>
-        {% for error in error_list %}
-            <li>{{error}}</li>
-        {% endfor %}
-        </ul>
-    {% endfor %}
-    {{ company_form.as_p }}
-    <button type="submit" class="btn btn-success">Add company</button>
-</form>
+{% load crispy_forms_tags %}
+
+<div class="modal fade" id="modal_company" tabindex="-1" role="dialog" aria-labelledby="modal_companyLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal_companyLabel">Add new company</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <!-- Form add company -->
+            <form method="post" action={% url 'add_company' %} id="id_form_add_company" >
+                {% csrf_token %}
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-10">
+                            <div class="row">
+                                <ul>
+                                {% for error_field, error_list in company_form_errors.items %}
+                                    <li>{{ error_field }} : </li>
+                                    <ul>
+                                    {% for error in error_list %}
+                                        <li>{{error.message}}</li>
+                                    {% endfor %}
+                                    </ul>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    {{ company_form.name|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    {{ company_form.address1|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    {{ company_form.address2|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    {{ company_form.zipcode|as_crispy_field }}
+                                </div>
+                                <div class="col-8">
+                                    {{ company_form.city|as_crispy_field }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Add company</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>

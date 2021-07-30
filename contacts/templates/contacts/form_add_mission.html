@@ -1,5 +1,57 @@
-<form method="post" action={% url 'add_mission' %} id="id_form_add_mission">
-    {% csrf_token %}
-    {{ add_mission_form.as_p }}
-    <button type="submit" class="btn btn-success">Add mission</button>
-</form>
+{% load crispy_forms_tags %}
+
+<div class="modal fade" id="modal_mission" tabindex="-1" role="dialog" aria-labelledby="modal_missionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal_missionLabel">Add new contact</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <!-- Form add mission -->
+            <form method="post" action={% url 'add_mission' %} id="id_form_add_mission" >
+                {% csrf_token %}
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-10">
+                            <div class="row">
+                                <ul>
+                                {% for error_field, error_list in mission_form_errors.items %}
+                                    <li>{{ error_field }} : </li>
+                                    <ul>
+                                    {% for error in error_list %}
+                                        <li>{{error.message}}</li>
+                                    {% endfor %}
+                                    </ul>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    {{ add_mission_form.title|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    {{ add_mission_form.description|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    {{ add_mission_form.company|as_crispy_field }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Add contact</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>

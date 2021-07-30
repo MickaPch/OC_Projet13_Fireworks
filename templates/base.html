@@ -1,3 +1,6 @@
+{% load static %}
+{% load tags_contacts %}
+
 <!DOCTYPE html>
 <html>
 
@@ -5,16 +8,51 @@
     <meta charset="utf-8">
     <title>MyJOB - {% block title %}base{% endblock %}</title>
 
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+
     <!-- BOOTSTRAP -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <!-- FontAwesome Free -->
+    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+
 </head>
 
 <body>
     <main>
+        {% include 'messages.html' %}
+        {% if request.user.is_authenticated %}
+        <!-- dropup button -->
+        <div class="btn-group dropup">
+            <button type="button" class="btn btn-info dropdown-toggle" id="dropupMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                ADD
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropupMenuButton">
+                <!-- Dropdown menu links -->
+                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_company">new company</button>
+                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_contact_member">new contact</button>
+                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_mission">new mission</button>
+            </div>
+        </div>
+        {% endif %}    
+
         {% block content %}
         {% endblock %}
-    </main>
-</body>
-
+        </main>
+    </body>
+    
+    <!-- Modal Company -->
+    {% form_add_company user %}
+    
+    <!-- Modal contact_member -->
+    {% form_add_contact_member %}
+    
+    <!-- Form add mission -->
+    {% form_add_mission user %}
+    
 </html>

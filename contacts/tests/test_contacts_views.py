@@ -7,6 +7,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from contacts.models.models import Company, ContactMember, Mission
+from contacts.validators.validator_company import validate_zipcode
 
 
 class ContactsTest(TestCase):
@@ -137,18 +138,52 @@ class AddCompanyTest(ContactsTest):
             password='pwd$User1'
         )
 
-        response = self.client.post(
+        company_name = "COMPANY TEST"
+        zipcode = "012"
+
+        self.client.post(
             reverse('add_company'),
             data={
-                "name": "COMPANY TEST",
+                "name": company_name,
                 "address1": "COMPANY address",
-                "zipcode": "012",
+                "zipcode": zipcode,
                 "city": "COMPANY CITY"
             }
         )
 
-        self.assertRaises(ValidationError)
-        self.assertNotIn(b'COMPANY TEST', response.content)
+        self.assertRaises(ValidationError, validate_zipcode, zipcode)
+
+        company_queryset = Company.objects.filter(
+            name=company_name
+        )
+        self.assertEqual(company_queryset.count(), 0)
+
+
+    def test_user_add_new_company_invalid_form_not_digits(self):
+        self.client.login(
+            username='User1',
+            password='pwd$User1'
+        )
+
+        company_name = "COMPANY TEST"
+        zipcode = "ABCDE"
+
+        self.client.post(
+            reverse('add_company'),
+            data={
+                "name": company_name,
+                "address1": "COMPANY address",
+                "zipcode": zipcode,
+                "city": "COMPANY CITY"
+            }
+        )
+
+        self.assertRaises(ValidationError, validate_zipcode, zipcode)
+
+        company_queryset = Company.objects.filter(
+            name=company_name
+        )
+        self.assertEqual(company_queryset.count(), 0)
 
 
 class AddContactMemberTest(ContactsTest):

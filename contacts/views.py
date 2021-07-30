@@ -1,19 +1,29 @@
 """Module user.views"""
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, request
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.urls.base import reverse
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
+
+from contacts.forms import (CompanyAddForm, ContactMemberAddForm,
+                            MissionAddForm, MissionDeleteForm,
+                            PhoneNumberAddForm)
 from contacts.models.models import Company, ContactMember, Mission
-from contacts.forms import CompanyAddForm, ContactMemberAddForm, MissionAddForm, MissionDeleteForm
-from django.shortcuts import redirect, render
 
 
 class ContactsHomeView(LoginRequiredMixin, TemplateView):
     """Contacts Home view"""
 
     template_name = "contacts/contacts.html"
+
+    def setup(self, request, *args, **kwargs):
+
+        request.session = self.check_session(request.session)
+
+        return super().setup(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
 
@@ -25,6 +35,23 @@ class ContactsHomeView(LoginRequiredMixin, TemplateView):
         context["missions"] = self.get_queryset_missions(companies)
 
         return context
+
+    def check_session(self, session):
+
+        if 'session_count' in session:
+            if (
+                'data' in session
+                and session['session_count'] >= 2
+            ):
+                session['session_count'] = 0
+                del session['data']
+            elif 'data' in session:
+                session['session_count'] += 1
+        elif 'data' in session:
+            session['session_count'] = 1
+        
+        return session
+
 
     def get_queryset_companies(self):
         companies = Company.objects.filter(user=self.request.user)
@@ -52,21 +79,24 @@ class ContactsAddCompanyFormView(FormView):
 
     def form_valid(self, form):
 
-        if 'company_form_errors' in self.request.session:
-            del self.request.session['company_form_errors']
-        if 'company_form_data' in self.request.session:
-            del self.request.session['company_form_data']
         form.add_company(self.request.user)
 
         return super().form_valid(form)
 
     def form_invalid(self, form):
 
-        print(form.data)
-
-        self.request.session['company_form_errors'] = form.errors
-        self.request.session['company_form_data'] = form.cleaned_data
-
+        if 'data' not in self.request.session:
+            self.request.session['data'] = {
+                'add_company_form': {
+                    'errors': form.errors.as_json(),
+                    'data': form.cleaned_data
+                }
+            }
+        else:
+            self.request.session['data']['add_company_form'] = {
+                'errors': form.errors.as_json(),
+                'data': form.cleaned_data
+            }
 
         return redirect(reverse('contacts_home'))
 
@@ -76,11 +106,60 @@ class ContactsAddContactMemberFormView(FormView):
     form_class = ContactMemberAddForm
     success_url = reverse_lazy('contacts_home')
 
+    def get_phone_form(self):
+        if self.request.method == 'POST':
+            return PhoneNumberAddForm(self.request.POST)
+        else:
+            return PhoneNumberAddForm()
+
     def form_valid(self, form):
 
-        form.add_contact_member()
+        self.phone_form = self.get_phone_form()
+        contact = form.add_contact_member()
 
-        return super().form_valid(form)
+        if self.phone_form.is_valid():
+            self.phone_form.add_phone_number(contact)
+            messages.success(self.request, 'Contact registered.')
+
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
+        
+    def form_invalid(self, form):
+
+        print(form.errors)
+        print(self.phone_form.errors)
+
+        error_message = self.format_error(form, self.phone_form)
+
+        messages.error(self.request, error_message)
+
+        return redirect(reverse('contacts_home'))
+
+    def format_error(self, *args):
+
+        message = 'An error occured :\n'
+
+        for form in args:
+            error_data = form.errors.as_data()
+            for error_field, error_types in error_data.items():
+                message += f'  {error_field} :\n'
+                for list_error_type in error_types:
+                    for error_message in list_error_type:
+                        message += error_message
+
+        return message
+
+
+
+        print()
+        print(self.phone_form.errors.as_data())
+
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['phone_number_form'] = getattr(self, 'phone_number_form', self.get_phone_form())
+    #     return context
 
 
 class ContactsAddMissionFormView(FormView):

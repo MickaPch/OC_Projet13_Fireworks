@@ -1,6 +1,8 @@
 from django import template
 from django.http import request
-from contacts.forms import CompanyAddForm, ContactMemberAddForm, MissionAddForm, MissionDeleteForm
+from contacts.forms import CompanyAddForm, ContactMemberAddForm, MissionAddForm, MissionDeleteForm, PhoneNumberAddForm
+
+import json
 
 register = template.Library()
 
@@ -8,28 +10,34 @@ register = template.Library()
 @register.inclusion_tag('contacts/form_add_company.html', takes_context=True)
 def form_add_company(context, user):
 
-    if 'company_form_data' in context.request.session:
-        data = context.request.session['company_form_data']
-    else:
-        data = {}
 
-    company_form = CompanyAddForm(data)
+    company_form = CompanyAddForm()
+    errors = None
+
+    if 'data' in context.request.session:
+        if 'add_company_form' in context.request.session['data']:
+            print(context.request.session['data']['add_company_form'])
+            company_form = CompanyAddForm(
+                data=context.request.session['data']['add_company_form']['data']
+            )
+            errors = json.loads(context.request.session['data']['add_company_form']['errors'])
+
     context_add_company = {
         'company_form': company_form,
+        'company_form_errors': errors,
         'user': user
     }
-
-    if 'company_form_errors' in context.request.session:
-        context_add_company['company_form_errors'] = context.request.session['company_form_errors']
     
     return context_add_company
 
 @register.inclusion_tag('contacts/form_add_contact_member.html', takes_context=True)
 def form_add_contact_member(context):
     contact_member_form = ContactMemberAddForm()
+    phone_number_form = PhoneNumberAddForm()
     
     return {
-        'contact_member_form': contact_member_form
+        'contact_member_form': contact_member_form,
+        'phone_number_form': phone_number_form
     }
 
 @register.inclusion_tag('contacts/form_add_mission.html', takes_context=True)

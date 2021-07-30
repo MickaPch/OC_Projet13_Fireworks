@@ -1,6 +1,7 @@
-<form method="post" action={% url 'delete_mission' %} class="class_form_delete_mission">
-    {% csrf_token %}
-    <!-- TODO Champs auto-remplis (title + company ou PK) -->
-    {{ delete_mission_form.as_p }}
-    <button type="submit" class="btn btn-danger">Delete {{mission_title}}</button>
-</form>
+<span>
+    <form method="post" action={% url 'delete_mission' %} class="class_form_delete_mission">
+        {% csrf_token %}
+        {{ delete_mission_form }}
+        <button type="submit" class="btn btn-danger"><span class="fas fa-trash"> </span></button>
+    </form>
+</span>

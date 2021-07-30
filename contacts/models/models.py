@@ -30,6 +30,16 @@ class ContactMember(models.Model):
     def __str__(self):
         return self.last_name
 
+class PhoneNumber(models.Model):
+    phone_number = validator_fields.PhoneNumberField(max_length=10, null=False, blank=True, unique=True)
+    contact = models.ForeignKey('contacts.ContactMember', on_delete=CASCADE)
+
+    class Meta:
+        ordering = ['contact']
+
+    def __str__(self):
+        return self.phone_number
+
 class Mission(models.Model):
     title = models.CharField(max_length=250, null=False)
     description = models.TextField(null=False)
