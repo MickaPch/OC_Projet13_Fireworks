@@ -8,7 +8,7 @@ from django.urls.base import reverse
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 
-from contacts.forms import (CompanyAddForm, ContactMemberAddForm,
+from contacts.forms import (CompanyAddForm, CompanyDeleteForm, ContactMemberAddForm,
                             MissionAddForm, MissionDeleteForm,
                             PhoneNumberAddForm)
 from contacts.models.models import Company, ContactMember, Mission
@@ -24,6 +24,7 @@ class ContactsHomeView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         companies = self.get_queryset_companies()
+        context['active_page'] = 'contacts'
         context["companies"] = companies
         context["contacts"] = self.get_queryset_contacts(companies)
         context["missions"] = self.get_queryset_missions(companies)
@@ -85,6 +86,19 @@ class ContactsAddCompanyFormView(FormView):
                         message += error_message
 
         return message
+
+
+class ContactsDeleteCompanyFormView(FormView):
+    template_name = 'contacts/form_delete_company.html'
+    form_class = CompanyDeleteForm
+    success_url = reverse_lazy('contacts_home')
+
+    def form_valid(self, form):
+
+        form.delete_company(self.request.user)
+
+        return super().form_valid(form)
+
 
 class ContactsAddContactMemberFormView(FormView):
     template_name = 'contacts/form_add_contact_member.html'

@@ -21,7 +21,7 @@ def validate_zipcode(value):
 def validate_phonenumber(value):
 
     error = ValidationError(
-        _('"%(value)s" is invalid. Zipcode must have 10 digits'),
+        _('"%(value)s" is invalid. Phone number must have 10 digits'),
         params={'value': value},
     )
 

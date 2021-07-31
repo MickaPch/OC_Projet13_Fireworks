@@ -1,28 +1,25 @@
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 {% load static %}
 {% load tags_contacts %}
 
 {% block title %}Contacts{% endblock  %}
+{% block app_title %}My contacts{% endblock  %}
 
 {% block content %}
 
-    <h3>My contacts</h3>
-
     <!-- List companies -->
     <!-- TODO : Convert in Bootstrap cards -->
-    <div class="container">
-        <div class="row">
-            <h5>Companies</h5>
-        </div>
+    <div class="container-fluid">
         <div class="row">
             {% for company in companies %}
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <!-- Card Company -->
-                    {% comment %} <div class="card" style="width: 18rem;"> {% endcomment %}
                     <div class="card card-company my-2">
-                        {% comment %} <img class="card-img-top" src="..." alt="Card image cap"> {% endcomment %}
                         <div class="card-body">
-                            <h5 class="card-title company-item">{{ company.name }}</h5>
+                            <div class="row align-items-center card-title">
+                                <h5 class="col-10 company-item">{{ company.name }} - {{ company.city }}</h5>
+                                <div class="col-2">{% form_delete_company company.name user %}</div>
+                            </div>
                         </div>
                         <ul class="list-group list-group-flush card-missions">
                         {% for mission in missions %}

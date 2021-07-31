@@ -29,6 +29,26 @@ class CompanyAddForm(forms.ModelForm):
         )
         new_company.user.add(user)
 
+
+class CompanyDeleteForm(forms.ModelForm):
+
+    class Meta:
+        model = Company
+        fields = [
+            'name'
+        ]
+
+        widgets = {
+            'name': forms.HiddenInput()
+        }
+
+    def delete_company(self, user):
+        company_to_delete = Company.objects.get(
+            name=self.cleaned_data['name']
+        )
+        company_to_delete.user.remove(user)
+
+
 class PhoneNumberAddForm(forms.ModelForm):
 
     class Meta:

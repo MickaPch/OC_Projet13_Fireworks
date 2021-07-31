@@ -1,0 +1,7 @@
+<span>
+    <form method="post" action={% url 'delete_company' %} class="class_form_delete_company">
+        {% csrf_token %}
+        {{ delete_company_form }}
+        <button type="submit" class="btn btn-danger"><span class="fas fa-trash"> </span></button>
+    </form>
+</span>
