@@ -19,12 +19,6 @@ class ContactsHomeView(LoginRequiredMixin, TemplateView):
 
     template_name = "contacts/contacts.html"
 
-    def setup(self, request, *args, **kwargs):
-
-        request.session = self.check_session(request.session)
-
-        return super().setup(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
@@ -35,23 +29,6 @@ class ContactsHomeView(LoginRequiredMixin, TemplateView):
         context["missions"] = self.get_queryset_missions(companies)
 
         return context
-
-    def check_session(self, session):
-
-        if 'session_count' in session:
-            if (
-                'data' in session
-                and session['session_count'] >= 2
-            ):
-                session['session_count'] = 0
-                del session['data']
-            elif 'data' in session:
-                session['session_count'] += 1
-        elif 'data' in session:
-            session['session_count'] = 1
-        
-        return session
-
 
     def get_queryset_companies(self):
         companies = Company.objects.filter(user=self.request.user)
@@ -72,6 +49,10 @@ class ContactsHomeView(LoginRequiredMixin, TemplateView):
         return missions
 
 
+# TODO Change form in AJAX request
+# Redirect to /contacts/ if success
+# Show error if wrong
+
 class ContactsAddCompanyFormView(FormView):
     template_name = 'contacts/form_add_company.html'
     form_class = CompanyAddForm
@@ -85,21 +66,25 @@ class ContactsAddCompanyFormView(FormView):
 
     def form_invalid(self, form):
 
-        if 'data' not in self.request.session:
-            self.request.session['data'] = {
-                'add_company_form': {
-                    'errors': form.errors.as_json(),
-                    'data': form.cleaned_data
-                }
-            }
-        else:
-            self.request.session['data']['add_company_form'] = {
-                'errors': form.errors.as_json(),
-                'data': form.cleaned_data
-            }
+        error_message = self.format_error(form)
+
+        messages.error(self.request, error_message)
 
         return redirect(reverse('contacts_home'))
 
+    def format_error(self, *args):
+
+        message = 'An error occured :\n'
+
+        for form in args:
+            error_data = form.errors.as_data()
+            for error_field, error_types in error_data.items():
+                message += f'  {error_field} :\n'
+                for list_error_type in error_types:
+                    for error_message in list_error_type:
+                        message += error_message
+
+        return message
 
 class ContactsAddContactMemberFormView(FormView):
     template_name = 'contacts/form_add_contact_member.html'
@@ -127,9 +112,6 @@ class ContactsAddContactMemberFormView(FormView):
         
     def form_invalid(self, form):
 
-        print(form.errors)
-        print(self.phone_form.errors)
-
         error_message = self.format_error(form, self.phone_form)
 
         messages.error(self.request, error_message)
@@ -149,17 +131,6 @@ class ContactsAddContactMemberFormView(FormView):
                         message += error_message
 
         return message
-
-
-
-        print()
-        print(self.phone_form.errors.as_data())
-
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['phone_number_form'] = getattr(self, 'phone_number_form', self.get_phone_form())
-    #     return context
 
 
 class ContactsAddMissionFormView(FormView):

@@ -7,7 +7,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from contacts.models.models import Company, ContactMember, Mission
-from contacts.validators.validator_company import validate_zipcode
+from contacts.validators.validator_contacts import validate_zipcode
 
 
 class ContactsTest(TestCase):
@@ -158,6 +158,10 @@ class AddCompanyTest(ContactsTest):
         )
         self.assertEqual(company_queryset.count(), 0)
 
+        response = self.client.get(reverse('contacts_home'))
+        messages = list(response.context['messages'])
+        self.assertEqual(len(messages), 1)
+        self.assertIn('An error occured', str(messages[0]))
 
     def test_user_add_new_company_invalid_form_not_digits(self):
         self.client.login(
@@ -184,6 +188,11 @@ class AddCompanyTest(ContactsTest):
             name=company_name
         )
         self.assertEqual(company_queryset.count(), 0)
+
+        response = self.client.get(reverse('contacts_home'))
+        messages = list(response.context['messages'])
+        self.assertEqual(len(messages), 1)
+        self.assertIn('An error occured', str(messages[0]))
 
 
 class AddContactMemberTest(ContactsTest):
