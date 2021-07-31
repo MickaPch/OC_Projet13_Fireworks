@@ -10,7 +10,7 @@ from django.views.generic.edit import FormView
 
 from contacts.forms import (CompanyAddForm, CompanyDeleteForm, ContactMemberAddForm,
                             MissionAddForm, MissionDeleteForm,
-                            PhoneNumberAddForm)
+                            PhoneNumberAddForm, EmailAddForm)
 from contacts.models.models import Company, ContactMember, Mission
 
 
@@ -111,22 +111,36 @@ class ContactsAddContactMemberFormView(FormView):
         else:
             return PhoneNumberAddForm()
 
+    def get_email_form(self):
+        if self.request.method == 'POST':
+            return EmailAddForm(self.request.POST)
+        else:
+            return EmailAddForm()
+
     def form_valid(self, form):
 
         self.phone_form = self.get_phone_form()
+        self.email_form = self.get_email_form()
         contact = form.add_contact_member()
 
         if self.phone_form.is_valid():
             self.phone_form.add_phone_number(contact)
-            messages.success(self.request, 'Contact registered.')
 
-            return super().form_valid(form)
-        else:
+        if self.email_form.is_valid():
+            self.email_form.add_email(contact)
+
+        if (
+            not self.phone_form.is_valid()
+            or not self.email_form.is_valid()
+        ):
             return self.form_invalid(form)
-        
+        else:
+            return super().form_valid(form)
+
+
     def form_invalid(self, form):
 
-        error_message = self.format_error(form, self.phone_form)
+        error_message = self.format_error(form, self.phone_form, self.email_form)
 
         messages.error(self.request, error_message)
 
@@ -134,7 +148,7 @@ class ContactsAddContactMemberFormView(FormView):
 
     def format_error(self, *args):
 
-        message = 'An error occured :\n'
+        message = str()
 
         for form in args:
             error_data = form.errors.as_data()

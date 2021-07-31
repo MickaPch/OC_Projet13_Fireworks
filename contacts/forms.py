@@ -1,7 +1,7 @@
 """Contacts forms"""
 from django import forms
 
-from contacts.models.models import Company, ContactMember, Mission, PhoneNumber
+from contacts.models.models import Company, ContactEmail, ContactMember, Mission, PhoneNumber
 
 
 class CompanyAddForm(forms.ModelForm):
@@ -63,7 +63,21 @@ class PhoneNumberAddForm(forms.ModelForm):
             contact=contact
         )
 
-class ContactMemberAddForm(PhoneNumberAddForm):
+class EmailAddForm(forms.ModelForm):
+
+    class Meta:
+        model = ContactEmail
+        fields = [
+            'email'
+        ]
+
+    def add_email(self, contact):
+        new_email, created = ContactEmail.objects.get_or_create(
+            email=self.cleaned_data['email'],
+            contact=contact
+        )
+
+class ContactMemberAddForm(forms.ModelForm):
 
     class Meta:
         model = ContactMember

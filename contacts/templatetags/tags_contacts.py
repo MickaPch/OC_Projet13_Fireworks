@@ -1,6 +1,6 @@
 from django import template
 from django.http import request
-from contacts.forms import CompanyAddForm, ContactMemberAddForm, MissionAddForm, MissionDeleteForm, PhoneNumberAddForm, CompanyDeleteForm
+from contacts.forms import CompanyAddForm, ContactMemberAddForm, MissionAddForm, MissionDeleteForm, PhoneNumberAddForm, CompanyDeleteForm, EmailAddForm
 
 import json
 
@@ -49,10 +49,12 @@ def form_delete_company(context, company, user):
 def form_add_contact_member(context):
     contact_member_form = ContactMemberAddForm()
     phone_number_form = PhoneNumberAddForm()
+    email_form = EmailAddForm()
     
     return {
         'contact_member_form': contact_member_form,
-        'phone_number_form': phone_number_form
+        'phone_number_form': phone_number_form,
+        'email_form': email_form
     }
 
 @register.inclusion_tag('contacts/form_add_mission.html', takes_context=True)

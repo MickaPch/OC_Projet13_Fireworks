@@ -41,7 +41,7 @@ class PhoneNumber(models.Model):
         return self.phone_number
 
 class ContactEmail(models.Model):
-    email = validator_fields.EmailField(null=False, blank=True, unique=True)
+    email = models.EmailField(max_length=254, null=False, blank=True, unique=True)
     contact = models.ForeignKey('contacts.ContactMember', on_delete=CASCADE)
 
     class Meta:
