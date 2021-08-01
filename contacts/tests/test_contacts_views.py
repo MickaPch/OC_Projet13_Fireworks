@@ -6,7 +6,7 @@ from django.http import response
 from django.test import TestCase
 from django.urls import reverse
 
-from contacts.models.models import Company, ContactMember, Mission
+from contacts.models.models import Company, Contact, Mission
 
 
 class ContactsTest(TestCase):
@@ -24,8 +24,8 @@ class ContactsTest(TestCase):
         self.company1 = Company.objects.get(pk=1)
         self.company2 = Company.objects.get(pk=2)
 
-        self.contact1 = ContactMember.objects.get(pk=1)
-        self.contact2 = ContactMember.objects.get(pk=2)
+        self.contact1 = Contact.objects.get(pk=1)
+        self.contact2 = Contact.objects.get(pk=2)
 
         self.mission1 = Mission.objects.get(pk=1)
         self.mission2 = Mission.objects.get(pk=6)

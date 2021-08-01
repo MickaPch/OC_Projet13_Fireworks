@@ -1,8 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-import string
-
 
 def validate_zipcode(value):
 
@@ -30,3 +28,4 @@ def validate_phonenumber(value):
         or not any(i.isdigit() for i in value)
     ):
         raise error
+

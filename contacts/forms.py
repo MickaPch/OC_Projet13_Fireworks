@@ -1,7 +1,7 @@
 """Contacts forms"""
 from django import forms
 
-from contacts.models.models import Company, ContactEmail, ContactMember, Mission, PhoneNumber
+from contacts.models.models import Company, Contact, Mission
 
 
 class CompanyAddForm(forms.ModelForm):
@@ -48,56 +48,99 @@ class CompanyDeleteForm(forms.ModelForm):
         )
         company_to_delete.user.remove(user)
 
-
-class PhoneNumberAddForm(forms.ModelForm):
-
-    class Meta:
-        model = PhoneNumber
-        fields = [
-            'phone_number'
-        ]
-
-    def add_phone_number(self, contact):
-        new_phone_number, created = PhoneNumber.objects.get_or_create(
-            phone_number=self.cleaned_data['phone_number'],
-            contact=contact
-        )
-
-class EmailAddForm(forms.ModelForm):
+class ContactForm(forms.ModelForm):
 
     class Meta:
-        model = ContactEmail
-        fields = [
-            'email'
-        ]
-
-    def add_email(self, contact):
-        new_email, created = ContactEmail.objects.get_or_create(
-            email=self.cleaned_data['email'],
-            contact=contact
-        )
-
-class ContactMemberAddForm(forms.ModelForm):
-
-    class Meta:
-        model = ContactMember
+        model = Contact
         fields = [
             'first_name',
             'last_name',
             'company',
+            'phone_number',
+            'email'
         ]
 
-    def add_contact_member(self):
+    def add_contact(self):
         company = Company.objects.get(
             name=self.cleaned_data['company']
         )
-        new_contact_member, created = ContactMember.objects.get_or_create(
+        new_contact, created = Contact.objects.get_or_create(
             first_name=self.cleaned_data['first_name'],
             last_name=self.cleaned_data['last_name'],
-            company=company
+            company=company,
+            phone_number=self.cleaned_data['phone_number'],
+            email=self.cleaned_data['email']
         )
 
-        return new_contact_member
+        return new_contact
+
+    def clean(self):
+
+        email = self.cleaned_data.get('email')
+        phone_number = self.cleaned_data.get('phone_number')        
+
+        if (
+            email != ""
+            and Contact.objects.filter(email=email).exists()
+        ):
+            raise forms.ValidationError(u'Email addresses must be unique.')
+        if (
+            phone_number != ""
+            and Contact.objects.filter(phone_number=phone_number).exists()
+        ):
+            raise forms.ValidationError(u'Phone number must be unique.')
+
+        return super().clean()
+
+class EditContactForm(forms.ModelForm):
+
+    contact_pk = forms.IntegerField()
+
+    class Meta:
+        model = Contact
+        fields = [
+            'first_name',
+            'last_name',
+            'company',
+            'phone_number',
+            'email'
+        ]
+
+        widgets = {
+            'contact_pk': forms.HiddenInput()
+        }
+
+    def edit_contact(self):
+
+        contact = Contact.objects.get(
+            pk=self.cleaned_data['contact_pk']
+        )
+
+        contact.first_name = self.cleaned_data['first_name']
+        contact.last_name = self.cleaned_data['last_name']
+        contact.phone_number = self.cleaned_data['phone_number']
+        contact.email = self.cleaned_data['email']
+
+        contact.save()
+
+    def clean(self):
+
+        contact_pk = self.cleaned_data.get('contact_pk')
+        email = self.cleaned_data.get('email')
+        phone_number = self.cleaned_data.get('phone_number')        
+
+        if (
+            email != ""
+            and Contact.objects.filter(email=email).exclude(pk=contact_pk).exists()
+        ):
+            raise forms.ValidationError(u'Email addresses must be unique.')
+        if (
+            phone_number != ""
+            and Contact.objects.filter(phone_number=phone_number).exclude(pk=contact_pk).exists()
+        ):
+            raise forms.ValidationError(u'Phone number must be unique.')
+
+        return super().clean()
 
 class MissionAddForm(forms.ModelForm):
 

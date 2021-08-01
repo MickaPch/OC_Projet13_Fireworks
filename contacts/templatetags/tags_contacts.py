@@ -1,6 +1,6 @@
 from django import template
 from django.http import request
-from contacts.forms import CompanyAddForm, ContactMemberAddForm, MissionAddForm, MissionDeleteForm, PhoneNumberAddForm, CompanyDeleteForm, EmailAddForm
+from contacts.forms import CompanyAddForm, ContactForm, EditContactForm, MissionAddForm, MissionDeleteForm, CompanyDeleteForm
 
 import json
 
@@ -9,7 +9,6 @@ register = template.Library()
 
 @register.inclusion_tag('contacts/form_add_company.html', takes_context=True)
 def form_add_company(context, user):
-
 
     company_form = CompanyAddForm()
     errors = None
@@ -45,16 +44,29 @@ def form_delete_company(context, company, user):
     }
 
 
-@register.inclusion_tag('contacts/form_add_contact_member.html', takes_context=True)
-def form_add_contact_member(context):
-    contact_member_form = ContactMemberAddForm()
-    phone_number_form = PhoneNumberAddForm()
-    email_form = EmailAddForm()
+@register.inclusion_tag('contacts/form_contact.html', takes_context=True)
+def form_contact(context):
+    contact_form = ContactForm()
     
     return {
-        'contact_member_form': contact_member_form,
-        'phone_number_form': phone_number_form,
-        'email_form': email_form
+        'contact_form': contact_form
+    }
+
+@register.inclusion_tag('contacts/form_edit_contact.html', takes_context=True)
+def form_edit_contact(context, contact_to_edit):
+    data = {
+        'contact_pk': contact_to_edit.pk,
+        'first_name': contact_to_edit.first_name,
+        'last_name': contact_to_edit.last_name,
+        'phone_number': contact_to_edit.phone_number,
+        'email': contact_to_edit.email,
+        'company': contact_to_edit.company.pk
+    }
+    edit_contact_form = EditContactForm(data=data)
+    
+    return {
+        'edit_contact_form': edit_contact_form,
+        'contact_to_edit': contact_to_edit
     }
 
 @register.inclusion_tag('contacts/form_add_mission.html', takes_context=True)

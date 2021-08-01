@@ -19,10 +19,12 @@ class Company(models.Model):
     def __str__(self):
         return self.name
 
-class ContactMember(models.Model):
+class Contact(models.Model):
     first_name = models.CharField(max_length=250, null=False)
     last_name = models.CharField(max_length=250, null=False)
     company = models.ForeignKey('contacts.Company', on_delete=CASCADE)
+    phone_number = validator_fields.PhoneNumberField(max_length=10, null=False, blank=True, default="")
+    email = models.EmailField(max_length=254, null=False, blank=True)
 
     class Meta:
         ordering = ['company', 'last_name']
@@ -30,25 +32,6 @@ class ContactMember(models.Model):
     def __str__(self):
         return self.last_name
 
-class PhoneNumber(models.Model):
-    phone_number = validator_fields.PhoneNumberField(max_length=10, null=False, blank=True, unique=True)
-    contact = models.ForeignKey('contacts.ContactMember', on_delete=CASCADE)
-
-    class Meta:
-        ordering = ['contact']
-
-    def __str__(self):
-        return self.phone_number
-
-class ContactEmail(models.Model):
-    email = models.EmailField(max_length=254, null=False, blank=True, unique=True)
-    contact = models.ForeignKey('contacts.ContactMember', on_delete=CASCADE)
-
-    class Meta:
-        ordering = ['contact']
-
-    def __str__(self):
-        return self.email
 
 class Mission(models.Model):
     title = models.CharField(max_length=250, null=False)

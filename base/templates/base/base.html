@@ -82,7 +82,7 @@
                                     <div class="dropdown-menu" aria-labelledby="dropupMenuButton">
                                         <!-- Dropdown menu links -->
                                         <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_company">new company</button>
-                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_contact_member">new contact</button>
+                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_contact">new contact</button>
                                         <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_mission">new mission</button>
                                     </div>
                                 </div>
@@ -106,7 +106,7 @@
 {% form_add_company user %}
 
 <!-- Modal contact_member -->
-{% form_add_contact_member %}
+{% form_contact %}
 
 <!-- Form add mission -->
 {% form_add_mission user %}

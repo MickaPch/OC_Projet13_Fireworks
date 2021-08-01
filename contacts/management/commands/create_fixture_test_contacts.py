@@ -67,7 +67,7 @@ class Command(BaseCommand):
                     "user": [1, 2, 3],
                 }
             }, {
-                "model": "contacts.ContactMember",
+                "model": "contacts.Contact",
                 "pk": 1,
                 "fields": {
                     "first_name": "Alain",
@@ -75,31 +75,35 @@ class Command(BaseCommand):
                     "company": 1,
                 }
             }, {
-                "model": "contacts.ContactMember",
+                "model": "contacts.Contact",
                 "pk": 2,
                 "fields": {
                     "first_name": "Thibault",
                     "last_name": "Astier",
                     "company": 2,
+                    "phone_number": "0612345679",
                 }
             }, {
-                "model": "contacts.ContactMember",
+                "model": "contacts.Contact",
                 "pk": 3,
                 "fields": {
                     "first_name": "Giselle",
                     "last_name": "Cohen",
                     "company": 3,
+                    "email": "giselle@example.com",
                 }
             }, {
-                "model": "contacts.ContactMember",
+                "model": "contacts.Contact",
                 "pk": 4,
                 "fields": {
                     "first_name": "Edouard",
                     "last_name": "Marty",
                     "company": 1,
+                    "phone_number": "0612345678",
+                    "email": "edouard@example.com"
                 }
             }, {
-                "model": "contacts.ContactMember",
+                "model": "contacts.Contact",
                 "pk": 5,
                 "fields": {
                     "first_name": "Sébastien",
@@ -107,7 +111,7 @@ class Command(BaseCommand):
                     "company": 1,
                 }
             }, {
-                "model": "contacts.ContactMember",
+                "model": "contacts.Contact",
                 "pk": 6,
                 "fields": {
                     "first_name": "Laura",

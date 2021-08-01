@@ -1,23 +1,23 @@
 from django.urls import reverse
 
-from contacts.models.models import Company, ContactMember, PhoneNumber, ContactEmail
+from contacts.models.models import Company, Contact
 from contacts.tests.test_contacts_views import ContactsTest
 
 
-class AddContactMemberTest(ContactsTest):
-    """Test add contact member"""
+class AddContactTest(ContactsTest):
+    """Test add contact"""
 
-    def test_contact_member_related_to_companies(self):
+    def test_contact_related_to_companies(self):
 
-        contacts_company1 = ContactMember.objects.filter(company=self.company1)
-        contacts_company2 = ContactMember.objects.filter(company=self.company2)
+        contacts_company1 = Contact.objects.filter(company=self.company1)
+        contacts_company2 = Contact.objects.filter(company=self.company2)
 
         self.assertIn(self.contact1, contacts_company1)
         self.assertIn(self.contact2, contacts_company2)
         self.assertNotIn(self.contact1, contacts_company2)
         self.assertNotIn(self.contact2, contacts_company1)
 
-    def test_user_can_add_contact_member_to_companies(self):
+    def test_user_can_add_contact_to_companies(self):
         self.client.login(
             username='User1',
             password='pwd$User1'
@@ -26,7 +26,7 @@ class AddContactMemberTest(ContactsTest):
         company_pk = str(Company.objects.get(name="Company2").pk)
 
         response = self.client.post(
-            reverse('add_contact_member'),
+            reverse('add_contact'),
             data={
                 "first_name": "TestFirstName3",
                 "last_name": "TestLastName3",
@@ -34,12 +34,12 @@ class AddContactMemberTest(ContactsTest):
             }
         )
 
-        new_contact = ContactMember.objects.get(
+        new_contact = Contact.objects.get(
             first_name='TestFirstName3'
         )
 
-        contacts_company1 = ContactMember.objects.filter(company=self.company1)
-        contacts_company2 = ContactMember.objects.filter(company=self.company2)
+        contacts_company1 = Contact.objects.filter(company=self.company1)
+        contacts_company2 = Contact.objects.filter(company=self.company2)
 
         self.assertIn(new_contact, contacts_company2)
         self.assertNotIn(new_contact, contacts_company1)
@@ -62,7 +62,7 @@ class AddContactMemberTest(ContactsTest):
         )
         response = self.client.get(reverse('contacts_home'))
 
-        self.assertIn(b'id_form_add_contact_member', response.content)
+        self.assertIn(b'id_form_contact', response.content)
         self.assertIn(b'id_last_name', response.content)
 
     def test_user_can_add_phone_number_when_contact_creation(self):
@@ -75,14 +75,14 @@ class AddContactMemberTest(ContactsTest):
 
         phone_number = "0123456789"
 
-        phone_numbers = PhoneNumber.objects.filter(
+        contacts_phone = Contact.objects.filter(
             phone_number=phone_number
         )
 
-        self.assertEqual(phone_numbers.count(), 0)
+        self.assertEqual(contacts_phone.count(), 0)
 
         self.client.post(
-            reverse('add_contact_member'),
+            reverse('add_contact'),
             data={
                 "first_name": "TestFirstName3",
                 "last_name": "TestLastName3",
@@ -91,15 +91,15 @@ class AddContactMemberTest(ContactsTest):
             }
         )
 
-        phone_numbers = PhoneNumber.objects.filter(
+        contacts_phone = Contact.objects.filter(
             phone_number=phone_number
         )
-        new_contact = ContactMember.objects.get(
+        new_contact = Contact.objects.get(
             first_name='TestFirstName3'
         )
 
-        self.assertEqual(phone_numbers.count(), 1)
-        self.assertEqual(new_contact, phone_numbers[0].contact)
+        self.assertEqual(contacts_phone.count(), 1)
+        self.assertEqual(new_contact, contacts_phone[0])
 
     def test_user_cannot_add_wrong_phone_number_letter_when_contact_creation(self):
         self.client.login(
@@ -111,14 +111,14 @@ class AddContactMemberTest(ContactsTest):
 
         phone_number = "ABCDE"
 
-        phone_numbers = PhoneNumber.objects.filter(
+        contacts_phone_number = Contact.objects.filter(
             phone_number=phone_number
         )
 
-        self.assertEqual(phone_numbers.count(), 0)
+        self.assertEqual(contacts_phone_number.count(), 0)
 
         self.client.post(
-            reverse('add_contact_member'),
+            reverse('add_contact'),
             data={
                 "first_name": "TestFirstName3",
                 "last_name": "TestLastName3",
@@ -127,11 +127,11 @@ class AddContactMemberTest(ContactsTest):
             }
         )
 
-        phone_numbers = PhoneNumber.objects.filter(
+        contacts_phone_number = Contact.objects.filter(
             phone_number=phone_number
         )
 
-        self.assertEqual(phone_numbers.count(), 0)
+        self.assertEqual(contacts_phone_number.count(), 0)
 
     def test_user_cannot_add_wrong_phone_number_length_when_contact_creation(self):
         self.client.login(
@@ -143,14 +143,14 @@ class AddContactMemberTest(ContactsTest):
 
         phone_number = "0123456"
 
-        phone_numbers = PhoneNumber.objects.filter(
+        contacts_phone_number = Contact.objects.filter(
             phone_number=phone_number
         )
 
-        self.assertEqual(phone_numbers.count(), 0)
+        self.assertEqual(contacts_phone_number.count(), 0)
 
         self.client.post(
-            reverse('add_contact_member'),
+            reverse('add_contact'),
             data={
                 "first_name": "TestFirstName3",
                 "last_name": "TestLastName3",
@@ -159,11 +159,11 @@ class AddContactMemberTest(ContactsTest):
             }
         )
 
-        phone_numbers = PhoneNumber.objects.filter(
+        contacts_phone_number = Contact.objects.filter(
             phone_number=phone_number
         )
 
-        self.assertEqual(phone_numbers.count(), 0)
+        self.assertEqual(contacts_phone_number.count(), 0)
 
     def test_user_can_add_email_when_contact_creation(self):
         self.client.login(
@@ -175,14 +175,14 @@ class AddContactMemberTest(ContactsTest):
 
         email = "foo@example.com"
 
-        emails = ContactEmail.objects.filter(
+        contact_emails = Contact.objects.filter(
             email=email
         )
 
-        self.assertEqual(emails.count(), 0)
+        self.assertEqual(contact_emails.count(), 0)
 
         self.client.post(
-            reverse('add_contact_member'),
+            reverse('add_contact'),
             data={
                 "first_name": "TestFirstName3",
                 "last_name": "TestLastName3",
@@ -191,15 +191,15 @@ class AddContactMemberTest(ContactsTest):
             }
         )
 
-        emails = ContactEmail.objects.filter(
+        contact_emails = Contact.objects.filter(
             email=email
         )
-        new_contact = ContactMember.objects.get(
+        new_contact = Contact.objects.get(
             first_name='TestFirstName3'
         )
 
-        self.assertEqual(emails.count(), 1)
-        self.assertEqual(new_contact, emails[0].contact)
+        self.assertEqual(contact_emails.count(), 1)
+        self.assertEqual(new_contact, contact_emails[0])
 
     def test_user_cannot_add_wrong_email_when_contact_creation(self):
         self.client.login(
@@ -211,14 +211,14 @@ class AddContactMemberTest(ContactsTest):
 
         email = "@example.com"
 
-        emails = ContactEmail.objects.filter(
+        contact_emails = Contact.objects.filter(
             email=email
         )
 
-        self.assertEqual(emails.count(), 0)
+        self.assertEqual(contact_emails.count(), 0)
 
         self.client.post(
-            reverse('add_contact_member'),
+            reverse('add_contact'),
             data={
                 "first_name": "TestFirstName3",
                 "last_name": "TestLastName3",
@@ -227,8 +227,65 @@ class AddContactMemberTest(ContactsTest):
             }
         )
 
-        emails = ContactEmail.objects.filter(
+        contact_emails = Contact.objects.filter(
             email=email
         )
 
-        self.assertEqual(emails.count(), 0)
+        self.assertEqual(contact_emails.count(), 0)
+
+    def test_user_can_edit_contact(self):
+        self.client.login(
+            username='User1',
+            password='pwd$User1'
+        )
+        contact = Contact.objects.get(
+            pk=1
+        )
+
+        new_first_name = 'Edit test'
+        new_last_name = 'EDIT TEST'
+        new_phone_number = '0123456789'
+        new_email = 'edit_test@example.com'
+
+        self.assertNotEqual(contact.first_name, new_first_name)
+        self.assertNotEqual(contact.last_name, new_last_name)
+
+        self.assertEqual(contact.phone_number, "")
+
+        contact_emails = Contact.objects.filter(
+            email=new_email
+        )
+        self.assertEqual(contact_emails.count(), 0)
+
+        self.client.post(
+            reverse('edit_contact'),
+            data={
+                "contact_pk": contact.pk,
+                "first_name": new_first_name,
+                "last_name": new_last_name,
+                "company": contact.company.pk,
+                "phone_number": new_phone_number,
+                "email": new_email
+            }
+        )
+
+        contact = Contact.objects.get(
+            pk=1
+        )
+
+        self.assertEqual(contact.first_name, new_first_name)
+        self.assertEqual(contact.last_name, new_last_name)
+
+        contact_phones = Contact.objects.filter(
+            phone_number=new_phone_number
+        )
+        self.assertEqual(contact_phones.count(), 1)
+        self.assertEqual(contact, contact_phones[0])
+
+        contact_emails = Contact.objects.filter(
+            email=new_email
+        )
+        self.assertEqual(contact_emails.count(), 1)
+        self.assertEqual(contact, contact_emails[0])
+
+

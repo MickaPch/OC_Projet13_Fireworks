@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.validators import validate_email
 
 from contacts.validators import validator_contacts
 
