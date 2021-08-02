@@ -8,7 +8,7 @@ from django.urls.base import reverse
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 
-from contacts.forms import (CompanyAddForm, CompanyDeleteForm, ContactForm, EditContactForm,
+from contacts.forms import (CompanyAddForm, CompanyDeleteForm, AddContactForm, EditContactForm, DeleteContactForm,
                             MissionAddForm, MissionDeleteForm)
 from contacts.models.models import Company, Contact, Mission
 
@@ -36,7 +36,10 @@ class ContactsHomeView(LoginRequiredMixin, TemplateView):
         return companies
 
     def get_queryset_contacts(self, companies):
-        contacts = Contact.objects.filter(company__in=companies)
+        contacts = Contact.objects.filter(
+            company__in=companies,
+            user=self.request.user
+        )
 
         return contacts
 
@@ -48,10 +51,6 @@ class ContactsHomeView(LoginRequiredMixin, TemplateView):
 
         return missions
 
-
-# TODO Change form in AJAX request
-# Redirect to /contacts/ if success
-# Show error if wrong
 
 class ContactsAddCompanyFormView(FormView):
     template_name = 'contacts/form_add_company.html'
@@ -100,13 +99,13 @@ class ContactsDeleteCompanyFormView(FormView):
 
 
 class ContactsAddContactFormView(FormView):
-    template_name = 'contacts/form_contact.html'
-    form_class = ContactForm
+    template_name = 'contacts/form_add_contact.html'
+    form_class = AddContactForm
     success_url = reverse_lazy('contacts_home')
 
     def form_valid(self, form):
 
-        form.add_contact()
+        form.add_contact(self.request.user)
 
         return super().form_valid(form)
 
@@ -169,6 +168,23 @@ class ContactsEditContactFormView(FormView):
 
         return message
 
+class ContactsDeleteContactFormView(FormView):
+    template_name = 'contacts/form_delete_contact.html'
+    form_class = DeleteContactForm
+    success_url = reverse_lazy('contacts_home')
+
+    def form_valid(self, form):
+
+        form.delete_contact(self.request.user)
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+
+        print(form)
+
+
+        return super().form_valid(form)
 
 class ContactsAddMissionFormView(FormView):
     template_name = 'contacts/form_add_mission.html'

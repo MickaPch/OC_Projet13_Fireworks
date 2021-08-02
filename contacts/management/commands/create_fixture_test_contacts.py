@@ -71,52 +71,58 @@ class Command(BaseCommand):
                 "pk": 1,
                 "fields": {
                     "first_name": "Alain",
-                    "last_name": "Thomas",
+                    "last_name": "THOMAS",
                     "company": 1,
+                    "user": [1]
                 }
             }, {
                 "model": "contacts.Contact",
                 "pk": 2,
                 "fields": {
                     "first_name": "Thibault",
-                    "last_name": "Astier",
+                    "last_name": "ASTIER",
                     "company": 2,
                     "phone_number": "0612345679",
+                    "user": [2]
                 }
             }, {
                 "model": "contacts.Contact",
                 "pk": 3,
                 "fields": {
                     "first_name": "Giselle",
-                    "last_name": "Cohen",
+                    "last_name": "COHEN",
                     "company": 3,
                     "email": "giselle@example.com",
+                    "user": [3]
                 }
             }, {
                 "model": "contacts.Contact",
                 "pk": 4,
                 "fields": {
                     "first_name": "Edouard",
-                    "last_name": "Marty",
-                    "company": 1,
+                    "last_name": "MARTY",
+                    "company": 5,
                     "phone_number": "0612345678",
-                    "email": "edouard@example.com"
+                    "email": "edouard@example.com",
+                    "user": [1, 3]
                 }
             }, {
                 "model": "contacts.Contact",
                 "pk": 5,
                 "fields": {
                     "first_name": "Sébastien",
-                    "last_name": "Bris",
-                    "company": 1,
+                    "last_name": "BRIS",
+                    "company": 4,
+                    "user": [1, 2]
                 }
             }, {
                 "model": "contacts.Contact",
                 "pk": 6,
                 "fields": {
                     "first_name": "Laura",
-                    "last_name": "Grassineau",
-                    "company": 2,
+                    "last_name": "GRASSINEAU",
+                    "company": 5,
+                    "user": [1, 2, 3]
                 }
             }, {
                 "model": "contacts.Mission",

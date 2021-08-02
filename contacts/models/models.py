@@ -25,6 +25,7 @@ class Contact(models.Model):
     company = models.ForeignKey('contacts.Company', on_delete=CASCADE)
     phone_number = validator_fields.PhoneNumberField(max_length=10, null=False, blank=True, default="")
     email = models.EmailField(max_length=254, null=False, blank=True)
+    user = models.ManyToManyField(User)
 
     class Meta:
         ordering = ['company', 'last_name']

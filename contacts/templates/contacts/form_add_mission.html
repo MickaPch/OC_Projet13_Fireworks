@@ -17,18 +17,6 @@
                     <div class="row justify-content-center">
                         <div class="col-10">
                             <div class="row">
-                                <ul>
-                                {% for error_field, error_list in mission_form_errors.items %}
-                                    <li>{{ error_field }} : </li>
-                                    <ul>
-                                    {% for error in error_list %}
-                                        <li>{{error.message}}</li>
-                                    {% endfor %}
-                                    </ul>
-                                {% endfor %}
-                                </ul>
-                            </div>
-                            <div class="row">
                                 <div class="col-12">
                                     {{ add_mission_form.title|as_crispy_field }}
                                 </div>

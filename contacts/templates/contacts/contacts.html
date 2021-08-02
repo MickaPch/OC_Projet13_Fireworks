@@ -51,7 +51,8 @@
                                                                 <p class="contact-item">{{ contact.first_name }} {{ contact.last_name }}</p>
                                                             </div>
                                                             <div class="row">
-                                                                {% form_edit_contact contact %}
+                                                                <div class="col">{% form_edit_contact contact %}</div>
+                                                                <div class="col">{% form_delete_contact contact.pk user %}</div>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -48,7 +48,7 @@ class CompanyDeleteForm(forms.ModelForm):
         )
         company_to_delete.user.remove(user)
 
-class ContactForm(forms.ModelForm):
+class AddContactForm(forms.ModelForm):
 
     class Meta:
         model = Contact
@@ -60,17 +60,23 @@ class ContactForm(forms.ModelForm):
             'email'
         ]
 
-    def add_contact(self):
+    def add_contact(self, user):
         company = Company.objects.get(
             name=self.cleaned_data['company']
         )
+        first_name = self.cleaned_data['first_name'].capitalize()
+        last_name = self.cleaned_data['last_name'].upper()
         new_contact, created = Contact.objects.get_or_create(
-            first_name=self.cleaned_data['first_name'],
-            last_name=self.cleaned_data['last_name'],
-            company=company,
-            phone_number=self.cleaned_data['phone_number'],
-            email=self.cleaned_data['email']
+            first_name=first_name,
+            last_name=last_name,
+            company=company
         )
+        if created:
+            new_contact.phone_number = self.cleaned_data['phone_number']
+            new_contact.email = self.cleaned_data['email']
+        new_contact.user.add(user)
+
+        new_contact.save()
 
         return new_contact
 
@@ -116,8 +122,11 @@ class EditContactForm(forms.ModelForm):
             pk=self.cleaned_data['contact_pk']
         )
 
-        contact.first_name = self.cleaned_data['first_name']
-        contact.last_name = self.cleaned_data['last_name']
+        first_name = self.cleaned_data['first_name'].capitalize()
+        last_name = self.cleaned_data['last_name'].upper()
+
+        contact.first_name = first_name
+        contact.last_name = last_name
         contact.phone_number = self.cleaned_data['phone_number']
         contact.email = self.cleaned_data['email']
 
@@ -141,6 +150,26 @@ class EditContactForm(forms.ModelForm):
             raise forms.ValidationError(u'Phone number must be unique.')
 
         return super().clean()
+
+
+class DeleteContactForm(forms.ModelForm):
+
+    contact_pk = forms.IntegerField()
+
+    class Meta:
+        model = Contact
+
+        fields = ['contact_pk']
+
+        widgets = {
+            'contact_pk': forms.HiddenInput()
+        }
+
+    def delete_contact(self, user):
+        contact_to_delete = Contact.objects.get(
+            pk=self.cleaned_data['contact_pk']
+        )
+        contact_to_delete.user.remove(user)
 
 class MissionAddForm(forms.ModelForm):
 

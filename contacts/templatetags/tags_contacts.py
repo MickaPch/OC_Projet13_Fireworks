@@ -1,6 +1,6 @@
 from django import template
 from django.http import request
-from contacts.forms import CompanyAddForm, ContactForm, EditContactForm, MissionAddForm, MissionDeleteForm, CompanyDeleteForm
+from contacts.forms import CompanyAddForm, AddContactForm, DeleteContactForm, EditContactForm, MissionAddForm, MissionDeleteForm, CompanyDeleteForm
 
 import json
 
@@ -11,19 +11,9 @@ register = template.Library()
 def form_add_company(context, user):
 
     company_form = CompanyAddForm()
-    errors = None
-
-    if 'data' in context.request.session:
-        if 'add_company_form' in context.request.session['data']:
-            print(context.request.session['data']['add_company_form'])
-            company_form = CompanyAddForm(
-                data=context.request.session['data']['add_company_form']['data']
-            )
-            errors = json.loads(context.request.session['data']['add_company_form']['errors'])
 
     context_add_company = {
         'company_form': company_form,
-        'company_form_errors': errors,
         'user': user
     }
     
@@ -44,12 +34,13 @@ def form_delete_company(context, company, user):
     }
 
 
-@register.inclusion_tag('contacts/form_contact.html', takes_context=True)
-def form_contact(context):
-    contact_form = ContactForm()
+@register.inclusion_tag('contacts/form_add_contact.html', takes_context=True)
+def form_add_contact(context, user):
+    add_contact_form = AddContactForm()
     
     return {
-        'contact_form': contact_form
+        'add_contact_form': add_contact_form,
+        'user': user
     }
 
 @register.inclusion_tag('contacts/form_edit_contact.html', takes_context=True)
@@ -67,6 +58,19 @@ def form_edit_contact(context, contact_to_edit):
     return {
         'edit_contact_form': edit_contact_form,
         'contact_to_edit': contact_to_edit
+    }
+
+@register.inclusion_tag('contacts/form_delete_contact.html', takes_context=True)
+def form_delete_contact(context, contact_pk, user):
+    data = {
+        'contact_pk': contact_pk,
+        'user': user
+    }
+    delete_contact_form = DeleteContactForm(data=data)
+    
+    return {
+        'delete_contact_form': delete_contact_form,
+        'user': user
     }
 
 @register.inclusion_tag('contacts/form_add_mission.html', takes_context=True)

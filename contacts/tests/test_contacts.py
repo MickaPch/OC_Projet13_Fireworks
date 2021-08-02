@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.urls import reverse
 
 from contacts.models.models import Company, Contact
@@ -52,7 +53,7 @@ class AddContactTest(ContactsTest):
         response = self.client.get(reverse('contacts_home'))
 
         self.assertIn(b'company-item">Company1', response.content)
-        self.assertIn(b'contact-item">Alain Thomas', response.content)
+        self.assertIn(b'contact-item">Alain THOMAS', response.content)
         self.assertNotIn(b'company-item">Company2', response.content)
 
     def test_contacts_homeview_show_contact_add_form(self):
@@ -233,6 +234,10 @@ class AddContactTest(ContactsTest):
 
         self.assertEqual(contact_emails.count(), 0)
 
+
+class EditContactTest(ContactsTest):
+    """Test edit contact"""
+
     def test_user_can_edit_contact(self):
         self.client.login(
             username='User1',
@@ -288,4 +293,36 @@ class AddContactTest(ContactsTest):
         self.assertEqual(contact_emails.count(), 1)
         self.assertEqual(contact, contact_emails[0])
 
+class DeleteContactTest(ContactsTest):
+    """Test delete contacts"""
 
+    def test_user_can_delete_contact(self):
+        self.client.login(
+            username='User1',
+            password='pwd$User1'
+        )
+
+        user1 = User.objects.get(username='User1')
+        contact_to_delete = Contact.objects.get(pk=1)
+
+        self.client.post(
+            reverse('delete_contact'),
+            data={
+                "contact_pk": contact_to_delete.pk
+            }
+        )
+
+        user_contacts = Contact.objects.filter(
+            user=user1
+        )
+
+        self.assertNotIn(contact_to_delete, user_contacts)
+
+    def test_contacts_homeview_show_contact_delete_form_contact(self):
+        self.client.login(
+            username='User1',
+            password='pwd$User1'
+        )
+        response = self.client.get(reverse('contacts_home'))
+
+        self.assertIn(b'class_form_delete_contact', response.content)

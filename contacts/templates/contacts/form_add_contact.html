@@ -1,6 +1,6 @@
 {% load crispy_forms_tags %}
 
-<div class="modal fade" id="modal_contact" tabindex="-1" role="dialog" aria-labelledby="modal_contactLabel" aria-hidden="true">
+<div class="modal fade" id="modal_contact" tabindex="-1" role="dialog" aria-labelledby="modal_add_contactLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -17,40 +17,28 @@
                     <div class="row justify-content-center">
                         <div class="col-10">
                             <div class="row">
-                                <ul>
-                                {% for error_field, error_list in contact_form_errors.items %}
-                                    <li>{{ error_field }} : </li>
-                                    <ul>
-                                    {% for error in error_list %}
-                                        <li>{{error.message}}</li>
-                                    {% endfor %}
-                                    </ul>
-                                {% endfor %}
-                                </ul>
-                            </div>
-                            <div class="row">
                                 <div class="col-12">
-                                    {{ contact_form.first_name|as_crispy_field }}
+                                    {{ add_contact_form.first_name|as_crispy_field }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    {{ contact_form.last_name|as_crispy_field }}
+                                    {{ add_contact_form.last_name|as_crispy_field }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    {{ contact_form.phone_number|as_crispy_field }}
+                                    {{ add_contact_form.phone_number|as_crispy_field }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    {{ contact_form.email|as_crispy_field }}
+                                    {{ add_contact_form.email|as_crispy_field }}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    {{ contact_form.company|as_crispy_field }}
+                                    {{ add_contact_form.company|as_crispy_field }}
                                 </div>
                             </div>
                         </div>

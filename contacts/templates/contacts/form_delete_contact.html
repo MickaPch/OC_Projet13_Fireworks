@@ -1,0 +1,7 @@
+<span>
+    <form method="post" action={% url 'delete_contact' %} class="class_form_delete_contact">
+        {% csrf_token %}
+        {{ delete_contact_form.contact_pk.as_hidden }}
+        <button type="submit" class="btn btn-danger"><span class="fas fa-trash"> </span></button>
+    </form>
+</span>

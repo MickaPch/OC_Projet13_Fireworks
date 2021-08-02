@@ -104,6 +104,68 @@ class AddCompanyTest(ContactsTest):
         self.assertEqual(len(messages), 1)
         self.assertIn('An error occured', str(messages[0]))
 
+class EditCompanyTest(ContactsTest):
+    """Test edit company"""
+
+    def test_user_can_edit_company(self):
+        self.client.login(
+            username='User1',
+            password='pwd$User1'
+        )
+        company = Company.objects.get(
+            pk=1
+        )
+
+        new_company_name = 'Edit test'
+        new_company_address1 = 'EDIT TEST'
+        new_company_address2 = '0123456789'
+        new_company_zipcode = '012345'
+        new_company_city = 'EDIT TEST CITY'
+
+        self.assertNotEqual(company.name, new_company_name)
+        self.assertNotEqual(company.address1, new_company_address1)
+        self.assertNotEqual(company.address2, new_company_address2)
+        self.assertNotEqual(company.zipcode, new_company_zipcode)
+        self.assertNotEqual(company.city, new_company_city)
+
+        self.assertEqual(contact.phone_number, "")
+
+        contact_emails = Contact.objects.filter(
+            email=new_email
+        )
+        self.assertEqual(contact_emails.count(), 0)
+
+        self.client.post(
+            reverse('edit_contact'),
+            data={
+                "contact_pk": contact.pk,
+                "first_name": new_first_name,
+                "last_name": new_last_name,
+                "company": contact.company.pk,
+                "phone_number": new_phone_number,
+                "email": new_email
+            }
+        )
+
+        contact = Contact.objects.get(
+            pk=1
+        )
+
+        self.assertEqual(contact.first_name, new_first_name)
+        self.assertEqual(contact.last_name, new_last_name)
+
+        contact_phones = Contact.objects.filter(
+            phone_number=new_phone_number
+        )
+        self.assertEqual(contact_phones.count(), 1)
+        self.assertEqual(contact, contact_phones[0])
+
+        contact_emails = Contact.objects.filter(
+            email=new_email
+        )
+        self.assertEqual(contact_emails.count(), 1)
+        self.assertEqual(contact, contact_emails[0])
+
 class DeleteCompanyTest(ContactsTest):
     """Test delete companies for user"""
 
