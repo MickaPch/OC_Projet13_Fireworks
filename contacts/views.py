@@ -8,7 +8,7 @@ from django.urls.base import reverse
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 
-from contacts.forms import (CompanyAddForm, CompanyDeleteForm, AddContactForm, EditContactForm, DeleteContactForm,
+from contacts.forms import (CompanyAddForm, EditCompanyForm, CompanyDeleteForm, AddContactForm, EditContactForm, DeleteContactForm,
                             MissionAddForm, MissionDeleteForm)
 from contacts.models.models import Company, Contact, Mission
 
@@ -85,6 +85,42 @@ class ContactsAddCompanyFormView(FormView):
 
         return message
 
+
+class ContactsEditCompanyFormView(FormView):
+    template_name = 'contacts/form_edit_company.html'
+    form_class = EditCompanyForm
+    success_url = reverse_lazy('contacts_home')
+
+    def form_valid(self, form):
+
+        form.edit_company()
+
+        return super().form_valid(form)
+
+
+    def form_invalid(self, form):
+
+        error_message = self.format_error(form)
+        print(form)
+        print(error_message)
+
+        messages.error(self.request, error_message)
+
+        return redirect(reverse('contacts_home'))
+
+    def format_error(self, *args):
+
+        message = str()
+
+        for form in args:
+            error_data = form.errors.as_data()
+            for error_field, error_types in error_data.items():
+                message += f'  {error_field} :\n'
+                for list_error_type in error_types:
+                    for error_message in list_error_type:
+                        message += error_message
+
+        return message
 
 class ContactsDeleteCompanyFormView(FormView):
     template_name = 'contacts/form_delete_company.html'

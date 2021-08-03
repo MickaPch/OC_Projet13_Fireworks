@@ -5,9 +5,12 @@ from contacts.models.models import Company, Contact, Mission
 
 
 class CompanyAddForm(forms.ModelForm):
+
     def __init__(self, *args, **kwargs):
         super(CompanyAddForm, self).__init__(*args, **kwargs)
+        self.fields['address1'].required = False
         self.fields['address2'].required = False
+        self.fields['zipcode'].required = False
 
     class Meta:
         model = Company
@@ -20,14 +23,97 @@ class CompanyAddForm(forms.ModelForm):
         ]
 
     def add_company(self, user):
-        new_company, created = Company.objects.get_or_create(
-            name=self.cleaned_data['name'],
-            address1=self.cleaned_data['address1'],
-            address2=self.cleaned_data['address2'],
-            zipcode=self.cleaned_data['zipcode'],
-            city=self.cleaned_data['city']
+        company_name = self.cleaned_data['name'].capitalize()
+        company_city = self.cleaned_data['city'].upper()
+        self.new_company, self.created = Company.objects.get_or_create(
+            name=company_name,
+            city=company_city
         )
-        new_company.user.add(user)
+        self.new_company.user.add(user)
+        self.add_company_infos()
+
+    def add_company_infos(self):
+        if self.created:
+            self.new_company.address1 = self.cleaned_data['address1']
+            self.new_company.address2 = self.cleaned_data['address2']
+            self.new_company.zipcode = self.cleaned_data['zipcode']
+        
+        if (
+            self.new_company.address1 == ""
+            and self.cleaned_data['address1'] != ""
+        ):
+            self.new_company.address1 = self.cleaned_data['address1']
+        if (
+            self.new_company.address2 == ""
+            and self.cleaned_data['address2'] != ""
+        ):
+            self.new_company.address2 = self.cleaned_data['address2']
+        if (
+            self.new_company.zipcode == ""
+            and self.cleaned_data['zipcode'] != ""
+        ):
+            self.new_company.zipcode = self.cleaned_data['zipcode']
+
+
+class EditCompanyForm(forms.ModelForm):
+
+    company_pk = forms.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        super(EditCompanyForm, self).__init__(*args, **kwargs)
+        self.fields['address1'].required = False
+        self.fields['address2'].required = False
+        self.fields['zipcode'].required = False
+
+    class Meta:
+        model = Company
+        fields = [
+            'name',
+            'address1',
+            'address2',
+            'zipcode',
+            'city'
+        ]
+
+        widgets = {
+            'company_pk': forms.HiddenInput()
+        }
+
+    def edit_company(self):
+
+        company = Company.objects.get(
+            pk=self.cleaned_data['company_pk']
+        )
+
+        company_name = self.cleaned_data['name'].capitalize()
+        company_city = self.cleaned_data['city'].upper()
+
+        company.name = company_name
+        company.city = company_city
+        company.address1 = self.cleaned_data['address1']
+        company.address2 = self.cleaned_data['address2']
+        company.zipcode = self.cleaned_data['zipcode']
+
+        company.save()
+
+    # def clean(self):
+
+    #     company_pk = self.cleaned_data.get('company_pk')
+    #     email = self.cleaned_data.get('email')
+    #     phone_number = self.cleaned_data.get('phone_number')        
+
+    #     if (
+    #         email != ""
+    #         and Contact.objects.filter(email=email).exclude(pk=contact_pk).exists()
+    #     ):
+    #         raise forms.ValidationError(u'Email addresses must be unique.')
+    #     if (
+    #         phone_number != ""
+    #         and Contact.objects.filter(phone_number=phone_number).exclude(pk=contact_pk).exists()
+    #     ):
+    #         raise forms.ValidationError(u'Phone number must be unique.')
+
+    #     return super().clean()
 
 
 class CompanyDeleteForm(forms.ModelForm):

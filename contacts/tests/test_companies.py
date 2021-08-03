@@ -25,22 +25,25 @@ class AddCompanyTest(ContactsTest):
             username='User1',
             password='pwd$User1'
         )
+        company_name = "COMPANY TEST"
+        company_city = "Toulouse"
 
         response = self.client.post(
             reverse('add_company'),
             data={
-                "name": "COMPANY TEST",
+                "name": company_name,
                 "address1": "1, Rue TEST",
                 "address2": "Bâtiment TEST",
                 "zipcode": "31000",
-                "city": "TOULOUSE"
+                "city": company_city
             }
         )
 
         self.assertRedirects(response, reverse('contacts_home'))
 
         response = self.client.get(reverse('contacts_home'))
-        self.assertIn(b'COMPANY TEST', response.content)
+        self.assertIn(bytes(company_name.capitalize(), encoding='utf-8'), response.content)
+        self.assertIn(bytes(company_city.upper(), encoding='utf-8'), response.content)
 
     def test_user_add_new_company_invalid_form(self):
         self.client.login(
@@ -119,52 +122,37 @@ class EditCompanyTest(ContactsTest):
         new_company_name = 'Edit test'
         new_company_address1 = 'EDIT TEST'
         new_company_address2 = '0123456789'
-        new_company_zipcode = '012345'
+        new_company_zipcode = '12345'
         new_company_city = 'EDIT TEST CITY'
 
-        self.assertNotEqual(company.name, new_company_name)
+        self.assertNotEqual(company.name, new_company_name.capitalize())
         self.assertNotEqual(company.address1, new_company_address1)
         self.assertNotEqual(company.address2, new_company_address2)
         self.assertNotEqual(company.zipcode, new_company_zipcode)
-        self.assertNotEqual(company.city, new_company_city)
-
-        self.assertEqual(contact.phone_number, "")
-
-        contact_emails = Contact.objects.filter(
-            email=new_email
-        )
-        self.assertEqual(contact_emails.count(), 0)
+        self.assertNotEqual(company.city, new_company_city.upper())
 
         self.client.post(
-            reverse('edit_contact'),
+            reverse('edit_company'),
             data={
-                "contact_pk": contact.pk,
-                "first_name": new_first_name,
-                "last_name": new_last_name,
-                "company": contact.company.pk,
-                "phone_number": new_phone_number,
-                "email": new_email
+                "company_pk": company.pk,
+                "name": new_company_name,
+                "address1": new_company_address1,
+                "address2": new_company_address2,
+                "zipcode": new_company_zipcode,
+                "city": new_company_city
             }
         )
 
-        contact = Contact.objects.get(
+        company = Company.objects.get(
             pk=1
         )
 
-        self.assertEqual(contact.first_name, new_first_name)
-        self.assertEqual(contact.last_name, new_last_name)
+        self.assertEqual(company.name, new_company_name.capitalize())
+        self.assertEqual(company.address1, new_company_address1)
+        self.assertEqual(company.address2, new_company_address2)
+        self.assertEqual(company.zipcode, new_company_zipcode)
+        self.assertEqual(company.city, new_company_city.upper())
 
-        contact_phones = Contact.objects.filter(
-            phone_number=new_phone_number
-        )
-        self.assertEqual(contact_phones.count(), 1)
-        self.assertEqual(contact, contact_phones[0])
-
-        contact_emails = Contact.objects.filter(
-            email=new_email
-        )
-        self.assertEqual(contact_emails.count(), 1)
-        self.assertEqual(contact, contact_emails[0])
 
 class DeleteCompanyTest(ContactsTest):
     """Test delete companies for user"""

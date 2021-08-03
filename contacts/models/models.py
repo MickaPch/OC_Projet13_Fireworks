@@ -7,9 +7,9 @@ from contacts.models import validator_fields
 # Create your models here.
 class Company(models.Model):
     name = models.CharField(max_length=250, default="", null=False)
-    address1 = models.TextField(max_length=1024, null=False)
-    address2 = models.TextField(max_length=1024, null=False)
-    zipcode = validator_fields.ZipcodeField(max_length=5, null=False)
+    address1 = models.TextField(max_length=1024, null=False, blank=True, default="")
+    address2 = models.TextField(max_length=1024, null=False, blank=True, default="")
+    zipcode = validator_fields.ZipcodeField(max_length=5, null=False, blank=True, default="")
     city = models.CharField(max_length=250, null=False)
     user = models.ManyToManyField(User)
 
