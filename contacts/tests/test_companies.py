@@ -185,7 +185,7 @@ class DeleteCompanyTest(ContactsTest):
         self.client.post(
             reverse('delete_company'),
             data={
-                "name": self.company_to_delete
+                "company_pk": company_pk
             }
         )
 

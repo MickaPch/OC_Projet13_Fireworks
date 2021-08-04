@@ -118,19 +118,21 @@ class EditCompanyForm(forms.ModelForm):
 
 class CompanyDeleteForm(forms.ModelForm):
 
+    company_pk = forms.IntegerField()
+
     class Meta:
         model = Company
         fields = [
-            'name'
+            'company_pk'
         ]
 
         widgets = {
-            'name': forms.HiddenInput()
+            'company_pk': forms.HiddenInput()
         }
 
     def delete_company(self, user):
         company_to_delete = Company.objects.get(
-            name=self.cleaned_data['name']
+            pk=self.cleaned_data['company_pk']
         )
         company_to_delete.user.remove(user)
 

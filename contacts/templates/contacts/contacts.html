@@ -17,8 +17,12 @@
                     <div class="card card-company my-2">
                         <div class="card-body">
                             <div class="row align-items-center card-title">
-                                <h5 class="col-10 company-item">{{ company.name }} - {{ company.city }}</h5>
-                                <div class="col-2">{% form_delete_company company.name user %}</div>
+                                <h5 class="col-8 company-item">{{ company.name }} - {{ company.city }}</h5>
+                                <div class="col-4 btn-group" role="group" aria-label="Company button group">
+                                    {% add_to_company_btn company user %}
+                                    {% form_edit_company company %}
+                                    {% form_delete_company company user %}
+                                </div>
                             </div>
                         </div>
                         <ul class="list-group list-group-flush card-missions">
@@ -63,6 +67,8 @@
                                 </div>
                             </div>
                         </div>
+                        {% comment %} <div class="card-footer">
+                        </div> {% endcomment %}
                     </div>
 
 

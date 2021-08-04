@@ -82,8 +82,8 @@
                                     <div class="dropdown-menu" aria-labelledby="dropupMenuButton">
                                         <!-- Dropdown menu links -->
                                         <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_company">new company</button>
-                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_contact">new contact</button>
-                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_mission">new mission</button>
+                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_contact_None">new contact</button>
+                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_mission_None">new mission</button>
                                     </div>
                                 </div>
                             {% endif %}    
@@ -101,7 +101,7 @@
         </div> <!-- Page container -->
     </main>
 </body>
-    
+
 <!-- Modal Company -->
 {% form_add_company user %}
 
@@ -110,5 +110,5 @@
 
 <!-- Form add mission -->
 {% form_add_mission user %}
-    
+
 </html>
