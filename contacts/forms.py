@@ -1,4 +1,5 @@
 """Contacts forms"""
+from appliances.models import Appliance
 from django import forms
 
 from contacts.models.models import Company, Contact, Mission
@@ -31,6 +32,7 @@ class CompanyAddForm(forms.ModelForm):
         )
         self.new_company.user.add(user)
         self.add_company_infos()
+        self.add_appliance(user)
 
     def add_company_infos(self):
         if self.created:
@@ -53,6 +55,12 @@ class CompanyAddForm(forms.ModelForm):
             and self.cleaned_data['zipcode'] != ""
         ):
             self.new_company.zipcode = self.cleaned_data['zipcode']
+    
+    def add_appliance(self, user):
+        new_appliance, created = Appliance.objects.get_or_create(
+            company=self.new_company,
+            user=user
+        )
 
 
 class EditCompanyForm(forms.ModelForm):

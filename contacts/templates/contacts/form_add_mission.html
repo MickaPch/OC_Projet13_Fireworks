@@ -1,10 +1,10 @@
 {% load crispy_forms_tags %}
 
-<div class="modal fade" id="modal_mission_{{company.pk}}" tabindex="-1" role="dialog" aria-labelledby="modal_missionLabel_{{company.pk}}" aria-hidden="true">
+<div class="modal fade" id="modal_mission_{{add_mission_form.company.value}}" tabindex="-1" role="dialog" aria-labelledby="modal_add_missionLabel_{{add_mission_form.company.value}}" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modal_missionLabel">Add new contact</h5>
+          <h5 class="modal-title" id="modal_add_missionLabel_{{add_mission_form.company.value}}">Add new mission</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

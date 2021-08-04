@@ -1,0 +1,53 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load tags_contacts %}
+
+{% block title %}Appliancess{% endblock  %}
+{% block app_title %}My appliances{% endblock  %}
+
+{% block content %}
+
+    <!-- List companies -->
+    <!-- TODO : Convert in Bootstrap cards -->
+    <div class="container-fluid">
+        <div class="row">
+            {% for appliance in appliances %}
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <!-- Card Appliance -->
+                    <div class="card card-appliance my-2">
+                        <div class="card-body">
+                            <div class="row align-items-center card-title">
+                                <h5 class="col-8 appliance-item">{{ appliance.company.name }} - {{ appliance.company.city }}</h5>
+                                {% comment %} <div class="col-4 btn-group" role="group" aria-label="Company button group">
+                                    {% add_to_company_btn company user %}
+                                    {% form_edit_company company %}
+                                    {% form_delete_company company user %}
+                                </div> {% endcomment %}
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-flush card-missions">
+                        {% for mission in missions %}
+                            {% if mission.company == company %}
+                                <li class="list-group-item">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-10 mission-item">{{ mission.title }}</div>
+                                            <div class="col-2">{% form_delete_mission mission.title company.pk user %}</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        </ul>
+
+                        {% comment %} <div class="card-footer">
+                        </div> {% endcomment %}
+                    </div>
+
+
+                </div>
+            {% endfor %}
+        </div>
+
+
+{% endblock  %}

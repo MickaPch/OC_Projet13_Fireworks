@@ -1,4 +1,4 @@
-"""Test accounts app"""
+"""Test contacts app"""
 from django.apps import apps
 from django.test import TestCase
 
@@ -8,7 +8,7 @@ from contacts.apps import ContactsConfig
 class ContactsConfigTest(TestCase):
     """Testing Contacts app"""
 
-    def test_app_accounts(self):
+    def test_app_contacts(self):
         """"Test contacts app name"""
 
         self.assertEqual(
