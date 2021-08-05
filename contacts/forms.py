@@ -59,7 +59,15 @@ class CompanyAddForm(forms.ModelForm):
     def add_appliance(self, user):
         new_appliance, created = Appliance.objects.get_or_create(
             company=self.new_company,
-            user=user
+            user=user,
+            environment_notation=0,
+            values_notation=0,
+            evolution_notation=0,
+            knowledge_notation=0,
+            management_notation=0,
+            advantages_notation=0,
+            notoriety_notation=0,
+            office_notation=0
         )
 
 

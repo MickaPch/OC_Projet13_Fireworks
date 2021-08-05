@@ -28,8 +28,9 @@
 $("[data-toggle=popover]").each(function( index ) {
 
     var that = $(this);
+    var container_id = '#modal_edit_appliance_' + $(this).attr('id').slice(-1);
     $(this).popover({
-        container: '.modal-edit-appliance',
+        container: container_id,
         html: true,
         placement: 'bottom',
         content: function () {
@@ -38,8 +39,11 @@ $("[data-toggle=popover]").each(function( index ) {
     });
 });
 
+$('[data-toggle=popover]').on('shown.bs.popover', function () {
+    console.log($('#' + $(this).attr('aria-describedby') + ' .popover-body .input-group textarea'));
+    $('#' + $(this).attr('aria-describedby') + ' .popover-body .input-group textarea').focus();
+});
+
 $('[data-toggle=popover]').on('hide.bs.popover', function () {
-    console.log($('#' + $(this).attr('aria-describedby') + ' .popover-body .input-group textarea').val());
-    // $('#' + $(this).attr('id') + ' + .popoverContent textarea').html( $('#' + $(this).attr('aria-describedby') + ' .popover-content textarea').val());
     $('#' + $(this).attr('id') + ' + .popoverContent textarea').html( $('#' + $(this).attr('aria-describedby') + ' .popover-body .input-group textarea').val());
 });
