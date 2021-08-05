@@ -64,3 +64,13 @@ class AppliancesCompanyRelationTest(AppliancesTest):
         )
 
         self.assertEqual(appliances_for_company.count(), 0)
+
+    def test_user_can_update_appliances(self):
+        self.client.login(
+            username='User1',
+            password='pwd$User1'
+        )
+
+        response = self.client.get(reverse('appliances_home'))
+
+        self.assertIn(b'edit-appliance', response.content)

@@ -58,7 +58,10 @@ def form_add_contact(context, user, company=None):
     if company is not None:
         data['company'] = company.pk
 
-    add_contact_form = AddContactForm(data=data)
+    add_contact_form = AddContactForm(
+        auto_id=False,
+        data=data
+    )
     
     return {
         'add_contact_form': add_contact_form,
@@ -102,7 +105,10 @@ def form_add_mission(context, user, company=None):
     if company is not None:
         data['company'] = company.pk
 
-    add_mission_form = MissionAddForm(data=data)
+    add_mission_form = MissionAddForm(
+        auto_id=False,
+        data=data
+    )
     
     return {
         'add_mission_form': add_mission_form,

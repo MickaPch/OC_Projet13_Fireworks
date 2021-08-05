@@ -24,6 +24,20 @@ html, body, main, .main_page {
     text-align: center;
 }
 
+.btn-circle-s {
+    width: 20px;
+    height: 20px;
+    padding: 3px 0px;
+    border-radius: 10px !important;
+    font-size: 6px;
+    text-align: center;
+}
+
 .nav-link.active {
     font-size: 1.5rem;
+}
+
+.popover {
+    max-width: 50%;
+    width: 50%;
 }

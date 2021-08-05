@@ -1,0 +1,342 @@
+{% load crispy_forms_tags %}
+<button type="button" class="btn btn-info edit-appliance" data-toggle="modal" data-target="#modal_edit_appliance_{{ edit_appliance_form.appliance_pk.value }}"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+
+<div class="modal fade modal-edit-appliance" id="modal_edit_appliance_{{ edit_appliance_form.appliance_pk.value }}" tabindex="-1" role="dialog" aria-labelledby="modal_edit_applianceLabel_{{ edit_appliance_form.appliance_pk.value }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal_edit_applianceLabel_{{ edit_appliance_form.appliance_pk.value }}">Edit {{appliance.company.name}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <!-- Form edit appliance -->
+            <form method="post" action={% url 'edit_appliance' %} class="edit_form_appliance" >
+                {% csrf_token %}
+                {{ edit_appliance_form.appliance_pk.as_hidden }}
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-10">
+                            <div class="row">
+                                <div class="col-6 form-group mb-3">
+                                    <label for="id_estimated_salary" class="form-label">Estimated salary</label>
+                                    {{ edit_appliance_form.estimated_salary }}
+                                </div>
+                                <div class="col-6 form-group mb-3">
+                                    <label for="id_proposed_salary" class="form-label">Proposed salary</label>
+                                    {{ edit_appliance_form.proposed_salary }}
+                                </div>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <th scope="col"></th>
+                                    <th scope="col">N/A</th>
+                                    <th scope="col">BAD</th>
+                                    <th scope="col">POOR</th>
+                                    <th scope="col">MEDIUM</th>
+                                    <th scope="col">GOOD</th>
+                                    <th scope="col">EXCELLENT</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">
+                                            {{ edit_appliance_form.environment_notation.label }}
+                                            <button type="button"
+                                                    class="btn btn-secondary btn-circle-s ButtonEnvironmentPopover"
+                                                    id="ButtonEnvironmentPopover"
+                                                    data-toggle="popover"
+                                                    title="Environment details"
+                                                    >
+                                                <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+                                            </button>
+                                            <div class="popoverContent"
+                                                id="ContentEnvironmentPopover"
+                                                style="display: none !important">
+                                                <div class="input-group">
+                                                    {{ edit_appliance_form.environment_details }}
+                                                    <button class="btn btn-outline-primary" type="button" data-toggle="popover" data-placement="bottom"
+                                                        data-html="true" data-title="Search">
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        {% for radio in edit_appliance_form.environment_notation %}
+                                        <td>
+                                            <div class="form-check-inline">
+                                                {{ radio.tag }}
+                                            </div>
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            {{ edit_appliance_form.values_notation.label }}
+                                            <button type="button"
+                                                    class="btn btn-secondary btn-circle-s ButtonValuesPopover"
+                                                    id="ButtonValuesPopover"
+                                                    data-toggle="popover"
+                                                    title="Values details"
+                                                    >
+                                                <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+                                            </button>
+                                            <div class="popoverContent"
+                                                id="ContentValuesPopover"
+                                                style="display: none !important">
+                                                <div class="input-group">
+                                                    {{ edit_appliance_form.values_details }}
+                                                    <button class="btn btn-outline-primary" type="button" data-toggle="popover" data-placement="bottom"
+                                                        data-html="true" data-title="Search">
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        {% for radio in edit_appliance_form.values_notation %}
+                                        <td>
+                                            <div class="form-check-inline">
+                                                {{ radio.tag }}
+                                            </div>
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            {{ edit_appliance_form.evolution_notation.label }}
+                                            <button type="button"
+                                                    class="btn btn-secondary btn-circle-s ButtonEvolutionPopover"
+                                                    id="ButtonEvolutionPopover"
+                                                    data-toggle="popover"
+                                                    title="Evolution details"
+                                                    >
+                                                <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+                                            </button>
+                                            <div class="popoverContent"
+                                                id="ContentEvolutionPopover"
+                                                style="display: none !important">
+                                                <div class="input-group">
+                                                    {{ edit_appliance_form.evolution_details }}
+                                                    <button class="btn btn-outline-primary" type="button" data-toggle="popover" data-placement="bottom"
+                                                        data-html="true" data-title="Search">
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        {% for radio in edit_appliance_form.evolution_notation %}
+                                        <td>
+                                            <div class="form-check-inline">
+                                                {{ radio.tag }}
+                                            </div>
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            {{ edit_appliance_form.knowledge_notation.label }}
+                                            <button type="button"
+                                                    class="btn btn-secondary btn-circle-s ButtonKnowledgePopover"
+                                                    id="ButtonKnowledgePopover"
+                                                    data-toggle="popover"
+                                                    title="Knowledge details"
+                                                    >
+                                                <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+                                            </button>
+                                            <div class="popoverContent"
+                                                id="ContentKnowledgePopover"
+                                                style="display: none !important">
+                                                <div class="input-group">
+                                                    {{ edit_appliance_form.knowledge_details }}
+                                                    <button class="btn btn-outline-primary" type="button" data-toggle="popover" data-placement="bottom"
+                                                        data-html="true" data-title="Search">
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        {% for radio in edit_appliance_form.knowledge_notation %}
+                                        <td>
+                                            <div class="form-check-inline">
+                                                {{ radio.tag }}
+                                            </div>
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            {{ edit_appliance_form.management_notation.label }}
+                                            <button type="button"
+                                                    class="btn btn-secondary btn-circle-s ButtonManagementPopover"
+                                                    id="ButtonManagementPopover"
+                                                    data-toggle="popover"
+                                                    title="Management details"
+                                                    >
+                                                <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+                                            </button>
+                                            <div class="popoverContent"
+                                                id="ContentManagementPopover"
+                                                style="display: none !important">
+                                                <div class="input-group">
+                                                    {{ edit_appliance_form.management_details }}
+                                                    <button class="btn btn-outline-primary" type="button" data-toggle="popover" data-placement="bottom"
+                                                        data-html="true" data-title="Search">
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        {% for radio in edit_appliance_form.management_notation %}
+                                        <td>
+                                            <div class="form-check-inline">
+                                                {{ radio.tag }}
+                                            </div>
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            {{ edit_appliance_form.advantages_notation.label }}
+                                            <button type="button"
+                                                    class="btn btn-secondary btn-circle-s ButtonAdvantagesPopover"
+                                                    id="ButtonAdvantagesPopover"
+                                                    data-toggle="popover"
+                                                    title="Advantages details"
+                                                    >
+                                                <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+                                            </button>
+                                            <div class="popoverContent"
+                                                id="ContentAdvantagesPopover"
+                                                style="display: none !important">
+                                                <div class="input-group">
+                                                    {{ edit_appliance_form.advantages_details }}
+                                                    <button class="btn btn-outline-primary" type="button" data-toggle="popover" data-placement="bottom"
+                                                        data-html="true" data-title="Search">
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        {% for radio in edit_appliance_form.advantages_notation %}
+                                        <td>
+                                            <div class="form-check-inline">
+                                                {{ radio.tag }}
+                                            </div>
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            {{ edit_appliance_form.notoriety_notation.label }}
+                                            <button type="button"
+                                                    class="btn btn-secondary btn-circle-s ButtonNotorietyPopover"
+                                                    id="ButtonNotorietyPopover"
+                                                    data-toggle="popover"
+                                                    title="Notoriety details"
+                                                    >
+                                                <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+                                            </button>
+                                            <div class="popoverContent"
+                                                id="ContentNotorietyPopover"
+                                                style="display: none !important">
+                                                <div class="input-group">
+                                                    {{ edit_appliance_form.notoriety_details }}
+                                                    <button class="btn btn-outline-primary" type="button" data-toggle="popover" data-placement="bottom"
+                                                        data-html="true" data-title="Search">
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        {% for radio in edit_appliance_form.notoriety_notation %}
+                                        <td>
+                                            <div class="form-check-inline">
+                                                {{ radio.tag }}
+                                            </div>
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            {{ edit_appliance_form.office_notation.label }}
+                                            <button type="button"
+                                                    class="btn btn-secondary btn-circle-s ButtonOfficePopover"
+                                                    id="ButtonOfficePopover"
+                                                    data-toggle="popover"
+                                                    title="Office details"
+                                                    >
+                                                <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+                                            </button>
+                                            <div class="popoverContent"
+                                                id="ContentOfficePopover"
+                                                style="display: none !important">
+                                                <div class="input-group">
+                                                    {{ edit_appliance_form.office_details }}
+                                                    <button class="btn btn-outline-primary" type="button" data-toggle="popover" data-placement="bottom"
+                                                        data-html="true" data-title="Search">
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        {% for radio in edit_appliance_form.office_notation %}
+                                        <td>
+                                            <div class="form-check-inline">
+                                                {{ radio.tag }}
+                                            </div>
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+
+                            <div class="row values-details" hidden>
+                                <div class="col-12">
+                                    {{ edit_appliance_form.values_details|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row evolution-details" hidden>
+                                <div class="col-12">
+                                    {{ edit_appliance_form.evolution_details|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row knowledge-details" hidden>
+                                <div class="col-12">
+                                    {{ edit_appliance_form.knowledge_details|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row management-details" hidden>
+                                <div class="col-12">
+                                    {{ edit_appliance_form.management_details|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row advantages-details" hidden>
+                                <div class="col-12">
+                                    {{ edit_appliance_form.advantages_details|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row notoriety-details" hidden>
+                                <div class="col-12">
+                                    {{ edit_appliance_form.notoriety_details|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row office-details" hidden>
+                                <div class="col-12">
+                                    {{ edit_appliance_form.office_details|as_crispy_field }}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Edit company</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>

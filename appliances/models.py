@@ -6,7 +6,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 class Appliance(models.Model):
     company = models.ForeignKey('contacts.Company', on_delete=CASCADE)
-    user = models.ForeignKey(User, on_delete=CASCADE)
+    user = models.ForeignKey(User, on_delete=CASCADE, null=True)
     estimated_salary = models.FloatField(null=True)
     proposed_salary = models.FloatField(null=True)
     environment_notation = models.IntegerField(

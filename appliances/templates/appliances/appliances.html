@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
-{% load tags_contacts %}
+{% load tags_appliances %}
 
 {% block title %}Appliancess{% endblock  %}
 {% block app_title %}My appliances{% endblock  %}
@@ -18,14 +18,14 @@
                         <div class="card-body">
                             <div class="row align-items-center card-title">
                                 <h5 class="col-8 appliance-item">{{ appliance.company.name }} - {{ appliance.company.city }}</h5>
-                                {% comment %} <div class="col-4 btn-group" role="group" aria-label="Company button group">
-                                    {% add_to_company_btn company user %}
-                                    {% form_edit_company company %}
-                                    {% form_delete_company company user %}
-                                </div> {% endcomment %}
+                                <div class="col-4 btn-group" role="group" aria-label="Appliance button group">
+                                    {% comment %} {% add_to_company_btn company user %} {% endcomment %}
+                                    {% form_edit_appliance appliance %}
+                                    {% comment %} {% form_delete_company company user %} {% endcomment %}
+                                </div>
                             </div>
                         </div>
-                        <ul class="list-group list-group-flush card-missions">
+                        {% comment %} <ul class="list-group list-group-flush card-missions">
                         {% for mission in missions %}
                             {% if mission.company == company %}
                                 <li class="list-group-item">
@@ -38,7 +38,7 @@
                                 </li>
                             {% endif %}
                         {% endfor %}
-                        </ul>
+                        </ul> {% endcomment %}
 
                         {% comment %} <div class="card-footer">
                         </div> {% endcomment %}
@@ -50,4 +50,8 @@
         </div>
 
 
+{% endblock  %}
+
+{% block scripts %}
+    <script src="{% static 'appliances/js/appliances.js' %}"></script>
 {% endblock  %}

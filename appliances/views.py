@@ -9,6 +9,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 
 from appliances.models import Appliance
+from appliances.forms import EditApplianceForm
 
 class AppliancesHomeView(LoginRequiredMixin, TemplateView):
     """Appliances Home view"""
@@ -22,8 +23,6 @@ class AppliancesHomeView(LoginRequiredMixin, TemplateView):
         appliances = self.get_queryset_appliances()
         context['active_page'] = 'appliances'
         context["appliances"] = appliances
-        # context["contacts"] = self.get_queryset_contacts(companies)
-        # context["missions"] = self.get_queryset_missions(companies)
 
         return context
 
@@ -35,18 +34,39 @@ class AppliancesHomeView(LoginRequiredMixin, TemplateView):
 
         return appliances
 
-    # def get_queryset_contacts(self, companies):
-    #     contacts = Contact.objects.filter(
-    #         company__in=companies,
-    #         user=self.request.user
-    #     )
 
-    #     return contacts
+class EditApplianceFormView(FormView):
+    template_name = 'appliances/form_edit_appliance.html'
+    form_class = EditApplianceForm
+    success_url = reverse_lazy('appliances_home')
 
-    # def get_queryset_missions(self, companies):
-    #     missions = Mission.objects.filter(
-    #         company__in=companies,
-    #         user=self.request.user
-    #     )
+    def form_valid(self, form):
 
-    #     return missions
+        form.edit_appliance()
+
+        return super().form_valid(form)
+
+
+    def form_invalid(self, form):
+
+        error_message = self.format_error(form)
+        print(form)
+        print(error_message)
+
+        messages.error(self.request, error_message)
+
+        return redirect(reverse('appliances_home'))
+
+    def format_error(self, *args):
+
+        message = str()
+
+        for form in args:
+            error_data = form.errors.as_data()
+            for error_field, error_types in error_data.items():
+                message += f'  {error_field} :\n'
+                for list_error_type in error_types:
+                    for error_message in list_error_type:
+                        message += error_message
+
+        return message

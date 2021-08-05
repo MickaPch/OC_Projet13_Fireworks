@@ -111,7 +111,7 @@ DATABASES = {
 }
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_ROOT, "static/")
+STATIC_ROOT = ""
 
 
 # Password validation
@@ -152,8 +152,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIR = [
-    os.path.join(BASE_DIR, "static/"),
+STATICFILES_DIRS = [
+    os.path.join("static"),
     # os.path.join(BASE_DIR, "accounts/static/accounts/"),
     # os.path.join(BASE_DIR, "dashboard/static/dashboard/"),
     # os.path.join(BASE_DIR, "contacts/static/contacts/"),

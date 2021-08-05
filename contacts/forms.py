@@ -55,7 +55,7 @@ class CompanyAddForm(forms.ModelForm):
             and self.cleaned_data['zipcode'] != ""
         ):
             self.new_company.zipcode = self.cleaned_data['zipcode']
-    
+
     def add_appliance(self, user):
         new_appliance, created = Appliance.objects.get_or_create(
             company=self.new_company,
@@ -104,25 +104,6 @@ class EditCompanyForm(forms.ModelForm):
 
         company.save()
 
-    # def clean(self):
-
-    #     company_pk = self.cleaned_data.get('company_pk')
-    #     email = self.cleaned_data.get('email')
-    #     phone_number = self.cleaned_data.get('phone_number')        
-
-    #     if (
-    #         email != ""
-    #         and Contact.objects.filter(email=email).exclude(pk=contact_pk).exists()
-    #     ):
-    #         raise forms.ValidationError(u'Email addresses must be unique.')
-    #     if (
-    #         phone_number != ""
-    #         and Contact.objects.filter(phone_number=phone_number).exclude(pk=contact_pk).exists()
-    #     ):
-    #         raise forms.ValidationError(u'Phone number must be unique.')
-
-    #     return super().clean()
-
 
 class CompanyDeleteForm(forms.ModelForm):
 
@@ -139,10 +120,20 @@ class CompanyDeleteForm(forms.ModelForm):
         }
 
     def delete_company(self, user):
-        company_to_delete = Company.objects.get(
+        self.company_to_delete = Company.objects.get(
             pk=self.cleaned_data['company_pk']
         )
-        company_to_delete.user.remove(user)
+        self.company_to_delete.user.remove(user)
+        self.delete_appliance(user)
+
+    def delete_appliance(self, user):
+        appliance_to_delete = Appliance.objects.filter(
+            company=self.company_to_delete,
+            user=user
+        )
+        appliance_to_delete.update(
+            user=None
+        )
 
 class AddContactForm(forms.ModelForm):
 

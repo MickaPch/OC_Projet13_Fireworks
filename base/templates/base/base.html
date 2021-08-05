@@ -24,6 +24,9 @@
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'base/css/main.css' %}">
 
+    <!-- main.js -->
+    <script src="{% static 'base/js/main.js' %}"></script>
+
 
 </head>
 
@@ -115,3 +118,5 @@
 {% form_add_mission user %}
 
 </html>
+
+{% block scripts %}{% endblock %}
