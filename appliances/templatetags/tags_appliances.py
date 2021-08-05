@@ -9,6 +9,7 @@ register = template.Library()
 def form_edit_appliance(context, appliance):
     data = {
         'appliance_pk': appliance.pk,
+        'status': appliance.status,
         'estimated_salary': appliance.estimated_salary,
         'proposed_salary': appliance.proposed_salary,
         'environment_notation': appliance.environment_notation,
@@ -36,4 +37,31 @@ def form_edit_appliance(context, appliance):
     return {
         'edit_appliance_form': edit_appliance_form,
         'appliance': appliance
+    }
+
+@register.inclusion_tag('appliances/appliance_bg.html', takes_context=True)
+def appliance_bg(context, appliance):
+
+    if appliance.status == 10:
+        appliance_background = 'bg-light'
+    elif appliance.status == 20:
+        appliance_background = 'bg-info'
+    elif appliance.status == 30:
+        appliance_background = 'bg-dark'
+    elif appliance.status == 40:
+        appliance_background = 'bg-warning'
+    elif appliance.status == 50:
+        appliance_background = 'bg-primary'
+    elif appliance.status == 60:
+        appliance_background = 'bg-success'
+    elif appliance.status == 70:
+        appliance_background = 'bg-secondary'
+    elif appliance.status == 80:
+        appliance_background = 'bg-danger'
+    else:
+        appliance_background = ''
+
+    return {
+        'appliance': appliance,
+        'appliance_background': appliance_background
     }

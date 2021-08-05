@@ -78,6 +78,7 @@ class EditApplianceForm(forms.ModelForm):
     class Meta:
         model = Appliance
         fields = [
+            'status',
             'estimated_salary',
             'proposed_salary',
             'environment_notation',
@@ -176,6 +177,7 @@ class EditApplianceForm(forms.ModelForm):
             pk=self.cleaned_data['appliance_pk']
         )
 
+        appliance.status = self.cleaned_data['status']
         appliance.estimated_salary = self.cleaned_data['estimated_salary']
         appliance.proposed_salary = self.cleaned_data['proposed_salary']
         appliance.environment_notation = self.cleaned_data['environment_notation']

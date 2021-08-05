@@ -14,7 +14,7 @@
             {% for appliance in appliances %}
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     <!-- Card Appliance -->
-                    <div class="card card-appliance my-2">
+                    <div class="card card-appliance my-2 {% appliance_bg appliance %}">
                         <div class="card-body">
                             <div class="row align-items-center card-title">
                                 <h5 class="col-8 appliance-item">{{ appliance.company.name }} - {{ appliance.company.city }}</h5>
