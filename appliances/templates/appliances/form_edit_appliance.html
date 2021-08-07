@@ -2,7 +2,7 @@
 
 <button type="button" class="btn btn-info edit-appliance" data-toggle="modal" data-target="#modal_edit_appliance_{{ edit_appliance_form.appliance_pk.value }}"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 
-<div class="modal fade modal-edit-appliance" id="modal_edit_appliance_{{ edit_appliance_form.appliance_pk.value }}" tabindex="-1" role="dialog" aria-labelledby="modal_edit_applianceLabel_{{ edit_appliance_form.appliance_pk.value }}" aria-hidden="true">
+<div class="modal fade modal-edit-appliance text-dark" id="modal_edit_appliance_{{ edit_appliance_form.appliance_pk.value }}" tabindex="-1" role="dialog" aria-labelledby="modal_edit_applianceLabel_{{ edit_appliance_form.appliance_pk.value }}" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -304,44 +304,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-
-
-
-                            <div class="row values-details" hidden>
-                                <div class="col-12">
-                                    {{ edit_appliance_form.values_details|as_crispy_field }}
-                                </div>
-                            </div>
-                            <div class="row evolution-details" hidden>
-                                <div class="col-12">
-                                    {{ edit_appliance_form.evolution_details|as_crispy_field }}
-                                </div>
-                            </div>
-                            <div class="row knowledge-details" hidden>
-                                <div class="col-12">
-                                    {{ edit_appliance_form.knowledge_details|as_crispy_field }}
-                                </div>
-                            </div>
-                            <div class="row management-details" hidden>
-                                <div class="col-12">
-                                    {{ edit_appliance_form.management_details|as_crispy_field }}
-                                </div>
-                            </div>
-                            <div class="row advantages-details" hidden>
-                                <div class="col-12">
-                                    {{ edit_appliance_form.advantages_details|as_crispy_field }}
-                                </div>
-                            </div>
-                            <div class="row notoriety-details" hidden>
-                                <div class="col-12">
-                                    {{ edit_appliance_form.notoriety_details|as_crispy_field }}
-                                </div>
-                            </div>
-                            <div class="row office-details" hidden>
-                                <div class="col-12">
-                                    {{ edit_appliance_form.office_details|as_crispy_field }}
-                                </div>
-                            </div>
 
                         </div>
                     </div>

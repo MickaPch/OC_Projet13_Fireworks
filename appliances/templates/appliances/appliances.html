@@ -39,6 +39,47 @@
                             {% endif %}
                         {% endfor %}
                         </ul> {% endcomment %}
+                        <div class="card-body bg-white">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-4 card text-center">
+                                        <div class="card-title">Appliance status</div>
+                                        <div class="card-body h6">{{ appliance.get_status_display }}</div>
+                                    </div>
+                                    <div class="col-4 card text-center">
+                                        <div class="card-title">Average notation</div>
+                                        <div class="card-body h5">
+                                            {% if appliance.get_notation != 0 %}
+                                                {{ appliance.get_notation }}
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-4 card text-center">
+                                        {% if appliance.proposed_salary != None %}
+                                            <div class="card-title">Proposed salary</div>
+                                            <div class="card-body h5">
+                                                {{ appliance.proposed_salary }} k
+                                            </div>
+                                        {% elif appliance.estimated_salary != None %}
+                                            <div class="card-title">Estimated salary</div>
+                                            <div class="card-body h5">
+                                                {{ appliance.estimated_salary }} k
+                                            </div>
+                                        {% else %}
+                                            <div class="card-title">Salary</div>
+                                            <div class="card-body h5">
+                                                N/A
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    {% chart_appliance appliance %}
+                                </div>
+                            </div>
+                        </div>
 
                         {% comment %} <div class="card-footer">
                         </div> {% endcomment %}
@@ -54,4 +95,5 @@
 
 {% block scripts %}
     <script src="{% static 'appliances/js/appliances.js' %}"></script>
+    <script src="{% static 'appliances/js/load_charts.js' %}"></script>
 {% endblock  %}

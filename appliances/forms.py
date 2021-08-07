@@ -198,37 +198,3 @@ class EditApplianceForm(forms.ModelForm):
         appliance.office_details = self.cleaned_data['office_details']
 
         appliance.save()
-
-    # def clean(self):
-
-    #     environment_notation = self.cleaned_data.get('environment_notation')
-    #     values_notation = self.cleaned_data.get('values_notation')
-    #     evolution_notation = self.cleaned_data.get('evolution_notation')
-    #     knowledge_notation = self.cleaned_data.get('knowledge_notation')
-    #     management_notation = self.cleaned_data.get('management_notation')
-    #     advantages_notation = self.cleaned_data.get('advantages_notation')
-    #     notoriety_notation = self.cleaned_data.get('notoriety_notation')
-    #     office_notation = self.cleaned_data.get('office_notation')
-
-    #     notations = [
-    #         environment_notation,
-    #         values_notation,
-    #         evolution_notation,
-    #         knowledge_notation,
-    #         management_notation,
-    #         advantages_notation,
-    #         notoriety_notation,
-    #         office_notation
-    #     ]
-
-    #     for notation in notations:
-    #         if (
-    #             notation != None
-    #             and (
-    #                 notation < 0
-    #                 or notation > 5
-    #             )
-    #         ):
-    #             raise forms.ValidationError(u'Notation must be between 0 and 5.')
-
-    #     return super().clean()

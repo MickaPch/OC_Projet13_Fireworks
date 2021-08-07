@@ -40,10 +40,13 @@ $("[data-toggle=popover]").each(function( index ) {
 });
 
 $('[data-toggle=popover]').on('shown.bs.popover', function () {
-    console.log($('#' + $(this).attr('aria-describedby') + ' .popover-body .input-group textarea'));
     $('#' + $(this).attr('aria-describedby') + ' .popover-body .input-group textarea').focus();
 });
 
 $('[data-toggle=popover]').on('hide.bs.popover', function () {
-    $('#' + $(this).attr('id') + ' + .popoverContent textarea').html( $('#' + $(this).attr('aria-describedby') + ' .popover-body .input-group textarea').val());
+    var value = $('#' + $(this).attr('aria-describedby') + ' .popover-body .input-group textarea').val();
+    var form_textarea = $('#' + $(this).attr('id') + ' + .popoverContent textarea');
+    form_textarea.html(value);
+    form_textarea.val(value);
+    console.log(form_textarea);
 });

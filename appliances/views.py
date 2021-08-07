@@ -1,14 +1,18 @@
 """Module user.views"""
+from appliances.charts import BACKGROUND_COLOR, BORDER_COLOR
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Avg
 from django.http import HttpResponseRedirect, request
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.urls.base import reverse
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
+from django.http.response import JsonResponse
 
-from appliances.models import Appliance
+from appliances.models import Appliance, NOTATIONS_LABELS
 from appliances.forms import EditApplianceForm
 
 class AppliancesHomeView(LoginRequiredMixin, TemplateView):
@@ -50,8 +54,6 @@ class EditApplianceFormView(FormView):
     def form_invalid(self, form):
 
         error_message = self.format_error(form)
-        print(form)
-        print(error_message)
 
         messages.error(self.request, error_message)
 
@@ -70,3 +72,21 @@ class EditApplianceFormView(FormView):
                         message += error_message
 
         return message
+
+@login_required
+def get_notations_chart(request, appliance_pk):
+
+    appliance = Appliance.objects.get(pk=appliance_pk)
+
+    return JsonResponse({
+            'title': f'Notations for {appliance.company.name}',
+            'data': {
+                'labels': NOTATIONS_LABELS,
+                'datasets': [{
+                    'label': f'{appliance.company.name} notes (/5)',
+                    'backgroundColor': BACKGROUND_COLOR,
+                    'borderColor': BORDER_COLOR,
+                    'data': appliance.get_notations_list()
+                }]
+            }
+        })

@@ -47,21 +47,31 @@ def appliance_bg(context, appliance):
     elif appliance.status == 20:
         appliance_background = 'bg-info'
     elif appliance.status == 30:
-        appliance_background = 'bg-dark'
+        appliance_background = 'bg-dark text-white'
     elif appliance.status == 40:
         appliance_background = 'bg-warning'
     elif appliance.status == 50:
-        appliance_background = 'bg-primary'
+        appliance_background = 'bg-primary text-white'
     elif appliance.status == 60:
         appliance_background = 'bg-success'
     elif appliance.status == 70:
-        appliance_background = 'bg-secondary'
+        appliance_background = 'bg-secondary text-white'
     elif appliance.status == 80:
-        appliance_background = 'bg-danger'
+        appliance_background = 'bg-danger text-white'
     else:
         appliance_background = ''
 
     return {
         'appliance': appliance,
         'appliance_background': appliance_background
+    }
+
+
+@register.inclusion_tag('appliances/chart_appliance.html', takes_context=True)
+def chart_appliance(context, appliance):
+
+    # appliance_datas = appliance.get_notations_list()
+
+    return {
+        'appliance': appliance
     }

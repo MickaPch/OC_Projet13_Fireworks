@@ -74,3 +74,12 @@ class AppliancesCompanyRelationTest(AppliancesTest):
         response = self.client.get(reverse('appliances_home'))
 
         self.assertIn(b'edit-appliance', response.content)
+
+
+class TestApplianceNotations(AppliancesTest):
+
+    def test_get_appliance_notations(self):
+
+        appliances = Appliance.objects.all()
+        for appliance in appliances:
+            self.assertNotEqual(appliance.get_notation(), None)

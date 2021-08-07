@@ -33,7 +33,7 @@ class Command(BaseCommand):
                     "advantages_details": "Lorem",
                     "notoriety_notation": 1,
                     "notoriety_details": "Lorem ipsum dolor",
-                    "office_notation": None,
+                    "office_notation": 0,
                     "office_details": "",
                 }
             }

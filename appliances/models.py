@@ -3,7 +3,30 @@ from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE, SET_NULL
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-# Create your models here.
+
+
+NOTATIONS_LIST = [
+    'environment_notation',
+    'values_notation',
+    'evolution_notation',
+    'knowledge_notation',
+    'management_notation',
+    'advantages_notation',
+    'notoriety_notation',
+    'office_notation'
+]
+NOTATIONS_LABELS = [
+    'Environment',
+    'Values',
+    'Evolution',
+    'Knowledge',
+    'Management',
+    'Advantages',
+    'Notoriety',
+    'Office'
+]
+
+
 class Appliance(models.Model):
 
     REGISTERED = 0 # Nothing
@@ -34,8 +57,8 @@ class Appliance(models.Model):
     estimated_salary = models.FloatField(null=True)
     proposed_salary = models.FloatField(null=True)
     environment_notation = models.IntegerField(
-        default=None,
-        null=True,
+        default=0,
+        null=False,
         validators=[
             MinValueValidator(0),
             MaxValueValidator(5)
@@ -47,8 +70,8 @@ class Appliance(models.Model):
         blank=True
     )
     values_notation = models.IntegerField(
-        default=None,
-        null=True,
+        default=0,
+        null=False,
         validators=[
             MinValueValidator(0),
             MaxValueValidator(5)
@@ -60,8 +83,8 @@ class Appliance(models.Model):
         blank=True
     )
     evolution_notation = models.IntegerField(
-        default=None,
-        null=True,
+        default=0,
+        null=False,
         validators=[
             MinValueValidator(0),
             MaxValueValidator(5)
@@ -73,8 +96,8 @@ class Appliance(models.Model):
         blank=True
     )
     knowledge_notation = models.IntegerField(
-        default=None,
-        null=True,
+        default=0,
+        null=False,
         validators=[
             MinValueValidator(0),
             MaxValueValidator(5)
@@ -86,8 +109,8 @@ class Appliance(models.Model):
         blank=True
     )
     management_notation = models.IntegerField(
-        default=None,
-        null=True,
+        default=0,
+        null=False,
         validators=[
             MinValueValidator(0),
             MaxValueValidator(5)
@@ -99,8 +122,8 @@ class Appliance(models.Model):
         blank=True
     )
     advantages_notation = models.IntegerField(
-        default=None,
-        null=True,
+        default=0,
+        null=False,
         validators=[
             MinValueValidator(0),
             MaxValueValidator(5)
@@ -112,8 +135,8 @@ class Appliance(models.Model):
         blank=True
     )
     notoriety_notation = models.IntegerField(
-        default=None,
-        null=True,
+        default=0,
+        null=False,
         validators=[
             MinValueValidator(0),
             MaxValueValidator(5)
@@ -125,8 +148,8 @@ class Appliance(models.Model):
         blank=True
     )
     office_notation = models.IntegerField(
-        default=None,
-        null=True,
+        default=0,
+        null=False,
         validators=[
             MinValueValidator(0),
             MaxValueValidator(5)
@@ -144,5 +167,37 @@ class Appliance(models.Model):
     def __str__(self):
         return self.company.name
 
-class ApplianceStatus(models.Model):
-    status = models.CharField(max_length=255, null=False, blank=False)
+    def get_notation(self):
+        notations = [
+            self.environment_notation,
+            self.values_notation,
+            self.evolution_notation,
+            self.knowledge_notation,
+            self.management_notation,
+            self.advantages_notation,
+            self.notoriety_notation,
+            self.office_notation
+        ]
+
+        notations = [notation for notation in notations if notation > 0]
+
+        if len(notations) >= 3:
+            mean = round(sum(notations) / len(notations), 2)
+        else:
+            mean = 0
+
+        return mean
+    
+    def get_notations_list(self):
+        appliance_notations = [
+            self.environment_notation,
+            self.values_notation,
+            self.evolution_notation,
+            self.knowledge_notation,
+            self.management_notation,
+            self.advantages_notation,
+            self.notoriety_notation,
+            self.office_notation
+        ]
+
+        return appliance_notations
