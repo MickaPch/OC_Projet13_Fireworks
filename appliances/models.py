@@ -187,7 +187,7 @@ class Appliance(models.Model):
             mean = 0
 
         return mean
-    
+
     def get_notations_list(self):
         appliance_notations = [
             self.environment_notation,
@@ -201,3 +201,30 @@ class Appliance(models.Model):
         ]
 
         return appliance_notations
+
+    def get_events(self):
+        events = [
+            {
+                'type': 'apply',
+                'title': 'Test1',
+                'description': 'Lorem Ipsum',
+                'date': '07/08/2021'
+            },{
+                'type': 'meeting',
+                'title': 'Test2',
+                'description': 'Lorem Ipsum',
+                'date': '08/08/2021'
+            },{
+                'type': 'phone_call',
+                'title': 'Test3',
+                'description': 'Lorem Ipsum',
+                'date': '09/08/2021'
+            },{
+                'type': 'offer',
+                'title': 'Test4',
+                'description': 'Lorem Ipsum',
+                'date': '10/08/2021'
+            },
+        ]
+
+        return events[-3::]

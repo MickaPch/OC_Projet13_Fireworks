@@ -75,3 +75,30 @@ def chart_appliance(context, appliance):
     return {
         'appliance': appliance
     }
+
+@register.inclusion_tag('appliances/timeline_appliance.html', takes_context=True)
+def timeline_appliance(context, appliance):
+
+    return {
+        'appliance': appliance
+    }
+
+
+@register.inclusion_tag('appliances/badge_event.html', takes_context=True)
+def badge_event(context, event):
+
+    if event['type'] == "meeting":
+        event_badge = 'badge badge-event-xl badge-primary fas fa-calendar-alt'
+    elif event['type'] == "phone_call":
+        event_badge = 'badge badge-event-xl badge-secondary fas fa-phone'
+    elif event['type'] == "apply":
+        event_badge = 'badge badge-event-xl badge-primary fas fa-calendar-plus'
+    elif event['type'] == "offer":
+        event_badge = 'badge badge-event-xl badge-success fa fa-pencil'
+    else:
+        event_badge = 'badge badge-event-xl badge-primary'
+
+    return {
+        'event': event,
+        'event_badge': event_badge
+    }
