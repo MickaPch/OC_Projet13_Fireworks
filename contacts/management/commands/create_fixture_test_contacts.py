@@ -1,5 +1,8 @@
 import os
 import json
+import random
+import lorem
+import numpy.random as np_random
 
 from django.core.management.base import BaseCommand
 
@@ -10,176 +13,147 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         """Create contact fixture"""
 
-        contacts = [
-            {
-                "model": "contacts.Company",
-                "pk": 1,
+        print('Contacts fixture creation ...')
+
+        users = self.get_users_from_fixture()
+
+        model_company = "contacts.Company"
+        companies = []
+        cities = {
+            'TOULOUSE': "31000",
+            'CARCASSONNE': "11000",
+            'PARIS': "75000",
+            'MARSEILLE': "13000",
+            'LYON': "69000",
+            'DIJON': "21000",
+            'BORDEAUX': "33000",
+            'LILLE': "59000",
+            'GAILLAC': "81600",
+            'ALBI': "81000",
+            'CASTRES': "81100"
+        }
+        first_names = [
+            'Alain',
+            'Thomas',
+            'Olivier',
+            'Serge',
+            'Matthieu',
+            'Stéphanie',
+            'Sophie',
+            'Renaud',
+            'Kevin',
+            'Mourad',
+            'Nora',
+            'Carine'
+        ]
+        last_names = [
+            'Wilkinson',
+            'Montoya',
+            'Marchand',
+            'Mazet',
+            'Levasseur',
+            'Dupuy',
+            'Aliker',
+            'Cazenave',
+            'Allard',
+            'Poirier',
+            'Faucher',
+            'Duval',
+            'Blandin'
+        ]
+
+        for i in range(1, random.randint(3, 10)):
+            if i == 1:
+                random_users = users
+            else:
+                random_users = random.sample(users, random.randint(1, len(users)))
+            company_name = "Company" + str(i)
+            address1 = np_random.choice(["", lorem.sentence()], p=[0.2, 0.8])
+            if address1 != '':
+                address2 = np_random.choice(["", lorem.sentence()], p=[0.8, 0.2])
+            else:
+                address2 = ""
+
+            city = random.choice(list(cities.keys()))
+            zipcode = random.choice(['', cities[city]])
+
+            company = {
+                "model": model_company,
+                "pk": i,
                 "fields": {
-                    "name": "Company1",
-                    "address1": "address1",
-                    "address2": "content1",
-                    "zipcode": "01234",
-                    "city": "CITY1",
-                    "user": [1],
-                }
-            }, {
-                "model": "contacts.Company",
-                "pk": 2,
-                "fields": {
-                    "name": "Company2",
-                    "address1": "address2",
-                    "address2": "content2",
-                    "zipcode": "21025",
-                    "city": "CITY2",
-                    "user": [2],
-                }
-            }, {
-                "model": "contacts.Company",
-                "pk": 3,
-                "fields": {
-                    "name": "Company3",
-                    "address1": "address3",
-                    "address2": "content3",
-                    "zipcode": "14485",
-                    "city": "CITY3",
-                    "user": [3],
-                }
-            }, {
-                "model": "contacts.Company",
-                "pk": 4,
-                "fields": {
-                    "name": "Company4",
-                    "address1": "address4",
-                    "address2": "content4",
-                    "zipcode": "45525",
-                    "city": "CITY4",
-                    "user": [1, 2],
-                }
-            }, {
-                "model": "contacts.Company",
-                "pk": 5,
-                "fields": {
-                    "name": "Company5",
-                    "address1": "address5",
-                    "address2": "content5",
-                    "zipcode": "01234",
-                    "city": "CITY1",
-                    "user": [1, 2, 3],
-                }
-            }, {
-                "model": "contacts.Contact",
-                "pk": 1,
-                "fields": {
-                    "first_name": "Alain",
-                    "last_name": "THOMAS",
-                    "company": 1,
-                    "user": [1]
-                }
-            }, {
-                "model": "contacts.Contact",
-                "pk": 2,
-                "fields": {
-                    "first_name": "Thibault",
-                    "last_name": "ASTIER",
-                    "company": 2,
-                    "phone_number": "0612345679",
-                    "user": [2]
-                }
-            }, {
-                "model": "contacts.Contact",
-                "pk": 3,
-                "fields": {
-                    "first_name": "Giselle",
-                    "last_name": "COHEN",
-                    "company": 3,
-                    "email": "giselle@example.com",
-                    "user": [3]
-                }
-            }, {
-                "model": "contacts.Contact",
-                "pk": 4,
-                "fields": {
-                    "first_name": "Edouard",
-                    "last_name": "MARTY",
-                    "company": 5,
-                    "phone_number": "0612345678",
-                    "email": "edouard@example.com",
-                    "user": [1, 3]
-                }
-            }, {
-                "model": "contacts.Contact",
-                "pk": 5,
-                "fields": {
-                    "first_name": "Sébastien",
-                    "last_name": "BRIS",
-                    "company": 4,
-                    "user": [1, 2]
-                }
-            }, {
-                "model": "contacts.Contact",
-                "pk": 6,
-                "fields": {
-                    "first_name": "Laura",
-                    "last_name": "GRASSINEAU",
-                    "company": 5,
-                    "user": [1, 2, 3]
-                }
-            }, {
-                "model": "contacts.Mission",
-                "pk": 1,
-                "fields": {
-                    "title": "Mission test 1",
-                    "description": "Description 1",
-                    "company": 1,
-                    "user": 1,
-                }
-            }, {
-                "model": "contacts.Mission",
-                "pk": 2,
-                "fields": {
-                    "title": "Mission test 2",
-                    "description": "Description 2",
-                    "company": 2,
-                    "user": 1,
-                }
-            }, {
-                "model": "contacts.Mission",
-                "pk": 3,
-                "fields": {
-                    "title": "Mission test 3",
-                    "description": "Description 3",
-                    "company": 1,
-                    "user": 2,
-                }
-            }, {
-                "model": "contacts.Mission",
-                "pk": 4,
-                "fields": {
-                    "title": "Mission test 4",
-                    "description": "Description 4",
-                    "company": 3,
-                    "user": 1,
-                }
-            }, {
-                "model": "contacts.Mission",
-                "pk": 5,
-                "fields": {
-                    "title": "Mission test 5",
-                    "description": "Description 5",
-                    "company": 3,
-                    "user": 3,
-                }
-            }, {
-                "model": "contacts.Mission",
-                "pk": 6,
-                "fields": {
-                    "title": "Mission test 6",
-                    "description": "Description 6",
-                    "company": 2,
-                    "user": 2,
+                    "name": company_name,
+                    "address1": address1,
+                    "address2": address2,
+                    "zipcode": zipcode,
+                    "city": city,
+                    "user": random_users
                 }
             }
-        ]
+
+            companies.append(company)
+
+        contacts = []
+        contact_pk = 0
+        model_contact = "contacts.Contact"
+
+        missions = []
+        mission_pk = 0
+        model_mission = "contacts.Mission"
+        for company in  companies:
+
+            company_pk = company["pk"]
+            # CONTACTS
+            for i in range(random.randint(0, 4)):
+                contact_pk += 1
+                first_name = random.choice(first_names).capitalize()
+                last_name = random.choice(last_names).upper()
+                contact_users = random.sample(company['fields']['user'], random.randint(1, len(company['fields']['user'])))
+
+                phone_number = "0" + "".join(str(random.randint(0,9)) for i in range(9))
+
+                email_name = random.choice([
+                    first_name.lower(), first_name[0].lower()
+                ]) + random.choice(["", ".", '-']) + last_name.lower()
+                email = email_name + "@example.com"
+
+                contact = {
+                    "model": model_contact,
+                    "pk": contact_pk,
+                    "fields": {
+                        "first_name": first_name,
+                        "last_name": last_name,
+                        "company": company_pk,
+                        "user": contact_users,
+                        "phone_number": phone_number,
+                        "email": email
+                    }
+                }
+                contacts.append(contact)
+            
+            # MISSONS
+            for user in company['fields']['user']:
+                for i in range(random.randint(0, 3)):
+                    mission_pk += 1
+
+                    title = "Mission" + str(mission_pk)
+                    description = lorem.paragraph()
+
+                    mission = {
+                        "model": model_mission,
+                        "pk": mission_pk,
+                        "fields": {
+                            "title": title,
+                            "description": description,
+                            "company": company_pk,
+                            "user": user
+                        }
+                    }
+
+                    missions.append(mission)
+
+        contact_objects = companies + contacts + missions
+
+        print('File creation ...')
 
         path_file = os.path.join(
             os.path.dirname(
@@ -192,4 +166,30 @@ class Command(BaseCommand):
         )
 
         with open(path_file, 'w') as file_contact:
-            file_contact.write(json.dumps(contacts))
+            file_contact.write(json.dumps(contact_objects))
+
+        print('Contacts fixture created !')
+
+    def get_users_from_fixture(self):
+
+        print('Retrieving users ...')
+        user_fixture = 'accounts/fixtures/users.json'
+
+        path_file = os.path.join(
+            os.path.dirname(
+                os.path.dirname(
+                    os.path.dirname(
+                        os.path.dirname(__file__)
+                    )
+                )
+            ),
+            user_fixture
+        )
+
+        with open(path_file, 'rb') as users_file:
+            users = json.load(users_file)
+            users = list(range(1, len(users) + 1))
+
+        print('List of users OK')
+
+        return users

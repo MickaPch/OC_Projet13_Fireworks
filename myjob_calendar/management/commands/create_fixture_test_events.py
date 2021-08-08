@@ -13,6 +13,10 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         """Create event fixture"""
 
+        print('Event fixture creation ...')
+
+        appliances = self.get_appliances()
+
         events = []
         model = "myjob_calendar.Event"
         event_types = {
@@ -57,28 +61,33 @@ class Command(BaseCommand):
         time_between_dates = end_date - start_date
         days_between_dates = time_between_dates.days
 
-        for i in range(random.randint(0, 5)):
-            type = random.choice(list(event_types.keys()))
-            title = random.choice(event_types[type])
-            descrition = random.choice(['', lorem.paragraph()])
-            random_number_of_days = random.randrange(days_between_dates)
-            date = start_date + datetime.timedelta(days=random_number_of_days)
-            appliance_pk = 1
+        event_pk = 0
+        for appliance in appliances:
+            appliance_pk = appliance['pk']
+            for i in range(random.randint(0, 5)):
+                event_pk += 1
 
-            events.append(
-                {
+                type = random.choice(list(event_types.keys()))
+                title = random.choice(event_types[type])
+                descrition = random.choice(['', lorem.paragraph()])
+                random_number_of_days = random.randrange(days_between_dates)
+                date = start_date + datetime.timedelta(days=random_number_of_days)
+
+                event = {
                     "model": model,
-                    "pk": i,
+                    "pk": event_pk,
                     "fields": {
                         "appliance": appliance_pk,
                         "title": title,
-                        "descrition": descrition,
-                        "date": date,
+                        "description": descrition,
+                        "date": str(date),
                         "type": type
                     }
                 }
-            )
 
+                events.append(event)
+
+        print('File creation ...')
 
         path_file = os.path.join(
             os.path.dirname(
@@ -92,3 +101,33 @@ class Command(BaseCommand):
 
         with open(path_file, 'w') as file_events:
             file_events.write(json.dumps(events))
+
+        print('Events fixture created !')
+
+    def get_appliances(self):
+
+        print('Retrieving appliances ...')
+        appliance_fixture = 'appliances/fixtures/appliances.json'
+
+        path_file = os.path.join(
+            os.path.dirname(
+                os.path.dirname(
+                    os.path.dirname(
+                        os.path.dirname(__file__)
+                    )
+                )
+            ),
+            appliance_fixture
+        )
+
+        appliances = []
+        with open(path_file, 'rb') as appliances_file:
+            json_appliances = json.load(appliances_file)
+
+            for appliance in json_appliances:
+                if appliance['model'] == "appliances.Appliance":
+                    appliances.append(appliance)
+
+        print('List of appliances OK')
+
+        return appliances

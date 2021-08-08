@@ -1,5 +1,6 @@
 import os
 import json
+import random
 
 from django.core.management.base import BaseCommand
 from django.contrib.auth.hashers import make_password
@@ -11,42 +12,37 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         """Create user fixture"""
 
-        users = [
-            {
-                "model": "auth.User",
-                "pk": 1,
+        print('User fixture creation ...')
+
+        users = []
+        model = "auth.User"
+        is_superuser = True
+        is_staff = True
+        for i in range(1, random.randint(4, 11)):
+            if i > 1:
+                is_superuser = False
+            if i > 2:
+                is_staff = False
+            username = "User" + str(i)
+            password = "pwd$" + username
+            email = username.lower() + '@example.com'
+
+            user = {
+                "model": model,
+                "pk": i,
                 "fields": {
-                    "username": "User1",
-                    "password": make_password('pwd$User1'),
-                    "is_superuser": False,
-                    "is_staff": False,
+                    "username": username,
+                    "password": make_password(password),
+                    "is_superuser": is_superuser,
+                    "is_staff": is_staff,
                     "is_active": True,
-                    "email": "user1@foo.com"
+                    "email": email
                 }
-            }, {
-                "model": "auth.User",
-                "pk": 2,
-                "fields": {
-                    "username": "User2",
-                    "password": make_password('pwd$User2'),
-                    "is_superuser": False,
-                    "is_staff": False,
-                    "is_active": True,
-                    "email": "user2@foo.com"
-                }
-            }, {
-                "model": "auth.User",
-                "pk": 3,
-                "fields": {
-                    "username": "User3",
-                    "password": make_password('pwd$User3'),
-                    "is_superuser": False,
-                    "is_staff": False,
-                    "is_active": True,
-                    "email": "user3@foo.com"
-                }
-            },
-        ]
+            }
+
+            users.append(user)
+
+        print('File creation ...')
 
         path_file = os.path.join(
             os.path.dirname(
@@ -57,6 +53,8 @@ class Command(BaseCommand):
             'fixtures',
             'users.json'
         )
+
+        print('Users fixture created !')
 
         with open(path_file, 'w') as file_user:
             file_user.write(json.dumps(users))
