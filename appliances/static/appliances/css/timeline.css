@@ -115,7 +115,10 @@ body {
     text-align: right;
     color: #adb5bd;
     font-size: .7619rem;
-    white-space: nowrap
+}
+
+.vertical-timeline-element-date {
+    width: 65px;
 }
 
 .vertical-timeline-element-content:after {

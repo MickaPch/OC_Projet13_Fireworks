@@ -53,6 +53,7 @@ class Command(BaseCommand):
                     "fields": {
                         "company": company_pk,
                         "user": user,
+                        "status": status,
                         "estimated_salary": estimated_salary,
                         "proposed_salary": proposed_salary,
                         "environment_notation": environment_notation,

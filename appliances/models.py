@@ -207,6 +207,6 @@ class Appliance(models.Model):
 
         events = Event.objects.filter(
             appliance=self.pk
-        ).order_by('-date')
+        ).order_by('date')
 
-        return events[-3::]
+        return events[:3]

@@ -34,7 +34,7 @@ class AppliancesHomeView(LoginRequiredMixin, TemplateView):
         appliances = Appliance.objects.filter(
             company__user__in=[self.request.user.pk],
             user=self.request.user
-        )
+        ).order_by('status')
 
         return appliances
 

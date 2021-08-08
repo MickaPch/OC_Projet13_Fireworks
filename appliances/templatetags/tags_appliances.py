@@ -87,14 +87,16 @@ def timeline_appliance(context, appliance):
 @register.inclusion_tag('appliances/badge_event.html', takes_context=True)
 def badge_event(context, event):
 
-    if event['type'] == "meeting":
+    if event.type == "MEE":
         event_badge = 'badge badge-event-xl badge-primary fas fa-calendar-alt'
-    elif event['type'] == "phone_call":
+    elif event.type == "PHC":
         event_badge = 'badge badge-event-xl badge-secondary fas fa-phone'
-    elif event['type'] == "apply":
+    elif event.type == "APY":
         event_badge = 'badge badge-event-xl badge-primary fas fa-calendar-plus'
-    elif event['type'] == "offer":
-        event_badge = 'badge badge-event-xl badge-success fa fa-pencil'
+    elif event.type == "OFR":
+        event_badge = 'badge badge-event-xl badge-success fa fa-check'
+    elif event.type == "TES":
+        event_badge = 'badge badge-event-xl badge-info fa fa-pencil'
     else:
         event_badge = 'badge badge-event-xl badge-primary'
 
