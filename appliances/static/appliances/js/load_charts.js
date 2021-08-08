@@ -20,7 +20,6 @@ function loadChart(chart, endpoint) {
       datasets.forEach(dataset => {
         chart.data.datasets.push(dataset);
       });
-      console.log(chart)
       // chart.options.scales.yAxes.type = "linear";
       // chart.options.scales.yAxes.min = 0;
       chart.options.scales.yAxes = [{

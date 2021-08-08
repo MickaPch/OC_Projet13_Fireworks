@@ -1,3 +1,4 @@
+from myjob_calendar.models import Event
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE, SET_NULL
@@ -203,28 +204,9 @@ class Appliance(models.Model):
         return appliance_notations
 
     def get_events(self):
-        events = [
-            {
-                'type': 'apply',
-                'title': 'Test1',
-                'description': 'Lorem Ipsum',
-                'date': '07/08/2021'
-            },{
-                'type': 'meeting',
-                'title': 'Test2',
-                'description': 'Lorem Ipsum',
-                'date': '08/08/2021'
-            },{
-                'type': 'phone_call',
-                'title': 'Test3',
-                'description': 'Lorem Ipsum',
-                'date': '09/08/2021'
-            },{
-                'type': 'offer',
-                'title': 'Test4',
-                'description': 'Lorem Ipsum',
-                'date': '10/08/2021'
-            },
-        ]
+
+        events = Event.objects.filter(
+            appliance=self.pk
+        ).order_by('-date')
 
         return events[-3::]
