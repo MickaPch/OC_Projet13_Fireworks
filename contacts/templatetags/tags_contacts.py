@@ -1,6 +1,6 @@
 from django import template
 from django.http import request
-from contacts.forms import CompanyAddForm, EditCompanyForm, AddContactForm, DeleteContactForm, EditContactForm, MissionAddForm, MissionDeleteForm, CompanyDeleteForm
+from contacts.forms import CompanyAddForm, EditCompanyForm, AddContactForm, DeleteContactForm, EditContactForm, CompanyDeleteForm
 
 import json
 
@@ -98,48 +98,48 @@ def form_delete_contact(context, contact_pk, user):
         'user': user
     }
 
-@register.inclusion_tag('contacts/form_add_mission.html', takes_context=True)
-def form_add_mission(context, user, company=None):
+# @register.inclusion_tag('contacts/form_add_mission.html', takes_context=True)
+# def form_add_mission(context, user, company=None):
 
-    data = {}
-    if company is not None:
-        data['company'] = company.pk
+#     data = {}
+#     if company is not None:
+#         data['company'] = company.pk
 
-    add_mission_form = MissionAddForm(
-        auto_id=False,
-        data=data
-    )
+#     add_mission_form = MissionAddForm(
+#         auto_id=False,
+#         data=data
+#     )
     
-    return {
-        'add_mission_form': add_mission_form,
-        'user': user
-    }
+#     return {
+#         'add_mission_form': add_mission_form,
+#         'user': user
+#     }
 
-@register.inclusion_tag('contacts/form_delete_mission.html', takes_context=True)
-def form_delete_mission(context, mission_title, company, user):
-    data = {
-        'title': mission_title,
-        'company': company,
-        'user': user
-    }
-    delete_mission_form = MissionDeleteForm(data=data)
+# @register.inclusion_tag('contacts/form_delete_mission.html', takes_context=True)
+# def form_delete_mission(context, mission_title, company, user):
+#     data = {
+#         'title': mission_title,
+#         'company': company,
+#         'user': user
+#     }
+#     delete_mission_form = MissionDeleteForm(data=data)
     
-    return {
-        'delete_mission_form': delete_mission_form,
-        'mission_title': mission_title,
-        'user': user
-    }
+#     return {
+#         'delete_mission_form': delete_mission_form,
+#         'mission_title': mission_title,
+#         'user': user
+#     }
 
-@register.inclusion_tag('contacts/add_btn.html', takes_context=True)
-def add_to_company_btn(context, company, user):
-    data = {
-        'company': company,
-        'user': user
-    }
-    # delete_mission_form = MissionDeleteForm(data=data)
+# @register.inclusion_tag('contacts/add_btn.html', takes_context=True)
+# def add_to_company_btn(context, company, user):
+#     data = {
+#         'company': company,
+#         'user': user
+#     }
+#     # delete_mission_form = MissionDeleteForm(data=data)
     
-    return {
-        # 'delete_mission_form': delete_mission_form,
-        'company': company,
-        'user': user
-    }
+#     return {
+#         # 'delete_mission_form': delete_mission_form,
+#         'company': company,
+#         'user': user
+#     }

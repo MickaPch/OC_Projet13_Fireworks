@@ -2,7 +2,7 @@
 from appliances.models import Appliance
 from django import forms
 
-from contacts.models.models import Company, Contact, Mission
+from contacts.models.models import Company, Contact
 
 
 class CompanyAddForm(forms.ModelForm):
@@ -266,48 +266,48 @@ class DeleteContactForm(forms.ModelForm):
         )
         contact_to_delete.user.remove(user)
 
-class MissionAddForm(forms.ModelForm):
+# class MissionAddForm(forms.ModelForm):
 
-    class Meta:
-        model = Mission
-        fields = [
-            'title',
-            'description',
-            'company',
-        ]
+#     class Meta:
+#         model = Mission
+#         fields = [
+#             'title',
+#             'description',
+#             'company',
+#         ]
 
-    def add_mission(self, user):
-        company = Company.objects.get(
-            name=self.cleaned_data['company']
-        )
-        new_mission, created = Mission.objects.get_or_create(
-            title=self.cleaned_data['title'],
-            description=self.cleaned_data['description'],
-            company=company,
-            user=user
-        )
+#     def add_mission(self, user):
+#         company = Company.objects.get(
+#             name=self.cleaned_data['company']
+#         )
+#         new_mission, created = Mission.objects.get_or_create(
+#             title=self.cleaned_data['title'],
+#             description=self.cleaned_data['description'],
+#             company=company,
+#             user=user
+#         )
 
-class MissionDeleteForm(forms.ModelForm):
+# class MissionDeleteForm(forms.ModelForm):
 
-    class Meta:
-        model = Mission
-        fields = [
-            'title',
-            'company',
-        ]
+#     class Meta:
+#         model = Mission
+#         fields = [
+#             'title',
+#             'company',
+#         ]
 
-        widgets = {
-            'title': forms.HiddenInput(),
-            'company': forms.HiddenInput()
-        }
+#         widgets = {
+#             'title': forms.HiddenInput(),
+#             'company': forms.HiddenInput()
+#         }
 
-    def delete_mission(self, user):
-        company = Company.objects.get(
-            name=self.cleaned_data['company']
-        )
-        mission_to_delete = Mission.objects.get(
-            title=self.cleaned_data['title'],
-            company=company,
-            user=user
-        )
-        mission_to_delete.delete()
+#     def delete_mission(self, user):
+#         company = Company.objects.get(
+#             name=self.cleaned_data['company']
+#         )
+#         mission_to_delete = Mission.objects.get(
+#             title=self.cleaned_data['title'],
+#             company=company,
+#             user=user
+#         )
+#         mission_to_delete.delete()

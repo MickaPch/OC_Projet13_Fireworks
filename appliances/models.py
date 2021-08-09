@@ -210,3 +210,45 @@ class Appliance(models.Model):
         ).order_by('date')
 
         return events[:3]
+
+
+class Skill(models.Model):
+
+    LANGUAGE = 0
+    FRAMEWORK = 1
+    TOOL = 2
+    LIBRARY = 3
+    OS = 4
+    METHOD = 5
+
+    TYPES = [
+        (LANGUAGE, 'Language'),
+        (FRAMEWORK, 'Framework'),
+        (TOOL, 'Tool'),
+        (LIBRARY, 'Library'),
+        (OS, 'OS'),
+        (METHOD, 'Method'),
+    ]
+
+    name = models.CharField(max_length=100, blank=False, null=False, unique=True)
+    type = models.IntegerField(choices=TYPES, blank=True, null=True)
+    related = models.ForeignKey(to='appliances.Skill', on_delete=CASCADE, null=True, blank=True)
+    image = models.ImageField(upload_to='skills', blank=True)
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+class Mission(models.Model):
+    appliance = models.ForeignKey('appliances.Appliance', on_delete=CASCADE)
+    title = models.CharField(max_length=250, null=False)
+    description = models.TextField(null=False)
+    skills = models.ManyToManyField('appliances.Skill')
+
+    class Meta:
+        ordering = ['appliance', 'title']
+
+    def __str__(self):
+        return self.title

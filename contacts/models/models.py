@@ -33,15 +33,3 @@ class Contact(models.Model):
     def __str__(self):
         return self.last_name
 
-
-class Mission(models.Model):
-    title = models.CharField(max_length=250, null=False)
-    description = models.TextField(null=False)
-    company = models.ForeignKey('contacts.Company', on_delete=CASCADE)
-    user = models.ForeignKey(User, on_delete=CASCADE)
-
-    class Meta:
-        ordering = ['company', 'title']
-
-    def __str__(self):
-        return self.last_name

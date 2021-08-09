@@ -75,6 +75,29 @@ class Command(BaseCommand):
                     }
                 }
 
+
+            # # MISSONS
+            # for user in company['fields']['user']:
+            #     for i in range(random.randint(0, 3)):
+            #         mission_pk += 1
+
+            #         title = "Mission" + str(mission_pk)
+            #         description = lorem.paragraph()
+
+            #         mission = {
+            #             "model": model_mission,
+            #             "pk": mission_pk,
+            #             "fields": {
+            #                 "title": title,
+            #                 "description": description,
+            #                 "company": company_pk,
+            #                 "user": user
+            #             }
+            #         }
+
+            #         missions.append(mission)
+
+
                 appliances.append(appliance)
 
         print('File creation ...')
