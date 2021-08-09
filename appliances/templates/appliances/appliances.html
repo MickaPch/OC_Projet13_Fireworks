@@ -9,7 +9,9 @@
     <script src="{% static 'appliances/js/appliances.js' %}"></script>
     <script src="{% static 'appliances/js/load_charts.js' %}"></script>
 
+    <link rel="stylesheet" type="text/css" href="{% static 'appliances/css/appliances.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'appliances/css/timeline.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'appliances/css/details.css' %}">
 
 {% endblock  %}
 
@@ -20,19 +22,16 @@
     <div class="container-fluid">
         <div class="row">
             {% for appliance in appliances %}
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12 col-appliance mb-4">
                     <!-- Card Appliance -->
-                    <div class="card card-appliance my-2 {% appliance_bg appliance %}">
-                        <div class="card-body">
-                            <div class="row align-items-center card-title">
-                                <h5 class="col-8 appliance-item">{{ appliance.company.name }} - {{ appliance.company.city }}</h5>
-                                <div class="col-4 btn-group" role="group" aria-label="Appliance button group">
-                                    {% comment %} {% add_to_company_btn company user %} {% endcomment %}
-                                    {% form_edit_appliance appliance %}
-                                    {% comment %} {% form_delete_company company user %} {% endcomment %}
+                    <div class="card card-appliance my-2 overflow-auto {% appliance_bg appliance %}">
+                        <a class="appliance-modal-link" href="#" data-toggle="modal" data-target="#modal_appliance_{{ appliance.pk }}">
+                        {% comment %} <a class="appliance-modal-link" href="#modal_appliance_{{ appliance.pk.value }}" data-toggle="modal"> {% endcomment %}
+                            <div class="card-body card-appliance-title">
+                                <div class="row w-100 justify-content-center card-title">
+                                    <h5 class="col-8 text-center appliance-item">{{ appliance.company.name }} - {{ appliance.company.city }}</h5>
                                 </div>
                             </div>
-                        </div>
                         {% comment %} <ul class="list-group list-group-flush card-missions">
                         {% for mission in missions %}
                             {% if mission.company == company %}
@@ -48,71 +47,70 @@
                         {% endfor %}
                         </ul> {% endcomment %}
 
-                        <div class="card-body bg-white text-dark">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-4 card text-center">
-                                        <div class="card-title">Appliance status</div>
-                                        <div class="card-body h6 p-0 text-prewrap">{{ appliance.get_status_display }}</div>
-                                    </div>
-                                    <div class="col-4 card text-center">
-                                        <div class="card-title">Average notation</div>
-                                        <div class="card-body h5">
-                                            {% if appliance.get_notation != 0 %}
-                                                {{ appliance.get_notation }}
+                            <div class="card-body bg-white text-dark card-appliance-infos">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-4 card text-center">
+                                            <div class="card-title">Appliance status</div>
+                                            <div class="card-body h6 p-0 text-prewrap">{{ appliance.get_status_display }}</div>
+                                        </div>
+                                        <div class="col-4 card text-center">
+                                            <div class="card-title">Average notation</div>
+                                            <div class="card-body h5">
+                                                {% if appliance.get_notation != 0 %}
+                                                    {{ appliance.get_notation }}
+                                                {% else %}
+                                                    N/A
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-4 card text-center">
+                                            {% if appliance.proposed_salary != None %}
+                                                <div class="card-title">Proposed salary</div>
+                                                <div class="card-body h5">
+                                                    {{ appliance.proposed_salary }} k
+                                                </div>
+                                            {% elif appliance.estimated_salary != None %}
+                                                <div class="card-title">Estimated salary</div>
+                                                <div class="card-body h5">
+                                                    {{ appliance.estimated_salary }} k
+                                                </div>
                                             {% else %}
-                                                N/A
+                                                <div class="card-title">Salary</div>
+                                                <div class="card-body h5">
+                                                    N/A
+                                                </div>
                                             {% endif %}
                                         </div>
                                     </div>
-                                    <div class="col-4 card text-center">
-                                        {% if appliance.proposed_salary != None %}
-                                            <div class="card-title">Proposed salary</div>
-                                            <div class="card-body h5">
-                                                {{ appliance.proposed_salary }} k
-                                            </div>
-                                        {% elif appliance.estimated_salary != None %}
-                                            <div class="card-title">Estimated salary</div>
-                                            <div class="card-body h5">
-                                                {{ appliance.estimated_salary }} k
-                                            </div>
-                                        {% else %}
-                                            <div class="card-title">Salary</div>
-                                            <div class="card-body h5">
-                                                N/A
-                                            </div>
-                                        {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="card-body bg-white text-dark card-appliance-timeline">
+                                <div class="container">
+                                    <div class="row">
+
+                                        {% timeline_appliance appliance %}
+
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="card-body bg-white text-dark">
-                            <div class="container">
-                                <div class="row">
+                        </a>
 
-                                    {% chart_appliance appliance %}
-
-                                </div>
+                        <div class="card-footer bg-white text-dark card-appliance-footer">
+                            <div class="col-4 btn-group" role="group" aria-label="Appliance button group">
+                                {% comment %} {% add_to_company_btn company user %} {% endcomment %}
+                                {% form_edit_appliance appliance %}
+                                {% comment %} {% form_delete_company company user %} {% endcomment %}
                             </div>
                         </div>
-
-                        <div class="card-body bg-white text-dark">
-                            <div class="container">
-                                <div class="row">
-
-                                    {% timeline_appliance appliance %}
-
-                                </div>
-                            </div>
-                        </div>
-
-                        {% comment %} <div class="card-footer">
-                        </div> {% endcomment %}
                     </div>
 
-
                 </div>
+
+                {% modal_appliance appliance %}
+
             {% endfor %}
         </div>
 

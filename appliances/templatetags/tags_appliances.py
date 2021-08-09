@@ -39,6 +39,22 @@ def form_edit_appliance(context, appliance):
         'appliance': appliance
     }
 
+@register.inclusion_tag('appliances/modal_appliance.html', takes_context=True)
+def modal_appliance(context, appliance):
+
+    return {
+        'appliance': appliance
+    }
+
+
+@register.inclusion_tag('appliances/card_skill.html', takes_context=True)
+def card_skill(context, skill):
+
+    return {
+        'skill': skill
+    }
+
+
 @register.inclusion_tag('appliances/appliance_bg.html', takes_context=True)
 def appliance_bg(context, appliance):
 

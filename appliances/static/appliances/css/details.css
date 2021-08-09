@@ -1,0 +1,25 @@
+.appliance-modal-link {
+    color: unset;
+    text-decoration: unset;
+}
+
+.appliance-modal-link:hover {
+    color: unset;
+    text-decoration: unset;
+    opacity: 0.9;
+}
+
+.details-lead {
+    font-size: 1rem;
+}
+
+.details-text {
+    font-size: 0.8rem;
+}
+
+.appliance-modal-chart {
+    position: fixed;
+    bottom: 10%;
+    right: 2%;
+    width: 100%;
+}

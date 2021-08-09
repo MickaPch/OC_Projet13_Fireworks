@@ -4,15 +4,15 @@
 <script>
 
 
-let notationsCtx_{{appliance.pk}} = document.getElementById("notationsChart_{{appliance.pk}}").getContext("2d");
-let notationsChart_{{appliance.pk}} = new Chart(notationsCtx_{{appliance.pk}}, {
-    type: "bar",
-    options: {
-        responsive: true
-    }
-});
-
 $(document).ready(function() {
+    let notationsCtx_{{appliance.pk}} = document.getElementById("notationsChart_{{appliance.pk}}").getContext("2d");
+    let notationsChart_{{appliance.pk}} = new Chart(notationsCtx_{{appliance.pk}}, {
+        type: "bar",
+        options: {
+            responsive: true
+        }
+    });
+
     loadChart(notationsChart_{{appliance.pk}}, '/appliances/notation_chart/{{appliance.pk}}');
 });
 

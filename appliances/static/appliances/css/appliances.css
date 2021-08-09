@@ -1,0 +1,26 @@
+.col-appliance {
+    max-height: 40em;
+}
+
+.card-appliance {
+    height: 100%;
+}
+.appliance-modal-link {
+    height: 85%;
+}
+
+.card-appliance-title {
+    height: 20%;
+}
+
+.card-appliance-infos {
+    height: 35%;
+}
+
+.card-appliance-timeline {
+    height: 45%;
+}
+
+.card-appliance-footer {
+    height: 14%;
+}
