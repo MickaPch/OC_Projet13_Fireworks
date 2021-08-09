@@ -159,9 +159,6 @@ class DeleteCompanyTest(ContactsTest):
 
     def setUp(self):
 
-        self.company_name = "Company5"
-        self.company_to_delete = Company.objects.get(name=self.company_name)
-
         self.user1 = User.objects.get(username='User1')
         self.user2 = User.objects.get(username='User2')
 
@@ -177,10 +174,10 @@ class DeleteCompanyTest(ContactsTest):
             user=self.user1
         )
         all_companies = Company.objects.all()
-        self.assertIn(self.company_to_delete, list_company_before_delete)
-        self.assertIn(self.company_to_delete, all_companies)
+        self.assertIn(self.company1, list_company_before_delete)
+        self.assertIn(self.company1, all_companies)
 
-        company_pk = str(self.company_to_delete.pk)
+        company_pk = str(self.company1.pk)
 
         self.client.post(
             reverse('delete_company'),
@@ -190,16 +187,16 @@ class DeleteCompanyTest(ContactsTest):
         )
 
         list_company_for_user1 = Company.objects.filter(
-            name=self.company_name,
+            name=self.company1.name,
             user=self.user1
         )
         list_company_for_user2 = Company.objects.filter(
-            name=self.company_name,
+            name=self.company1.name,
             user=self.user2
         )
 
-        self.assertNotIn(self.company_to_delete, list_company_for_user1)
-        self.assertIn(self.company_to_delete, list_company_for_user2)
+        self.assertNotIn(self.company1, list_company_for_user1)
+        self.assertIn(self.company1, list_company_for_user2)
 
 
     # def test_contacts_homeview_show_contact_delete_form_mission(self):

@@ -6,7 +6,8 @@ from django.http import response
 from django.test import TestCase
 from django.urls import reverse
 
-from contacts.models.models import Company, Contact, Mission
+from contacts.models.models import Company, Contact
+from appliances.models import Appliance, Mission
 
 
 class AppliancesTest(TestCase):
@@ -28,8 +29,11 @@ class AppliancesTest(TestCase):
         self.contact1 = Contact.objects.get(pk=1)
         self.contact2 = Contact.objects.get(pk=2)
 
-        self.mission1 = Mission.objects.get(pk=1)
-        self.mission2 = Mission.objects.get(pk=6)
+        self.appliance1 = Appliance.objects.get(pk=1)
+        self.appliance2 = Appliance.objects.get(pk=2)
+
+        # self.mission1 = Mission.objects.get(pk=1)
+        # self.mission2 = Mission.objects.get(pk=2)
 
 class AppliancesViewTest(AppliancesTest):
     """Testing appliances view"""
@@ -77,12 +81,15 @@ class AppliancesViewTest(AppliancesTest):
 
         self.assertIn(b'appliance-item', response.content)
 
-    def test_contacts_homeview_show_only_user_contacts(self):
+    def test_contacts_homeview_show_only_user_appliances(self):
         self.client.login(
             username='User1',
             password='pwd$User1'
         )
         response = self.client.get(reverse('appliances_home'))
 
+        not_user_appliances = Appliance.objects.exclude(user=self.user1)
+        appliance_string = f'appliance-item">{not_user_appliances[0].company.name}'
+
         self.assertIn(b'appliance-item">Company1', response.content)
-        self.assertNotIn(b'appliance-item">Company2', response.content)
+        self.assertNotIn(bytes(appliance_string, 'utf-8'), response.content)

@@ -130,16 +130,16 @@ def form_delete_contact(context, contact_pk, user):
 #         'user': user
 #     }
 
-# @register.inclusion_tag('contacts/add_btn.html', takes_context=True)
-# def add_to_company_btn(context, company, user):
-#     data = {
-#         'company': company,
-#         'user': user
-#     }
-#     # delete_mission_form = MissionDeleteForm(data=data)
+@register.inclusion_tag('contacts/add_btn.html', takes_context=True)
+def add_to_company_btn(context, company, user):
+    data = {
+        'company': company,
+        'user': user
+    }
+    # delete_mission_form = MissionDeleteForm(data=data)
     
-#     return {
-#         # 'delete_mission_form': delete_mission_form,
-#         'company': company,
-#         'user': user
-#     }
+    return {
+        # 'delete_mission_form': delete_mission_form,
+        'company': company,
+        'user': user
+    }

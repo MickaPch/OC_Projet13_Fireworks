@@ -6,7 +6,7 @@ from django.http import response
 from django.test import TestCase
 from django.urls import reverse
 
-from contacts.models.models import Company, Contact, Mission
+from contacts.models.models import Company, Contact
 
 
 class ContactsTest(TestCase):
@@ -26,9 +26,6 @@ class ContactsTest(TestCase):
 
         self.contact1 = Contact.objects.get(pk=1)
         self.contact2 = Contact.objects.get(pk=2)
-
-        self.mission1 = Mission.objects.get(pk=1)
-        self.mission2 = Mission.objects.get(pk=6)
 
 class ContactsViewTest(ContactsTest):
     """Testing contacts view"""
@@ -83,8 +80,12 @@ class ContactsViewTest(ContactsTest):
         )
         response = self.client.get(reverse('contacts_home'))
 
+        non_user_companies = Company.objects.exclude(user=self.user1)
+
+        company_string = f'company-item">{non_user_companies[0].name}'
+
         self.assertIn(b'company-item">Company1', response.content)
-        self.assertNotIn(b'company-item">Company2', response.content)
+        self.assertNotIn(bytes(company_string, 'utf-8'), response.content)
 
     def test_contacts_homeview_show_user_contacts_manyfield(self):
         self.client.login(

@@ -11,12 +11,9 @@ class AddContactTest(ContactsTest):
     def test_contact_related_to_companies(self):
 
         contacts_company1 = Contact.objects.filter(company=self.company1)
-        contacts_company2 = Contact.objects.filter(company=self.company2)
 
         self.assertIn(self.contact1, contacts_company1)
-        self.assertIn(self.contact2, contacts_company2)
-        self.assertNotIn(self.contact1, contacts_company2)
-        self.assertNotIn(self.contact2, contacts_company1)
+        self.assertIn(self.contact2, contacts_company1)
 
     def test_user_can_add_contact_to_companies(self):
         self.client.login(
@@ -52,9 +49,11 @@ class AddContactTest(ContactsTest):
         )
         response = self.client.get(reverse('contacts_home'))
 
+        contact_user = Contact.objects.filter(user=self.user1)
+        contact_string = f'contact-item">{contact_user[0].first_name} {contact_user[0].last_name}'
+
         self.assertIn(b'company-item">Company1', response.content)
-        self.assertIn(b'contact-item">Alain THOMAS', response.content)
-        self.assertNotIn(b'company-item">Company2', response.content)
+        self.assertIn(bytes(contact_string, 'utf-8'), response.content)
 
     def test_contacts_homeview_show_contact_add_form(self):
         self.client.login(
@@ -254,8 +253,7 @@ class EditContactTest(ContactsTest):
 
         self.assertNotEqual(contact.first_name, new_first_name)
         self.assertNotEqual(contact.last_name, new_last_name)
-
-        self.assertEqual(contact.phone_number, "")
+        self.assertNotEqual(contact.phone_number, new_phone_number)
 
         contact_emails = Contact.objects.filter(
             email=new_email

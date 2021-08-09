@@ -26,22 +26,22 @@ class UserCanAddContactToCompanyTest(ContactsTest):
         )
 
 
-class UserCanAddMissionToCompanyTest(ContactsTest):
+# class UserCanAddMissionToCompanyTest(ContactsTest):
 
-    def setUp(self):
+#     def setUp(self):
 
-        self.user_logged_in = self.client.login(
-            username='User1',
-            password='pwd$User1'
-        )
+#         self.user_logged_in = self.client.login(
+#             username='User1',
+#             password='pwd$User1'
+#         )
 
-        return super().setUp()
+#         return super().setUp()
     
-    def test_company_card_show_add_mission_btn(self):
+#     def test_company_card_show_add_mission_btn(self):
 
-        response = self.client.get(reverse('contacts_home'))
+#         response = self.client.get(reverse('contacts_home'))
 
-        self.assertIn(
-            b"add-mission-to-company",
-            response.content
-        )
+#         self.assertIn(
+#             b"add-mission-to-company",
+#             response.content
+#         )

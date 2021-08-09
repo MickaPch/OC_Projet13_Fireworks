@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from contacts.models.models import Company, Contact, Mission
+from contacts.models.models import Company, Contact
 from django.test import TestCase
 from django.urls.base import reverse
 
@@ -25,9 +25,6 @@ class AppliancesTest(TestCase):
 
         self.contact1 = Contact.objects.get(pk=1)
         self.contact2 = Contact.objects.get(pk=2)
-
-        self.mission1 = Mission.objects.get(pk=1)
-        self.mission2 = Mission.objects.get(pk=6)
 
 class EventsRelatedToAppliancesTest(AppliancesTest):
     pass
