@@ -5,6 +5,13 @@
 {% block title %}Contacts{% endblock  %}
 {% block app_title %}My contacts{% endblock  %}
 
+{% block meta %}
+    <script src="{% static 'contacts/js/phonenumber.js' %}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'contacts/css/contacts.css' %}">
+
+{% endblock  %}
+
 {% block content %}
 
     <!-- List companies -->
@@ -44,19 +51,31 @@
                                 <div class="row">
                                     {% for contact in contacts %}
                                         {% if contact.company == company %}
-                                            <div class="col-lg-4 col-md-6 col-sm-12 px-0">
-                                                <!-- Card Contact -->
-                                                {% comment %} <div class="card" style="width: 18rem;"> {% endcomment %}
-                                                <div class="card card-contact my-2 w-100">
-                                                    <i class="fas fa-user fa-4x"></i>
-                                                    <div class="card-body">
-                                                        <div class="container">
-                                                            <div class="row">
-                                                                <p class="contact-item">{{ contact.first_name }} {{ contact.last_name }}</p>
+                                            <div class="col-12 card overflow-auto">
+                                                <div class="card-body">
+                                                    <div class="container">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-2"><i class="fas fa-user-circle fa-3x"></i></div>
+                                                            <div class="col-8 contact-item">
+                                                                <div class="row contact-name">
+                                                                    {{ contact.first_name }} {{ contact.last_name }}
+                                                                </div>
+                                                                {% if contact.phone_number != '' %}
+                                                                    <div class="row contact-infos align-items-center">
+                                                                        <div class="col-2"><i class="fas fa-phone-alt"></i></div>
+                                                                        <div class="col-10 contact-phonenumber">{{ contact.phone_number }}</div>
+                                                                    </div>
+                                                                {% endif %}
+                                                                {% if contact.email != '' %}
+                                                                    <div class="row contact-infos align-items-center">
+                                                                        <div class="col-2"><i class="fas fa-envelope"></i></div>
+                                                                        <div class="col-10 contact-email">{{ contact.email }}</div>
+                                                                    </div>
+                                                                {% endif %}
                                                             </div>
-                                                            <div class="row">
-                                                                <div class="col">{% form_edit_contact contact %}</div>
-                                                                <div class="col">{% form_delete_contact contact.pk user %}</div>
+                                                            <div class="col2">
+                                                                <div>{% form_edit_contact contact %}</div>
+                                                                <div>{% form_delete_contact contact.pk user %}</div>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -24,7 +24,7 @@
             {% for appliance in appliances %}
                 <div class="col-lg-4 col-md-6 col-sm-12 col-appliance mb-4">
                     <!-- Card Appliance -->
-                    <div class="card card-appliance my-2 overflow-auto {% appliance_bg appliance %}">
+                    <div class="card card-appliance my-2 {% appliance_bg appliance %}">
                         <a class="appliance-modal-link" href="#" data-toggle="modal" data-target="#modal_appliance_{{ appliance.pk }}">
                         {% comment %} <a class="appliance-modal-link" href="#modal_appliance_{{ appliance.pk.value }}" data-toggle="modal"> {% endcomment %}
                             <div class="card-body card-appliance-title">
@@ -88,11 +88,7 @@
 
                             <div class="card-body bg-white text-dark card-appliance-timeline">
                                 <div class="container">
-                                    <div class="row">
-
-                                        {% timeline_appliance appliance %}
-
-                                    </div>
+                                    {% timeline_appliance appliance %}
                                 </div>
                             </div>
 

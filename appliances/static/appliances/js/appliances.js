@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $(function () {
         $('[data-toggle="popover"]').popover()
-    })
+    });
     $("[data-toggle=popover]").each(function( index ) {
 
         var that = $(this);

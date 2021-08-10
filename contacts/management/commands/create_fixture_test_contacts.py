@@ -6,6 +6,7 @@ import numpy.random as np_random
 
 from django.core.management.base import BaseCommand
 
+from contacts.models.models import COMPANY_TYPE
 
 class Command(BaseCommand):
     """Command to create contact fixture for tests"""
@@ -19,48 +20,12 @@ class Command(BaseCommand):
 
         model_company = "contacts.Company"
         companies = []
-        cities = {
-            'TOULOUSE': "31000",
-            'CARCASSONNE': "11000",
-            'PARIS': "75000",
-            'MARSEILLE': "13000",
-            'LYON': "69000",
-            'DIJON': "21000",
-            'BORDEAUX': "33000",
-            'LILLE': "59000",
-            'GAILLAC': "81600",
-            'ALBI': "81000",
-            'CASTRES': "81100"
-        }
-        first_names = [
-            'Alain',
-            'Thomas',
-            'Olivier',
-            'Serge',
-            'Matthieu',
-            'Stéphanie',
-            'Sophie',
-            'Renaud',
-            'Kevin',
-            'Mourad',
-            'Nora',
-            'Carine'
-        ]
-        last_names = [
-            'Wilkinson',
-            'Montoya',
-            'Marchand',
-            'Mazet',
-            'Levasseur',
-            'Dupuy',
-            'Aliker',
-            'Cazenave',
-            'Allard',
-            'Poirier',
-            'Faucher',
-            'Duval',
-            'Blandin'
-        ]
+        cities = self.get_cities()
+        first_names = self.get_first_names()
+        last_names = self.get_last_names()
+        business_list, business_pk_list = self.get_business_lists()
+        self.create_business_fixture(business_list)
+        types = [type_tuple[0] for type_tuple in COMPANY_TYPE]
 
         for i in range(1, random.randint(3, 10)):
             if i == 1:
@@ -76,17 +41,23 @@ class Command(BaseCommand):
 
             city = random.choice(list(cities.keys()))
             zipcode = random.choice(['', cities[city]])
+            business = random.sample(business_pk_list, random.randint(1, 4))
+            type = random.choice(types)
+            description = random.choice(['', lorem.paragraph()])
 
             company = {
                 "model": model_company,
                 "pk": i,
                 "fields": {
                     "name": company_name,
+                    "type": type,
+                    "description": description,
                     "address1": address1,
                     "address2": address2,
                     "zipcode": zipcode,
                     "city": city,
-                    "user": random_users
+                    "user": random_users,
+                    "business": business
                 }
             }
 
@@ -96,9 +67,6 @@ class Command(BaseCommand):
         contact_pk = 0
         model_contact = "contacts.Contact"
 
-        missions = []
-        mission_pk = 0
-        model_mission = "contacts.Mission"
         for company in  companies:
 
             company_pk = company["pk"]
@@ -149,6 +117,118 @@ class Command(BaseCommand):
             file_contact.write(json.dumps(contact_objects))
 
         print('Contacts fixture created !')
+
+    def get_cities(self):
+        
+        cities_fixture = 'contacts/fixtures/cities.json'
+
+        path_file = os.path.join(
+            os.path.dirname(
+                os.path.dirname(
+                    os.path.dirname(
+                        os.path.dirname(__file__)
+                    )
+                )
+            ),
+            cities_fixture
+        )
+
+        with open(path_file, 'rb') as cities_file:
+            cities = json.load(cities_file)
+
+        return cities
+
+    def get_first_names(self):
+        
+        first_names_fixture = 'contacts/fixtures/first_names.json'
+
+        path_file = os.path.join(
+            os.path.dirname(
+                os.path.dirname(
+                    os.path.dirname(
+                        os.path.dirname(__file__)
+                    )
+                )
+            ),
+            first_names_fixture
+        )
+
+        with open(path_file, 'rb') as first_names_file:
+            first_names = json.load(first_names_file)
+
+        return first_names
+
+    def get_last_names(self):
+        
+        last_names_fixture = 'contacts/fixtures/last_names.json'
+
+        path_file = os.path.join(
+            os.path.dirname(
+                os.path.dirname(
+                    os.path.dirname(
+                        os.path.dirname(__file__)
+                    )
+                )
+            ),
+            last_names_fixture
+        )
+
+        with open(path_file, 'rb') as last_names_file:
+            last_names = json.load(last_names_file)
+
+        return last_names
+
+    def get_business_lists(self):
+        
+        business_fixture = 'contacts/fixtures/business_list.json'
+
+        path_file = os.path.join(
+            os.path.dirname(
+                os.path.dirname(
+                    os.path.dirname(
+                        os.path.dirname(__file__)
+                    )
+                )
+            ),
+            business_fixture
+        )
+
+        with open(path_file, 'rb') as business_file:
+            business_list = json.load(business_file)
+        
+        business_pk_list = list(range(1, len(business_list) + 1))
+
+        return business_list, business_pk_list
+
+    def create_business_fixture(self, business_list):
+
+        business_json = []
+        model_business = 'contacts.Business'
+        business_pk = 0
+        for business_item in business_list:
+            business_pk += 1
+            business = {
+                "model": model_business,
+                "pk": business_pk,
+                "fields": {
+                    "name": business_item
+                }
+            }
+            business_json.append(business)
+
+        path_file = os.path.join(
+            os.path.dirname(
+                os.path.dirname(
+                    os.path.dirname(__file__)
+                )
+            ),
+            'fixtures',
+            'business.json'
+        )
+
+        with open(path_file, 'w') as file_business:
+            file_business.write(json.dumps(business_json))
+
 
     def get_users_from_fixture(self):
 

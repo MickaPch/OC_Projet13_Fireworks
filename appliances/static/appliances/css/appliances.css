@@ -14,11 +14,17 @@
 }
 
 .card-appliance-infos {
-    height: 35%;
+    height: 25%;
 }
 
 .card-appliance-timeline {
-    height: 45%;
+    height: 55%;
+}
+
+.card-appliance-timeline .container,
+.card-appliance-timeline .container .vertical-timeline {
+    max-height: 100%;
+    overflow: auto;
 }
 
 .card-appliance-footer {

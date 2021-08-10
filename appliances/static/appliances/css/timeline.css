@@ -1,7 +1,7 @@
 .vertical-timeline {
     width: 100%;
     position: relative;
-    padding: 1.5rem 0 1rem
+    padding: 1.5rem 0 1rem;
 }
 
 .vertical-timeline::before {

@@ -4,14 +4,33 @@ from django.db.models.deletion import CASCADE
 
 from contacts.models import validator_fields
 
-# Create your models here.
+
+ESN = 'ESN'
+SOFTWARE = 'SOFT'
+ENGINEERING = 'ENG'
+INDUSTRY = 'IND'
+WEB = 'WEB'
+COMPANY_TYPE = [
+    (ESN, 'Entreprise de services numériques'),
+    (SOFTWARE, 'Editeur de logiciels'),
+    (ENGINEERING, 'Ingénierie'),
+    (INDUSTRY, 'Industrie'),
+    (WEB, 'Création de sites internet')
+]
+
+class Business(models.Model):
+    name = models.CharField(max_length=250, blank=False, null=False)
+
 class Company(models.Model):
     name = models.CharField(max_length=250, default="", null=False)
+    type = models.CharField(choices=COMPANY_TYPE, max_length=4, blank=False, null=False)
+    description = models.TextField(blank=True, null=False, default="")
     address1 = models.TextField(max_length=1024, null=False, blank=True, default="")
     address2 = models.TextField(max_length=1024, null=False, blank=True, default="")
     zipcode = validator_fields.ZipcodeField(max_length=5, null=False, blank=True, default="")
     city = models.CharField(max_length=250, null=False)
     user = models.ManyToManyField(User)
+    business = models.ManyToManyField('contacts.Business')
 
     class Meta:
         ordering = ['name']
@@ -33,3 +52,14 @@ class Contact(models.Model):
     def __str__(self):
         return self.last_name
 
+    def format_phonenumber(self):
+
+        preformatted_phone = [self.phone_number[i:i+2] for i in range(0, len(self.phone_number), 2)]
+
+        formatted_phone = '<div class="col-10 contact-phonenumber">'
+        for phone_element in preformatted_phone:
+            formatted_phone += f'<span class="mr-1">{phone_element}</span>'
+        formatted_phone += '</div>'
+
+
+        return formatted_phone        
