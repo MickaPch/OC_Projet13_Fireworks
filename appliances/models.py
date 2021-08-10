@@ -27,29 +27,45 @@ NOTATIONS_LABELS = [
     'Office'
 ]
 
+REGISTERED = 0 # Nothing
+TO_APPLY = 10 # light
+CONTACTED_BY = 20 # info
+FIRST_MEET_INCOMING = 30 # dark
+TECHNICAL_TEST = 40 # warning
+IN_PROGRESS = 50 # primary
+OFFER_RECEIVED = 60 # success
+ABORTED = 70 # secondary
+REFUSED = 80 # danger
+STATUS_CHOICES = [
+    (REGISTERED, 'Company registered'),
+    (TO_APPLY, 'To apply'),
+    (CONTACTED_BY, 'Contacted by company'),
+    (FIRST_MEET_INCOMING, 'First meet incoming'),
+    (TECHNICAL_TEST, 'Technical test'),
+    (IN_PROGRESS, 'In progress'),
+    (OFFER_RECEIVED, 'Offer received'),
+    (ABORTED, 'Aborted'),
+    (REFUSED, 'Refused by company'),
+]
+
+LANGUAGE = 0
+FRAMEWORK = 1
+TOOL = 2
+LIBRARY = 3
+OS = 4
+METHOD = 5
+
+SKILL_TYPES = [
+    (LANGUAGE, 'Language'),
+    (FRAMEWORK, 'Framework'),
+    (TOOL, 'Tool'),
+    (LIBRARY, 'Library'),
+    (OS, 'OS'),
+    (METHOD, 'Method'),
+]
+
 
 class Appliance(models.Model):
-
-    REGISTERED = 0 # Nothing
-    TO_APPLY = 10 # light
-    CONTACTED_BY = 20 # info
-    FIRST_MEET_INCOMING = 30 # dark
-    TECHNICAL_TEST = 40 # warning
-    IN_PROGRESS = 50 # primary
-    OFFER_RECEIVED = 60 # success
-    ABORTED = 70 # secondary
-    REFUSED = 80 # danger
-    STATUS_CHOICES = [
-        (REGISTERED, 'Company registered'),
-        (TO_APPLY, 'To apply'),
-        (CONTACTED_BY, 'Contacted by company'),
-        (FIRST_MEET_INCOMING, 'First meet incoming'),
-        (TECHNICAL_TEST, 'Technical test'),
-        (IN_PROGRESS, 'In progress'),
-        (OFFER_RECEIVED, 'Offer received'),
-        (ABORTED, 'Aborted'),
-        (REFUSED, 'Refused by company'),
-    ]
 
 
     company = models.ForeignKey('contacts.Company', on_delete=CASCADE)
@@ -214,24 +230,8 @@ class Appliance(models.Model):
 
 class Skill(models.Model):
 
-    LANGUAGE = 0
-    FRAMEWORK = 1
-    TOOL = 2
-    LIBRARY = 3
-    OS = 4
-    METHOD = 5
-
-    TYPES = [
-        (LANGUAGE, 'Language'),
-        (FRAMEWORK, 'Framework'),
-        (TOOL, 'Tool'),
-        (LIBRARY, 'Library'),
-        (OS, 'OS'),
-        (METHOD, 'Method'),
-    ]
-
     name = models.CharField(max_length=100, blank=False, null=False, unique=True)
-    type = models.IntegerField(choices=TYPES, blank=True, null=True)
+    type = models.IntegerField(choices=SKILL_TYPES, blank=True, null=True)
     related = models.ForeignKey(to='appliances.Skill', on_delete=CASCADE, null=True, blank=True)
     image = models.ImageField(upload_to='skills', blank=True)
 

@@ -15,6 +15,59 @@ class Command(BaseCommand):
         print('Appliance fixture creation ...')
 
         companies = self.get_companies()
+        appliances = self.generate_appliances(companies)
+        skills, skills_per_type = self.get_skills()
+        missions = self.generate_missions(skills_per_type, appliances)
+
+        appliance_datas = appliances + skills + missions
+
+        print('File creation ...')
+
+        path_file = os.path.join(
+            os.path.dirname(
+                os.path.dirname(
+                    os.path.dirname(__file__)
+                )
+            ),
+            'fixtures',
+            'appliances.json'
+        )
+
+        with open(path_file, 'w') as file_contact:
+            file_contact.write(json.dumps(appliance_datas))
+
+        print('Appliances fixture created !')
+
+    def get_companies(self):
+
+        print('Retrieving companies ...')
+
+        contact_fixture = 'contacts/fixtures/contacts.json'
+
+        path_file = os.path.join(
+            os.path.dirname(
+                os.path.dirname(
+                    os.path.dirname(
+                        os.path.dirname(__file__)
+                    )
+                )
+            ),
+            contact_fixture
+        )
+
+        companies = []
+        with open(path_file, 'rb') as contacts_file:
+            contacts = json.load(contacts_file)
+
+            for contact in contacts:
+                if contact['model'] == "contacts.Company":
+                    companies.append(contact)
+
+        print('List of companies OK')
+
+        return companies
+
+    def generate_appliances(self, companies):
 
         model = 'appliances.Appliance'
         status_choices = [0, 10, 20, 30, 40, 50, 60, 70, 80]
@@ -75,53 +128,13 @@ class Command(BaseCommand):
                     }
                 }
 
-
-            # # MISSONS
-            # for user in company['fields']['user']:
-            #     for i in range(random.randint(0, 3)):
-            #         mission_pk += 1
-
-            #         title = "Mission" + str(mission_pk)
-            #         description = lorem.paragraph()
-
-            #         mission = {
-            #             "model": model_mission,
-            #             "pk": mission_pk,
-            #             "fields": {
-            #                 "title": title,
-            #                 "description": description,
-            #                 "company": company_pk,
-            #                 "user": user
-            #             }
-            #         }
-
-            #         missions.append(mission)
-
-
                 appliances.append(appliance)
+        
+        return appliances
 
-        print('File creation ...')
+    def get_skills(self):
 
-        path_file = os.path.join(
-            os.path.dirname(
-                os.path.dirname(
-                    os.path.dirname(__file__)
-                )
-            ),
-            'fixtures',
-            'appliances.json'
-        )
-
-        with open(path_file, 'w') as file_contact:
-            file_contact.write(json.dumps(appliances))
-
-        print('Appliances fixture created !')
-
-    def get_companies(self):
-
-        print('Retrieving companies ...')
-
-        contact_fixture = 'contacts/fixtures/contacts.json'
+        skills_fixture = 'appliances/fixtures/skills.json'
 
         path_file = os.path.join(
             os.path.dirname(
@@ -131,17 +144,55 @@ class Command(BaseCommand):
                     )
                 )
             ),
-            contact_fixture
+            skills_fixture
         )
 
-        companies = []
-        with open(path_file, 'rb') as contacts_file:
-            contacts = json.load(contacts_file)
+        with open(path_file, 'rb') as skills_file:
+            skills = json.load(skills_file)
 
-            for contact in contacts:
-                if contact['model'] == "contacts.Company":
-                    companies.append(contact)
+        skills_per_type = {}
+        for skill in skills:
+            type = skill['fields']['type']
+            skill_pk = skill['pk']
+            if type not in skills_per_type:
+                skills_per_type[type] = [skill_pk]
+            else:
+                skills_per_type[type].append(skill_pk)
 
-        print('List of companies OK')
+        return skills, skills_per_type
 
-        return companies
+
+    def generate_missions(self, skills_per_type, appliances):
+        
+        missions = []
+        model = "appliances.Mission"
+        mission_pk = 0
+        for appliance in appliances:
+            for i in range(random.randint(0, 4)):
+                mission_pk += 1
+                mission_title = "Mission" + str(mission_pk)
+                mission_description = random.choice(['', lorem.paragraph()])
+                mission_types = list(range(6))
+                mission_skills = []
+                for type in mission_types:
+                    list_skills_type = skills_per_type[str(type)]
+                    if random.choice([True, False]):
+                        mission_skills += random.sample(
+                            list_skills_type,
+                            random.randint(1, max([3, len(list_skills_type)]))
+                        )
+
+                mission = {
+                    "model": model,
+                    "pk": mission_pk,
+                    "fields": {
+                        "appliance": appliance['pk'],
+                        "title": mission_title,
+                        "description": mission_description,
+                        "skills": mission_skills
+                    }
+                }
+
+                missions.append(mission)
+        
+        return missions
