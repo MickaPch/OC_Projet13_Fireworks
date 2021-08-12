@@ -20,6 +20,7 @@ COMPANY_TYPE = [
 
 class Business(models.Model):
     name = models.CharField(max_length=250, blank=False, null=False)
+    fa_icon = models.CharField(max_length=250, blank=True, null=False)
 
 class Company(models.Model):
     name = models.CharField(max_length=250, default="", null=False)

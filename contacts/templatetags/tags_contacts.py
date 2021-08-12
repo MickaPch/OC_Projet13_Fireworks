@@ -143,3 +143,42 @@ def add_to_company_btn(context, company, user):
         'company': company,
         'user': user
     }
+
+@register.inclusion_tag('contacts/company_title.html', takes_context=True)
+def company_title(context, company, user):
+
+    if company.type == 'ESN':
+        company_icon = 'fas fa-desktop'
+    elif company.type == 'SOFT':
+        company_icon = 'fas fa-laptop-code'
+    elif company.type == 'ENG':
+        company_icon = 'fas fa-tools'
+    elif company.type == 'IND':
+        company_icon = 'fas fa-industry'
+    elif company.type == 'WEB':
+        company_icon = 'fas fa-wifi'
+    else:
+        company_icon = 'fas fa-building'
+
+    return {
+        'company': company,
+        'company_icon': company_icon,
+        'user': user
+    }
+
+
+@register.inclusion_tag('contacts/activity_icons.html', takes_context=True)
+def activity_icons(context, company):
+
+    business_icons_list = list()
+    for business in company.business.all():
+        icon = business.name + '///' + business.fa_icon
+        business_icons_list.append(icon)
+    
+    business_icons_list = "---".join(business_icons_list)
+
+    return {
+        'company': company,
+        'business_icons_list': business_icons_list
+    }
+

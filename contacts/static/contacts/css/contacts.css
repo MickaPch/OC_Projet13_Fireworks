@@ -1,3 +1,47 @@
+.col-contact {
+    max-height: 40em;
+}
+
+.card-company {
+    height: 100%;
+}
+
+.appliance-modal-link {
+    height: 85%;
+}
+
+.card-company-title {
+    max-height: 15%;
+}
+
+.card-company-infos {
+    max-height: 30%;
+    overflow: auto;
+}
+
+.card-company-contacts {
+    max-height: 54%;
+    overflow: auto;
+}
+
+.contact-item {
+    color: unset !important;
+    text-decoration: unset !important;
+}
+
+.contact-item:hover {
+    color: unset !important;
+    text-decoration: unset !important;
+}
+
+.contact-card-hover {
+    filter: brightness(0.9);
+}
+
 .contact-infos {
     font-size: 0.8rem;
+}
+
+.company-text, .company-type {
+    font-size: 0.9rem;
 }

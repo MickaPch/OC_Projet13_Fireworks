@@ -23,8 +23,8 @@ class Command(BaseCommand):
         cities = self.get_cities()
         first_names = self.get_first_names()
         last_names = self.get_last_names()
-        business_list, business_pk_list = self.get_business_lists()
-        self.create_business_fixture(business_list)
+        business_datas, business_pk_list = self.get_business_lists()
+        self.create_business_fixture(business_datas)
         types = [type_tuple[0] for type_tuple in COMPANY_TYPE]
 
         for i in range(1, random.randint(3, 10)):
@@ -194,24 +194,25 @@ class Command(BaseCommand):
         )
 
         with open(path_file, 'rb') as business_file:
-            business_list = json.load(business_file)
-        
-        business_pk_list = list(range(1, len(business_list) + 1))
+            business_datas = json.load(business_file)
 
-        return business_list, business_pk_list
+        business_pk_list = list(range(1, len(business_datas) + 1))
 
-    def create_business_fixture(self, business_list):
+        return business_datas, business_pk_list
+
+    def create_business_fixture(self, business_datas):
 
         business_json = []
         model_business = 'contacts.Business'
         business_pk = 0
-        for business_item in business_list:
+        for business_item in business_datas:
             business_pk += 1
             business = {
                 "model": model_business,
                 "pk": business_pk,
                 "fields": {
-                    "name": business_item
+                    "name": business_item['name'],
+                    "fa_icon": business_item['fa_icon'],
                 }
             }
             business_json.append(business)

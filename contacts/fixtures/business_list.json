@@ -1,29 +1,110 @@
 [
-    "Administration / Fonction publique",
-    "Agroalimentaire",
-    "Artisanat d'art",
-    "Associations",
-    "Banques / Assurances / Services financiers",
-    "Chime / Plastique / Conditionnement",
-    "Commerce de détail / Grande distribution",
-    "Communication / Marketing / Information",
-    "Construction / Bâtiment / Travaux publics",
-    "Culture / Sports / Loisirs",
-    "Energie",
-    "Enseignement / Formation",
-    "Environnement / Récupération / Tri / Recyclage / Traitement des déchets, matériaux, de l'eau",
-    "Equipement / Matériel pour activités professionnelles",
-    "Fabrication / Commerce de gros d'articles destinés à la vente",
-    "Gestion / Administration des entreprises",
-    "Hôtellerie / Restauration / Tourisme",
-    "Immobilier",
-    "Industrie textile",
-    "Informatique",
-    "Ingénieurs d'études et de recherche / Chercheurs",
-    "Logistique / Transports",
-    "Matériel électrique / Electronique / Optique",
-    "Mécanique / Métallurgie",
-    "Minérais / Minéraux / Sidérurgie",
-    "Professions juridiques",
-    "Santé / Action sociale"    
+    {
+        "name": "Administration / Fonction publique",
+        "fa_icon": "fas fa-user-tie"
+    },
+    {
+        "name": "Agroalimentaire",
+        "fa_icon": "fas fa-seedling"
+    },
+    {
+        "name": "Artisanat d'art",
+        "fa_icon": "fas fa-paint-brush"
+    },
+    {
+        "name": "Associations",
+        "fa_icon": "fas fa-people-arrows"
+    },
+    {
+        "name": "Banques / Assurances / Services financiers",
+        "fa_icon": "fas fa-money-bill-wave"
+    },
+    {
+        "name": "Chime / Plastique / Conditionnement",
+        "fa_icon": "fas fa-flask"
+    },
+    {
+        "name": "Commerce de détail / Grande distribution",
+        "fa_icon": "fas fa-comments-dollar"
+    },
+    {
+        "name": "Communication / Marketing / Information",
+        "fa_icon": "fas fa-comments"
+    },
+    {
+        "name": "Construction / Bâtiment / Travaux publics",
+        "fa_icon": "fas fa-hammer"
+    },
+    {
+        "name": "Culture / Sports / Loisirs",
+        "fa_icon": "fas fa-quidditch"
+    },
+    {
+        "name": "Energie",
+        "fa_icon": "fas fa-battery-three-quarters"
+    },
+    {
+        "name": "Enseignement / Formation",
+        "fa_icon": "fas fa-graduation-cap"
+    },
+    {
+        "name": "Environnement / Récupération / Tri / Recyclage / Traitement des déchets, matériaux, de l'eau",
+        "fa_icon": "fas fa-globe-europe"
+    },
+    {
+        "name": "Equipement / Matériel pour activités professionnelles",
+        "fa_icon": "fas fa-toolbox"
+    },
+    {
+        "name": "Fabrication / Commerce de gros d'articles destinés à la vente",
+        "fa_icon": "fas fa-industry"
+    },
+    {
+        "name": "Gestion / Administration des entreprises",
+        "fa_icon": "far fa-building"
+    },
+    {
+        "name": "Hôtellerie / Restauration / Tourisme",
+        "fa_icon": "fas fa-hotel"
+    },
+    {
+        "name": "Immobilier",
+        "fa_icon": "fas fa-city"
+    },
+    {
+        "name": "Industrie textile",
+        "fa_icon": "fas fa-tshirt"
+    },
+    {
+        "name": "Informatique",
+        "fa_icon": "fas fa-desktop"
+    },
+    {
+        "name": "Ingénieurs d'études et de recherche / Chercheurs",
+        "fa_icon": "fas fa-search"
+    },
+    {
+        "name": "Logistique / Transports",
+        "fa_icon": "fas fa-truck"
+    },
+    {
+        "name": "Matériel électrique / Electronique / Optique",
+        "fa_icon": "fas fa-bolt"
+    },
+    {
+        "name": "Mécanique / Métallurgie",
+        "fa_icon": "fas fa-cogs"
+    },
+    {
+        "name": "Minérais / Minéraux / Sidérurgie",
+        "fa_icon": "fas fa-gem"
+    },
+    {
+        "name": "Professions juridiques",
+        "fa_icon": "fas fa-balance-scale"
+    },
+    {
+        "name": "Santé / Action sociale",
+        "fa_icon": "fas fa-notes-medical"
+    }
 ]

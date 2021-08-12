@@ -1,0 +1,14 @@
+{% load tags_contacts %}
+
+<div class="row align-items-center card-title">
+    <div class="col-2 text-center"><i class="{{company_icon}} fa-2x"></i></div>
+    <div class="col-6">
+        <div class="row h5 company-item">{{ company.name }} - {{ company.city }}</div>
+        <div class="row company-type">{{company.get_type_display}}</div>
+    </div>
+    <div class="col-4 btn-group" role="group" aria-label="Company button group">
+        {% add_to_company_btn company user %}
+        {% form_edit_company company %}
+        {% form_delete_company company user %}
+    </div>
+</div>

@@ -2,6 +2,7 @@ html, body, main, .main_page {
     width: 100%;
     min-height: 100%;
     height: 100%;
+    overflow-x: hidden;
 }
 
 html, body, main, .top-row, .app-section {
@@ -41,19 +42,23 @@ html, body, main, .top-row, .app-section {
 
 .left-bar {
     position: fixed;
-    top: 0;
+    top: 5%;
+    height: 95%;
     left: 0;
     padding: 1%;
     margin: auto;
+    z-index: 1000;
+    background-color: rgba(241, 187, 218, 1);
+    box-shadow: 1rem 0 1rem -1rem #333;
 }
 
-.left-bar-hidden {
+/* .left-bar-hidden {
     background-color: rgba(77, 88, 99, 0.6);
 }
 
 .left-bar-shown {
-    background-color: rgba(77, 88, 99, 0.2);
-}
+    background-color: rgb(214, 214, 214);
+} */
 
 .left-text-icon-hidden {
     display: none;
@@ -82,34 +87,42 @@ html, body, main, .top-row, .app-section {
 .top-row {
     position: fixed;
     top: 0;
+    background-color: rgba(241, 187, 218, 1);;
     z-index: 1;
     box-shadow: 1rem 1.5rem 1rem -1rem rgba(0, 0, 0, 0.5);
 }
 
 .top-row-left-hidden {
-    left: 6%;
-    width: 100%;
+    width: 105%;
+    height: 5%;
+    left: 0;
 }
 
 .top-row-left-shown {
-    left: 12%;
-    width: 100%;
+    width: 105%;
+    height: 5%;
+    left: 0;
+}
+
+.app-title {
+    left: 10%;
 }
 
 .page-content {
     position: absolute;
     top: 50px;
+    width: 99%;
 }
 
-.left-footer-profile {
+.left-footer-btn {
     position: fixed;
-    bottom: 5%;
+    top: 95%;
 }
 
 .add-button {
     position: fixed;
-    bottom: 5%;
-    right: 5%;
+    bottom: 6%;
+    /* right: 5%; */
 }
 
 .btn-circle {
@@ -130,7 +143,12 @@ html, body, main, .top-row, .app-section {
     text-align: center;
 }
 
-.navbar-brand, .nav-link, .footer-profile {
+.navbar-nav {
+    position: relative;
+    top: 3%;
+}
+
+.navbar-brand, .nav-link {
     padding-left: 9px !important;
 }
 
@@ -141,22 +159,40 @@ html, body, main, .top-row, .app-section {
 
 .left-bar-hidden .nav-item .nav-link.active {
     border-radius: 50%;
-    background-color: rgba(77, 88, 99, 0.8);
+    background-color: rgba(183, 116, 154, 0.8);
 }
 
-.left-bar-shown .nav-item, .left-bar-shown .navbar-brand, .left-bar-shown .footer-profile {
+.left-bar-shown .nav-item, .left-bar-shown .navbar-brand {
     height: 40px;
     width: 150px;
 }
 
 .left-bar-shown .nav-item .nav-link.active {
     border-radius: 20px;
-    background-color: rgba(77, 88, 99, 0.6);
+    background-color: rgba(183, 116, 154, 0.8);
 }
 
-.nav-item .nav-link:hover, .navbar-brand:hover, .footer-profile:hover {
+.topbar-profile {
+    color: unset;
+    text-decoration: none;
+}
+
+.topbar-profile:hover {
+    color: unset;
+    text-decoration: none;
+}
+
+.username-hidden {
+    opacity: 0;
+}
+
+.username-shown {
+    opacity: 1;
+}
+
+.nav-item .nav-link:hover, .navbar-brand:hover {
     border-radius: 20px;
-    background-color: rgba(77, 88, 99, 0.4);
+    background-color: rgba(183, 116, 154, 0.5);
     text-decoration: none;
 }
 
