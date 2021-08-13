@@ -6,6 +6,7 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <title>MyJOB - {% block title %}base{% endblock %}</title>
 
     <!-- jQuery -->
@@ -22,6 +23,8 @@
     <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
 
     <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'base/css/header.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'base/css/leftbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'base/css/main.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'base/css/modal.css' %}">
 
@@ -37,85 +40,81 @@
 
 <body>
 
+    <header>
+        <div class="header-topbar">
+            <div class="header-logo">
+                <a class="header-logo-link" href="{% url 'home' %}">
+                    <i class="fas fa-briefcase fa-lg pr-1 bar-icon"></i>
+                    <span class="text-icon ml-2">MyJOB</span>
+                </a>
+            </div>
+            <div class="header-title">
+                <h2>{% block app_title %}{% endblock %}</h2>
+            </div> <!-- App title -->
+            <div class="header-search">
+                <input type="text" name="header_searchbar" class="header-searchbar form-control" placeholder="Search..." />
+                <button class="btn-reset btn-search" name="btn_searchbar"><i class="fas fa-search"></i></button>
+            </div>
+            <a href="#" class="header-profile">
+                <div class="header-profile-items">
+                    <i class="far fa-user-circle fa-lg pr-2"></i>
+                    <div class="header-username">{{ user.username }}</div>
+                </div>
+            </a>
+        </div> <!-- Top row -->
+    </header>
+
     <main>
 
         <div class="container-fluid main_page">
-            <nav class='left-bar left-bar-hidden h-100'>
-                <div class="logo mt-5">
-                    <a class="navbar-brand" href="{% url 'home' %}">
-                        <i class="fas fa-briefcase fa-lg pr-1"></i>
-                        <span class="left-text-icon left-text-icon-hidden">MyJOB</span>
-                    </a>
-                </div>
+            <nav class='leftbar show-leftbar leftbar-hidden h-100'>
                 <ul class="nav navbar-nav mt-5">
-                    <li class="nav-item mb-4">
-                        <a href="{% url 'home' %}" class="nav-link {% if active_page == 'dashboard' %}active{% endif %}">
-                            <i class="fas fa-columns fa-lg pr-1"></i>
-                            <span class="left-text-icon left-text-icon-hidden">Dashboard</span>
+                    <li class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
+                        <a href="{% url 'home' %}" class="nav-link">
+                            <i class="fas fa-columns fa-lg mr-2 bar-icon"></i>
+                            <span class="text-icon text-icon-leftbar text-icon-hidden">Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-item mb-4">
+                    <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="far fa-calendar-alt fa-lg pr-1"></i>
-                            <span class="left-text-icon left-text-icon-hidden">Agenda</span>
+                            <i class="far fa-calendar-alt fa-lg mr-2 bar-icon"></i>
+                            <span class="text-icon text-icon-leftbar text-icon-hidden">Agenda</span>
                         </a>
                     </li>
-                    <li class="nav-item mb-4">
-                        <a href="{% url 'appliances_home' %}" class="nav-link {% if active_page == 'appliances' %}active{% endif %}">
-                            <i class="fas fa-chart-bar fa-lg pr-1"></i>
-                            <span class="left-text-icon left-text-icon-hidden">Appliances</span>
+                    <li class="nav-item {% if active_page == 'appliances' %}active{% endif %}">
+                        <a href="{% url 'appliances_home' %}" class="nav-link">
+                            <i class="fas fa-chart-bar fa-lg mr-2 bar-icon"></i>
+                            <span class="text-icon text-icon-leftbar text-icon-hidden">Appliances</span>
                         </a>
                     </li>
-                    <li class="nav-item mb-4">
-                        <a href="{% url 'contacts_home' %}" class="nav-link {% if active_page == 'contacts' %}active{% endif %}">
-                            <i class="fas fa-users fa-lg pr-1"></i>
-                            <span class="left-text-icon left-text-icon-hidden">Contacts</span>
+                    <li class="nav-item {% if active_page == 'contacts' %}active{% endif %}">
+                        <a href="{% url 'contacts_home' %}" class="nav-link">
+                            <i class="fas fa-users fa-lg mr-2 bar-icon"></i>
+                            <span class="text-icon text-icon-leftbar text-icon-hidden">Contacts</span>
                         </a>
                     </li>
-                    {% comment %} <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-chart-line fa-lg pr-1"></i>
-                            <span class="left-text-icon left-text-icon-hidden">Stats</span>
-                        </a>
-                    </li> {% endcomment %}
 
-                    <li class="nav-item left-footer-btn align-items-center">
-                        {% if request.user.is_authenticated %}
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item footer-btn-leftbar show-leftbar show-add-btn align-items-center">
                             <!-- dropup button -->
-                            <div class="btn-group dropup nav-link add-button">
-                                <button type="button" class="btn btn-light btn-circle" id="dropupMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropupMenuButton">
-                                    <!-- Dropdown menu links -->
-                                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_company">new company</button>
-                                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_contact_None">new contact</button>
-                                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal_mission_None">new mission</button>
-                                </div>
-                                <span class="left-text-icon left-text-icon-hidden">Add</span>
+                            <div class="nav-link">
+                                <i class="fas fa-plus-circle fa-lg mr-2 bar-icon"></i>
+                                <span class="text-icon text-icon-leftbar text-icon-hidden">Add</span>
                             </div>
-                        {% endif %}
-
-                    </li>
+                        </li>
+                        <div class="add-button-group add-button-group-hidden show-leftbar show-add-btn">
+                            <div class="container-fluid p-0">
+                                <button type="button" class="row row-add-btn btn-reset add-btn-item" data-toggle="modal" data-target="#modal_company">new company</button>
+                                <button type="button" class="row row-add-btn btn-reset add-btn-item" data-toggle="modal" data-target="#modal_contact_None">new contact</button>
+                                <button type="button" class="row row-add-btn btn-reset add-btn-item" data-toggle="modal" data-target="#modal_mission_None">new mission</button>
+                            </div>
+                        </div>
+                    {% endif %}
                 </ul>
             </nav> <!-- Left bar -->
             <div class="row app-section app-section-left-hidden">
                 <div class="container-fluid container-app">
 
-                    <div class="row justify-content-between align-items-center top-row top-row-left-hidden">
-                        <div class="col-4 app-title">
-                            <h2>{% block app_title %}{% endblock %}</h2>
-                        </div> <!-- App title -->
-                        <div class="col-8 top-bar">
-                            <a href="#" class="row topbar-profile justify-content-end mr-3">
-                                <div class="col-4 topbar-username username-hidden mr-2">{{ user.username }}</div>
-                                <div class="col-2">
-                                    <i class="fas fa-user-cog fa-lg pr-1"></i>
-                                </div>
-                                <div class="col-5">MyProfile</div>
-                            </a>
-                        </div> <!-- App title -->
-                    </div> <!-- Top row -->
                     <div class="row page-content">
 
                         {% block content %}

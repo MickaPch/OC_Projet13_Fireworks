@@ -1,0 +1,89 @@
+/* LEFTBAR */
+
+.leftbar {
+    background-color: rgb(43,48,53);
+    position: fixed;
+    left: 0;
+    top: 6%;
+    height: 94%;
+    z-index: 1;
+}
+
+.leftbar-shown {
+    width: 10%;
+}
+
+.leftbar-hidden {
+    width: 4%;
+}
+
+
+/* ICONS */
+
+.text-icon-hidden {
+    display: none;
+}
+
+.text-icon-shown {
+    display: unset;
+}
+
+/* NAV */
+.nav-item {
+    height: 4.5rem;
+    display: inline-flex;
+    align-items: center;
+}
+.nav-item.active {
+    box-shadow: inset 3px 0 0 #1885c9;
+    background-color: rgb(54,59,63);
+}
+.nav-item:hover, .footer-btn-leftbar-hover {
+    background-color: rgb(54,59,63);
+}
+.nav-link {
+    padding-left: 1.5rem !important;
+    width: 100%;
+}
+
+
+/* FOOTER ADD BTN */
+
+.footer-btn-leftbar {
+    position: fixed;
+    bottom: 3%;
+    display: inline-flex;
+    align-items: center;
+}
+
+.add-button-group {
+    position: fixed;
+    height: 9rem;
+    bottom: 3%;
+    left: 10%;
+    background-color: rgb(43,48,53);
+}
+
+.add-button-group-hidden {
+    display: none;
+}
+
+.add-button-group-shown {
+    display: unset;
+}
+
+.row-add-btn {
+    height: 3rem;
+    width: 100%;
+    padding: 1rem;
+    margin: 0;
+}
+
+.add-btn-item {
+    width: 100%;
+    color: whitesmoke;
+}
+
+.add-btn-item:hover {
+    background-color: rgb(54,59,63);
+}
