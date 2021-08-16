@@ -13,7 +13,7 @@ from django.views.generic.edit import FormView
 from django.http.response import JsonResponse
 
 from appliances.models import Appliance, NOTATIONS_LABELS
-from appliances.forms import EditApplianceForm
+from appliances.forms import EditApplianceForm, EditApplianceStatusForm
 
 class AppliancesHomeView(LoginRequiredMixin, TemplateView):
     """Appliances Home view"""
@@ -53,6 +53,41 @@ class EditApplianceFormView(FormView):
 
     def form_invalid(self, form):
 
+        error_message = self.format_error(form)
+
+        messages.error(self.request, error_message)
+
+        return redirect(reverse('appliances_home'))
+
+    def format_error(self, *args):
+
+        message = str()
+
+        for form in args:
+            error_data = form.errors.as_data()
+            for error_field, error_types in error_data.items():
+                message += f'  {error_field} :\n'
+                for list_error_type in error_types:
+                    for error_message in list_error_type:
+                        message += error_message
+
+        return message
+
+class EditApplianceStatusFormView(FormView):
+    template_name = 'appliances/form_appliance_status.html'
+    form_class = EditApplianceStatusForm
+    success_url = reverse_lazy('appliances_home')
+
+    def form_valid(self, form):
+
+        form.edit_appliance_status()
+
+        return super().form_valid(form)
+
+
+    def form_invalid(self, form):
+
+        print(form)
         error_message = self.format_error(form)
 
         messages.error(self.request, error_message)

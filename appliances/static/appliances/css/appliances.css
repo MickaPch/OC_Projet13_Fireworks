@@ -5,8 +5,32 @@
 .card-appliance {
     height: 100%;
 }
-.appliance-modal-link {
+
+.appliance-title-and-body {
     height: 85%;
+}
+
+.appliance-status, .appliance-status:focus {
+    font-size: 0.8rem;
+    background-color: transparent;
+    color: inherit;
+    border: unset;
+    text-align-last: right;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.appliance-status option {
+    color: rgb(33, 37, 41);
+}
+
+.appliance-status:hover, .appliance-status:focus {
+    border: 1px solid;
+    border-radius: .25rem;
+}
+
+.appliance-status-dropdown-toggle::after {
+    content: none;
 }
 
 .card-appliance-title {

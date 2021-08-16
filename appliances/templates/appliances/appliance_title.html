@@ -1,0 +1,16 @@
+{% load tags_appliances %}
+
+<div class="row w-100 align-items-center card-title">
+    <a class="appliance-modal-link col-7" href="#" data-toggle="modal" data-target="#modal_appliance_{{ appliance.pk }}">
+        <div class="row align-items-center">
+            <div class="col-3 text-center"><i class="{{appliance_status_icon}} fa-2x"></i></div>
+            <div class="col-9">
+                <div class="row h5 company-item">{{ appliance.company.name }}</div>
+                <div class="row h6 company-item">{{ appliance.company.city }}</div>
+            </div>
+        </div>
+    </a>
+    <div class="col-5">
+        {% form_appliance_status appliance %}
+    </div>
+</div>

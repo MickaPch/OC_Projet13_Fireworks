@@ -1,4 +1,4 @@
-from appliances.models import Appliance
+from appliances.models import Appliance, STATUS_CHOICES
 from django import forms
 
 
@@ -196,5 +196,36 @@ class EditApplianceForm(forms.ModelForm):
         appliance.notoriety_details = self.cleaned_data['notoriety_details']
         appliance.office_notation = self.cleaned_data['office_notation']
         appliance.office_details = self.cleaned_data['office_details']
+
+        appliance.save()
+
+
+class EditApplianceStatusForm(forms.ModelForm):
+
+    appliance_pk = forms.IntegerField()
+    status = forms.ChoiceField(
+        choices=STATUS_CHOICES,
+        widget= forms.Select(
+            attrs= {
+                'class': "form-control appliance-status"
+            }
+        )
+    )
+    class Meta:
+        model = Appliance
+        fields = [
+            'status'
+        ]
+
+        widgets = {
+            'appliance_pk': forms.HiddenInput()
+        }
+    def edit_appliance_status(self):
+
+        appliance = Appliance.objects.get(
+            pk=self.cleaned_data['appliance_pk']
+        )
+
+        appliance.status = self.cleaned_data['status']
 
         appliance.save()

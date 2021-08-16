@@ -27,21 +27,16 @@ NOTATIONS_LABELS = [
     'Office'
 ]
 
-REGISTERED = 0 # Nothing
-TO_APPLY = 10 # light
-CONTACTED_BY = 20 # info
-FIRST_MEET_INCOMING = 30 # dark
-TECHNICAL_TEST = 40 # warning
-IN_PROGRESS = 50 # primary
-OFFER_RECEIVED = 60 # success
-ABORTED = 70 # secondary
-REFUSED = 80 # danger
+REGISTERED = 0 # dark
+TO_DO = 10 # warning
+IN_PROGRESS = 20 # primary
+OFFER_RECEIVED = 30 # success
+ABORTED = 40 # secondary
+REFUSED = 50 # danger
+
 STATUS_CHOICES = [
     (REGISTERED, 'Company registered'),
-    (TO_APPLY, 'To apply'),
-    (CONTACTED_BY, 'Contacted by company'),
-    (FIRST_MEET_INCOMING, 'First meet incoming'),
-    (TECHNICAL_TEST, 'Technical test'),
+    (TO_DO, 'Action to do'),
     (IN_PROGRESS, 'In progress'),
     (OFFER_RECEIVED, 'Offer received'),
     (ABORTED, 'Aborted'),
