@@ -112,7 +112,7 @@ def badge_event(context, event):
     elif event.type == "OFR":
         event_badge = 'badge badge-event-xl badge-success fa fa-check'
     elif event.type == "TES":
-        event_badge = 'badge badge-event-xl badge-info fa fa-pencil'
+        event_badge = 'badge badge-event-xl badge-info fas fa-pencil-alt'
     else:
         event_badge = 'badge badge-event-xl badge-primary'
 
