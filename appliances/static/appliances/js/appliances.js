@@ -29,4 +29,10 @@ $(document).ready(function() {
         form_textarea.html(value);
         form_textarea.val(value);
     });
+
+    $(".appliance-status").on('change', function() {
+        var form = $(this).closest('form');
+        form.submit()
+    })
+
 });

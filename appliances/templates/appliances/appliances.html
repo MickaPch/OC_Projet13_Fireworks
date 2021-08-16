@@ -6,8 +6,6 @@
 {% block app_title %}My appliances{% endblock  %}
 
 {% block meta %}
-    <script src="{% static 'appliances/js/appliances.js' %}"></script>
-    <script src="{% static 'appliances/js/load_charts.js' %}"></script>
 
     <link rel="stylesheet" type="text/css" href="{% static 'appliances/css/appliances.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'appliances/css/timeline.css' %}">
@@ -25,12 +23,10 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 col-appliance mb-4">
                     <!-- Card Appliance -->
                     <div class="card card-appliance my-2 {% appliance_bg appliance %}">
-                        <a class="appliance-modal-link" href="#" data-toggle="modal" data-target="#modal_appliance_{{ appliance.pk }}">
+                        <div class="appliance-title-and-body">
                         {% comment %} <a class="appliance-modal-link" href="#modal_appliance_{{ appliance.pk.value }}" data-toggle="modal"> {% endcomment %}
                             <div class="card-body card-appliance-title">
-                                <div class="row w-100 justify-content-center card-title">
-                                    <h5 class="col-8 text-center appliance-item">{{ appliance.company.name }} - {{ appliance.company.city }}</h5>
-                                </div>
+                                {% appliance_title appliance %}
                             </div>
                         {% comment %} <ul class="list-group list-group-flush card-missions">
                         {% for mission in missions %}
@@ -51,8 +47,8 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-4 card text-center">
-                                            <div class="card-title">Appliance status</div>
-                                            <div class="card-body h6 p-0 text-prewrap">{{ appliance.get_status_display }}</div>
+                                            <div class="card-title">Tasks</div>
+                                            <div class="card-body h6 p-0 text-prewrap">blabla</div>
                                         </div>
                                         <div class="col-4 card text-center">
                                             <div class="card-title">Average notation</div>
@@ -92,7 +88,7 @@
                                 </div>
                             </div>
 
-                        </a>
+                        </div>
 
                         <div class="card-footer bg-white text-dark card-appliance-footer">
                             <div class="col-4 btn-group" role="group" aria-label="Appliance button group">
@@ -110,6 +106,28 @@
             {% endfor %}
         </div>
 
-
 {% endblock  %}
 
+{% block scripts %}
+
+    <script src="{% static 'appliances/js/appliances.js' %}"></script>
+    <script src="{% static 'appliances/js/load_charts.js' %}"></script>
+
+    {% for appliance in appliances %}
+
+        <script>
+
+            let notationsCtx_{{appliance.pk}} = document.getElementById("notationsChart_{{appliance.pk}}").getContext("2d");
+            let notationsChart_{{appliance.pk}} = new Chart(notationsCtx_{{appliance.pk}}, {
+                type: "bar",
+                options: {
+                    responsive: true
+                }
+            });
+
+            loadChart(notationsChart_{{appliance.pk}}, '/appliances/notation_chart/{{appliance.pk}}');
+
+        </script>
+    {% endfor %}
+
+{% endblock  %}
