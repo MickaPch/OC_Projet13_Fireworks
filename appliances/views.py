@@ -123,10 +123,6 @@ class AddTaskFormView(FormView):
 
     def form_invalid(self, form):
 
-        print('\n\nFORM INVALID\n\n')
-        print(form)
-        print('\n\nFORM INVALID\n\n')
-
         error_message = self.format_error(form)
 
         messages.error(self.request, error_message)

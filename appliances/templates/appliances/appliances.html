@@ -46,10 +46,21 @@
                             <div class="card-body bg-white text-dark card-appliance-infos">
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col-4 card text-center">
+
+                                        <a class="col-4 card text-center card-task link-reset" href="#">
                                             <div class="card-title">Tasks</div>
-                                            <div class="card-body h6 p-0 text-prewrap">{{ appliance.get_tasks }}</div>
-                                        </div>
+                                            <div class="card-body h5">
+                                                <div class="row">
+                                                    <div class="col-3 text-primary">
+                                                        <i class="far fa-check-square"></i>
+                                                    </div>
+                                                    <div class="col-9">
+                                                        {{ appliance.get_tasks_count }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+
                                         <div class="col-4 card text-center">
                                             <div class="card-title">Average notation</div>
                                             <div class="card-body h5">

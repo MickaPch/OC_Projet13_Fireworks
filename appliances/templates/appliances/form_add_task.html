@@ -1,11 +1,22 @@
 {% load crispy_forms_tags %}
 
-<button type="button" class="btn btn-outline-primary btn-add-task" data-toggle="modal" data-target="#modal_add_task_{{ form_add_task.appliance_pk.value }}"><i class="far fa-plus-square" aria-hidden="true"></i></button>
+<button type="button"
+        title="Add task"
+        class="btn btn-outline-primary btn-add-task"
+        data-toggle="modal"
+        data-target="#modal_add_task_{{ form_add_task.appliance_pk.value }}">
+    <i class="far fa-plus-square" aria-hidden="true"></i>
+</button>
 
 
 
 
-<div class="modal fade modal-add-task text-dark" id="modal_add_task_{{ form_add_task.appliance_pk.value }}" tabindex="-1" role="dialog" aria-labelledby="modal_add_task_Label_{{ form_add_task.appliance_pk.value }}" aria-hidden="true">
+<div class="modal fade modal-add-task text-dark"
+     id="modal_add_task_{{ form_add_task.appliance_pk.value }}"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="modal_add_task_Label_{{ form_add_task.appliance_pk.value }}"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">

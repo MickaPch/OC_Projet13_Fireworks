@@ -221,7 +221,7 @@ class Appliance(models.Model):
         ).order_by('date')
 
         return events[:3]
-    
+
     def get_tasks(self):
 
         tasks = Task.objects.filter(
@@ -229,7 +229,19 @@ class Appliance(models.Model):
             user=self.user
         ).order_by('id')
 
-        return tasks.count()
+        return tasks
+
+    def get_tasks_count(self):
+
+        total_tasks = self.get_tasks().count()
+
+        tasks_done = Task.objects.filter(
+            appliance=self.pk,
+            user=self.user,
+            is_open=False
+        ).count()
+
+        return f"{tasks_done} / {total_tasks}"
 
 
 class Skill(models.Model):
@@ -263,4 +275,4 @@ class Task(models.Model):
     user = models.ForeignKey(User, on_delete=CASCADE, null=True)
     appliance = models.ForeignKey('appliances.Appliance', on_delete=CASCADE, blank=True, null=True)
     description = models.TextField(null=False, blank=False)
-    is_open = models.BooleanField(default=False, null=False)
+    is_open = models.BooleanField(default=True, null=False)

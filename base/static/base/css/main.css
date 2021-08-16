@@ -67,3 +67,8 @@ html, body, main, .app-section {
 .text-prewrap {
     white-space: break-spaces !important;
 }
+
+.link-reset, .link-reset:hover {
+    color: unset;
+    text-decoration: unset;
+}

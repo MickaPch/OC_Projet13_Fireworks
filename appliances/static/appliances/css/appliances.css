@@ -54,3 +54,7 @@
 .card-appliance-footer {
     height: 14%;
 }
+
+.card-task:hover {
+    background-color: rgba(33, 37, 41, 0.2);
+}
