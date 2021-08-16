@@ -1,5 +1,5 @@
 from django import template
-from appliances.forms import EditApplianceForm, EditApplianceStatusForm
+from appliances.forms import AddTaskForm, EditApplianceForm, EditApplianceStatusForm
 
 
 register = template.Library()
@@ -155,4 +155,23 @@ def badge_event(context, event):
     return {
         'event': event,
         'event_badge': event_badge
+    }
+
+@register.inclusion_tag('appliances/form_add_task.html', takes_context=True)
+def form_add_task(context, user, appliance=None):
+
+    data = {
+        'user_pk': user.pk
+    }
+    if appliance is not None:
+        data['appliance_pk'] = appliance.pk
+
+    form_add_task = AddTaskForm(
+        auto_id=False,
+        data=data
+    )
+    
+    return {
+        'form_add_task': form_add_task,
+        'user': user
     }

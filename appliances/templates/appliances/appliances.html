@@ -48,7 +48,7 @@
                                     <div class="row">
                                         <div class="col-4 card text-center">
                                             <div class="card-title">Tasks</div>
-                                            <div class="card-body h6 p-0 text-prewrap">blabla</div>
+                                            <div class="card-body h6 p-0 text-prewrap">{{ appliance.get_tasks }}</div>
                                         </div>
                                         <div class="col-4 card text-center">
                                             <div class="card-title">Average notation</div>
@@ -91,9 +91,10 @@
                         </div>
 
                         <div class="card-footer bg-white text-dark card-appliance-footer">
-                            <div class="col-4 btn-group" role="group" aria-label="Appliance button group">
+                            <div class="col-12 btn-group" role="group" aria-label="Appliance button group">
                                 {% comment %} {% add_to_company_btn company user %} {% endcomment %}
                                 {% form_edit_appliance appliance %}
+                                {% form_add_task user appliance %}
                                 {% comment %} {% form_delete_company company user %} {% endcomment %}
                             </div>
                         </div>

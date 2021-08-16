@@ -221,6 +221,15 @@ class Appliance(models.Model):
         ).order_by('date')
 
         return events[:3]
+    
+    def get_tasks(self):
+
+        tasks = Task.objects.filter(
+            appliance=self.pk,
+            user=self.user
+        ).order_by('id')
+
+        return tasks.count()
 
 
 class Skill(models.Model):
@@ -247,3 +256,11 @@ class Mission(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Task(models.Model):
+
+    user = models.ForeignKey(User, on_delete=CASCADE, null=True)
+    appliance = models.ForeignKey('appliances.Appliance', on_delete=CASCADE, blank=True, null=True)
+    description = models.TextField(null=False, blank=False)
+    is_open = models.BooleanField(default=False, null=False)

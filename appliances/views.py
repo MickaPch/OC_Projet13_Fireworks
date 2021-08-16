@@ -13,7 +13,7 @@ from django.views.generic.edit import FormView
 from django.http.response import JsonResponse
 
 from appliances.models import Appliance, NOTATIONS_LABELS
-from appliances.forms import EditApplianceForm, EditApplianceStatusForm
+from appliances.forms import AddTaskForm, EditApplianceForm, EditApplianceStatusForm
 
 class AppliancesHomeView(LoginRequiredMixin, TemplateView):
     """Appliances Home view"""
@@ -107,6 +107,46 @@ class EditApplianceStatusFormView(FormView):
                         message += error_message
 
         return message
+
+class AddTaskFormView(FormView):
+    template_name = 'appliances/form_add_task.html'
+    form_class = AddTaskForm
+    success_url = reverse_lazy('appliances_home')
+
+    def form_valid(self, form):
+
+        print('form valid')
+
+        form.add_task()
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+
+        print('\n\nFORM INVALID\n\n')
+        print(form)
+        print('\n\nFORM INVALID\n\n')
+
+        error_message = self.format_error(form)
+
+        messages.error(self.request, error_message)
+
+        return redirect(reverse('appliances_home'))
+
+    def format_error(self, *args):
+
+        message = 'An error occured :\n'
+
+        for form in args:
+            error_data = form.errors.as_data()
+            for error_field, error_types in error_data.items():
+                message += f'  {error_field} :\n'
+                for list_error_type in error_types:
+                    for error_message in list_error_type:
+                        message += error_message
+
+        return message
+
 
 @login_required
 def get_notations_chart(request, appliance_pk):

@@ -1,4 +1,5 @@
-from appliances.models import Appliance, STATUS_CHOICES
+from django.contrib.auth.models import User
+from appliances.models import Appliance, STATUS_CHOICES, Task
 from django import forms
 
 
@@ -229,3 +230,38 @@ class EditApplianceStatusForm(forms.ModelForm):
         appliance.status = self.cleaned_data['status']
 
         appliance.save()
+
+
+class AddTaskForm(forms.ModelForm):
+
+    user_pk = forms.IntegerField()
+    appliance_pk = forms.IntegerField()
+
+    class Meta:
+        model = Task
+        fields = [
+            'description',
+            'is_open'
+        ]
+
+        widgets = {
+            'description': forms.Textarea(
+                attrs={
+                    'class': 'form-control task-textarea',
+                    'rows': 4
+                }
+            )
+        }
+
+    def add_task(self):
+        user_pk = self.cleaned_data['user_pk']
+        user = User.objects.get(pk=user_pk)
+
+        appliance_pk = self.cleaned_data['appliance_pk']
+        appliance = Appliance.objects.get(pk=appliance_pk)
+
+        self.new_task = Task.objects.create(
+            user=user,
+            appliance=appliance,
+            description=self.cleaned_data['description']
+        )
