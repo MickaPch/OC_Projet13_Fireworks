@@ -1,0 +1,37 @@
+<form method="post" class="edit-task form-task w-100" data-urlcheck="{% url 'check_task' %}" data-urldescription="{% url 'edit_task_description' %}">
+    {% csrf_token %}
+
+    <div class="form-group form-check container-fluid align-items-center">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div class="row align-items-center">
+                    <div class='col-1'>
+                    </div>
+                    <div class='col-10 col-label col-display'>
+                        <div class="input-task-text align-items-center justify-content-start">
+
+                            {{ form_check_task.task_pk.as_hidden }}
+                            {{ form_check_task.done }}
+                            <label class="col-9 form-check-label task-hover label-task {% if task.done %}text-muted label-mute{% endif %}" for="form_check_task_done_{{ task.pk }}">
+                                {{task.description}}
+                            </label>
+
+                            {{ form_edit_description.task_pk.as_hidden }}
+                            {{ form_edit_description.description }}
+
+                            <button class="col-1 btn-reset btn-task btn-task-edit text-info" type="button" name="btn_edit_task">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+
+                            <button class="col-1 btn-reset btn-task btn-task-delete text-danger" type="button" name="btn_delete_task" data-task_pk="{{task.pk}}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

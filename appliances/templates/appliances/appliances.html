@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'appliances/css/appliances.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'appliances/css/timeline.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'appliances/css/details.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'appliances/css/checkbox_task.css' %}">
 
 {% endblock  %}
 
@@ -20,7 +21,7 @@
     <div class="container-fluid">
         <div class="row">
             {% for appliance in appliances %}
-                <div class="col-lg-4 col-md-6 col-sm-12 col-appliance mb-4">
+                <div class="col-xl-4 col-md-6 col-sm-12 col-appliance mb-4">
                     <!-- Card Appliance -->
                     <div class="card card-appliance my-2 {% appliance_bg appliance %}">
                         <div class="appliance-title-and-body">
@@ -46,35 +47,42 @@
                             <div class="card-body bg-white text-dark card-appliance-infos">
                                 <div class="container">
                                     <div class="row">
+
+                                        {% card_task appliance %}
+
                                         <div class="col-4 card text-center">
-                                            <div class="card-title">Tasks</div>
-                                            <div class="card-body h6 p-0 text-prewrap">blabla</div>
-                                        </div>
-                                        <div class="col-4 card text-center">
-                                            <div class="card-title">Average notation</div>
-                                            <div class="card-body h5">
-                                                {% if appliance.get_notation != 0 %}
-                                                    {{ appliance.get_notation }}
-                                                {% else %}
-                                                    N/A
-                                                {% endif %}
+                                            <div class="card-title card-infos-title">Average notation</div>
+                                            <div class="card-body card-infos">
+                                                <div class="row align-items-center justify-content-center">
+                                                    {% if appliance.get_notation != 0 %}
+                                                        {{ appliance.get_notation }}
+                                                    {% else %}
+                                                        N/A
+                                                    {% endif %}
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-4 card text-center">
                                             {% if appliance.proposed_salary != None %}
-                                                <div class="card-title">Proposed salary</div>
-                                                <div class="card-body h5">
-                                                    {{ appliance.proposed_salary }} k
+                                                <div class="card-title card-infos-title">Proposed salary</div>
+                                                <div class="card-body card-infos">
+                                                    <div class="row align-items-center justify-content-center">
+                                                        {{ appliance.proposed_salary }} k
+                                                    </div>
                                                 </div>
                                             {% elif appliance.estimated_salary != None %}
-                                                <div class="card-title">Estimated salary</div>
-                                                <div class="card-body h5">
-                                                    {{ appliance.estimated_salary }} k
+                                                <div class="card-title card-infos-title">Estimated salary</div>
+                                                <div class="card-body card-infos">
+                                                    <div class="row align-items-center justify-content-center">
+                                                        {{ appliance.estimated_salary }} k
+                                                    </div>
                                                 </div>
                                             {% else %}
-                                                <div class="card-title">Salary</div>
-                                                <div class="card-body h5">
-                                                    N/A
+                                                <div class="card-title card-infos-title">Salary</div>
+                                                <div class="card-body card-infos">
+                                                    <div class="row align-items-center justify-content-center">
+                                                        N/A
+                                                    </div>
                                                 </div>
                                             {% endif %}
                                         </div>
@@ -91,9 +99,10 @@
                         </div>
 
                         <div class="card-footer bg-white text-dark card-appliance-footer">
-                            <div class="col-4 btn-group" role="group" aria-label="Appliance button group">
+                            <div class="col-12 btn-group" role="group" aria-label="Appliance button group">
                                 {% comment %} {% add_to_company_btn company user %} {% endcomment %}
                                 {% form_edit_appliance appliance %}
+                                {% form_add_task user appliance %}
                                 {% comment %} {% form_delete_company company user %} {% endcomment %}
                             </div>
                         </div>
@@ -112,6 +121,8 @@
 
     <script src="{% static 'appliances/js/appliances.js' %}"></script>
     <script src="{% static 'appliances/js/load_charts.js' %}"></script>
+    <script src="{% static 'appliances/js/checkbox_task.js' %}"></script>
+    <script src="{% static 'appliances/js/add_task_to_list.js' %}"></script>
 
     {% for appliance in appliances %}
 

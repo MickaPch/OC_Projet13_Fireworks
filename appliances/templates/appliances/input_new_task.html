@@ -1,0 +1,9 @@
+
+<form method="post" data-url={% url 'add_task_input' appliance.pk %} class="form-add-task w-75" id="form_add_task_{{form_add_task.appliance_pk.value}}">
+    {% csrf_token %}
+    
+    {{ form_add_task.appliance_pk.as_hidden }}
+    {{ form_add_task.user_pk.as_hidden }}
+    {{ form_add_task.description }}
+
+</form>

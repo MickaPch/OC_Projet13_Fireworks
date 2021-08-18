@@ -222,6 +222,27 @@ class Appliance(models.Model):
 
         return events[:3]
 
+    def get_tasks(self):
+
+        tasks = Task.objects.filter(
+            appliance=self.pk,
+            user=self.user
+        ).order_by('id')
+
+        return tasks
+
+    def get_tasks_count(self):
+
+        total_tasks = self.get_tasks().count()
+
+        tasks_done = Task.objects.filter(
+            appliance=self.pk,
+            user=self.user,
+            done=True
+        ).count()
+
+        return f"{tasks_done} / {total_tasks}"
+
 
 class Skill(models.Model):
 
@@ -247,3 +268,11 @@ class Mission(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Task(models.Model):
+
+    user = models.ForeignKey(User, on_delete=CASCADE, null=True)
+    appliance = models.ForeignKey('appliances.Appliance', on_delete=CASCADE, blank=True, null=True)
+    description = models.CharField(max_length=255, null=False, blank=False)
+    done = models.BooleanField(default=False, null=False)

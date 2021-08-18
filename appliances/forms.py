@@ -1,4 +1,6 @@
-from appliances.models import Appliance, STATUS_CHOICES
+from django.contrib.auth.models import User
+from django.db.models import fields
+from appliances.models import Appliance, STATUS_CHOICES, Task
 from django import forms
 
 
@@ -229,3 +231,94 @@ class EditApplianceStatusForm(forms.ModelForm):
         appliance.status = self.cleaned_data['status']
 
         appliance.save()
+
+
+class AddTaskForm(forms.ModelForm):
+
+    user_pk = forms.IntegerField()
+    appliance_pk = forms.IntegerField()
+
+    class Meta:
+        model = Task
+        fields = [
+            'description',
+            'done'
+        ]
+
+        widgets = {
+            'description': forms.TextInput(
+                attrs={
+                    'class': 'form-control task-textarea'
+                }
+            )
+        }
+
+    def add_task(self):
+        user_pk = self.cleaned_data['user_pk']
+        user = User.objects.get(pk=user_pk)
+
+        appliance_pk = self.cleaned_data['appliance_pk']
+        appliance = Appliance.objects.get(pk=appliance_pk)
+
+        self.new_task = Task.objects.create(
+            user=user,
+            appliance=appliance,
+            description=self.cleaned_data['description']
+        )
+
+        return self.new_task
+
+
+class CheckTaskForm(forms.ModelForm):
+
+    task_pk = forms.IntegerField()
+
+    class Meta:
+        model = Task
+        fields = [
+            'done'
+        ]
+
+        widgets = {
+            'done': forms.CheckboxInput(
+                attrs={
+                    'class': 'col-1 form-check-input checkbox-task task-hover'
+                }
+            )
+        }
+
+    def edit_task_check(self):
+        task_pk = self.cleaned_data['task_pk']
+        task = Task.objects.get(pk=task_pk)
+
+        task.done = self.cleaned_data['done']
+
+        task.save()
+
+
+class EditTaskForm(forms.ModelForm):
+
+    task_pk = forms.IntegerField()
+
+    class Meta:
+        model = Task
+        fields = [
+            'description'
+        ]
+
+        widgets = {
+            'description': forms.TextInput(
+                attrs={
+                    'class': 'col-10 form-control label-input-task task-hover display-none'
+                }
+            )
+        }
+
+    def edit_task_description(self):
+        task_pk = self.cleaned_data['task_pk']
+        task = Task.objects.get(pk=task_pk)
+
+        task.description = self.cleaned_data['description']
+
+        task.save()
+

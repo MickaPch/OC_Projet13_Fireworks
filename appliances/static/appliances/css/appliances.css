@@ -54,3 +54,61 @@
 .card-appliance-footer {
     height: 14%;
 }
+
+.card-task:hover {
+    background-color: rgba(33, 37, 41, 0.2);
+}
+
+.card-infos-title {
+    height: 40%;
+}
+
+@media screen and (max-width: 768px) {
+    .card-infos {
+        font-size: 0.5rem !important;
+        font-weight: bold;
+    }
+    .card-infos-title {
+        font-size: 0.6rem !important;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .card-infos {
+        font-size: 0.6rem !important;
+        font-weight: bold;
+    }
+    .card-infos-title {
+        font-size: 0.8rem !important;
+    }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1240px) {
+    .card-infos {
+        font-size: 0.6rem !important;
+        font-weight: bold;
+    }
+    .card-infos-title {
+        font-size: 0.8rem !important;
+    }
+}
+
+@media screen and (min-width: 1240px) and (max-width: 1440px) {
+    .card-infos {
+        font-size: 0.8rem !important;
+        font-weight: bold;
+    }
+    .card-infos-title {
+        font-size: 1rem !important;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .card-infos {
+        font-size: 1rem !important;
+        font-weight: bold;
+    }
+    .card-infos-title {
+        font-size: 1.2rem !important;
+    }
+}

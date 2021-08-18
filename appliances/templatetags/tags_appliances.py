@@ -1,5 +1,5 @@
 from django import template
-from appliances.forms import EditApplianceForm, EditApplianceStatusForm
+from appliances.forms import AddTaskForm, EditApplianceForm, EditApplianceStatusForm, EditTaskForm, CheckTaskForm
 
 
 register = template.Library()
@@ -155,4 +155,78 @@ def badge_event(context, event):
     return {
         'event': event,
         'event_badge': event_badge
+    }
+
+@register.inclusion_tag('appliances/form_add_task.html', takes_context=True)
+def form_add_task(context, user, appliance=None):
+
+    data = {
+        'user_pk': user.pk
+    }
+    if appliance is not None:
+        data['appliance_pk'] = appliance.pk
+
+    form_add_task = AddTaskForm(
+        auto_id=False,
+        data=data
+    )
+    
+    return {
+        'form_add_task': form_add_task,
+        'user': user
+    }
+
+@register.inclusion_tag('appliances/card_task.html', takes_context=True)
+def card_task(context, appliance):
+
+    return {
+        'appliance': appliance
+    }
+
+@register.inclusion_tag('appliances/checkbox_task.html', takes_context=True)
+def checkbox_task(context, task):
+
+    data_checkbox = {
+        'task_pk': task.pk,
+        'done': task.done
+    }
+    data_description = {
+        'task_pk': task.pk,
+        'description': task.description
+    }
+    data_delete = {
+        'task_pk': task.pk
+    }
+
+    form_check_task = CheckTaskForm(
+        auto_id=f'form_check_task_%s_{str(task.pk)}',
+        data=data_checkbox
+    )
+    form_edit_description = EditTaskForm(
+        auto_id=f'form_description_task_%s_{str(task.pk)}',
+        data=data_description
+    )
+
+    return {
+        'form_check_task': form_check_task,
+        'form_edit_description': form_edit_description,
+        'task': task
+    }
+
+@register.inclusion_tag('appliances/input_new_task.html', takes_context=True)
+def input_new_task (context, appliance):
+
+    data_checkbox = {
+        'appliance_pk': appliance.pk,
+        'user_pk': appliance.user.pk
+    }
+
+    form_add_task = AddTaskForm(
+        auto_id=f'form_input_task_%s_{str(appliance.pk)}',
+        data=data_checkbox
+    )
+
+    return {
+        'form_add_task': form_add_task,
+        'appliance': appliance
     }

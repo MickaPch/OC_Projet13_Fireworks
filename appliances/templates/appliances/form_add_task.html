@@ -1,0 +1,48 @@
+{% load crispy_forms_tags %}
+
+<button type="button"
+        title="Add task"
+        class="btn btn-outline-primary btn-add-task"
+        data-toggle="modal"
+        data-target="#modal_add_task_{{ form_add_task.appliance_pk.value }}">
+    <i class="far fa-plus-square" aria-hidden="true"></i>
+</button>
+
+
+
+<div class="modal fade modal-add-task text-dark"
+     id="modal_add_task_{{ form_add_task.appliance_pk.value }}"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="modal_add_task_Label_{{ form_add_task.appliance_pk.value }}"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal_add_task_Label_{{ form_add_task.appliance_pk.value }}">New task</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <!-- Form add task -->
+            <form method="post" action={% url 'add_task' %} class="add-task-form" >
+                {% csrf_token %}
+                {{ form_add_task.user_pk.as_hidden }}
+                {{ form_add_task.appliance_pk.as_hidden }}
+                <div class="container">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-10">
+                            {{ form_add_task.description|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Edit appliance</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
