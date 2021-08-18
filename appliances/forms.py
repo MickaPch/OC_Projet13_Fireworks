@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import fields
 from appliances.models import Appliance, STATUS_CHOICES, Task
 from django import forms
 
@@ -241,14 +242,13 @@ class AddTaskForm(forms.ModelForm):
         model = Task
         fields = [
             'description',
-            'is_open'
+            'done'
         ]
 
         widgets = {
-            'description': forms.Textarea(
+            'description': forms.TextInput(
                 attrs={
-                    'class': 'form-control task-textarea',
-                    'rows': 4
+                    'class': 'form-control task-textarea'
                 }
             )
         }
@@ -265,3 +265,60 @@ class AddTaskForm(forms.ModelForm):
             appliance=appliance,
             description=self.cleaned_data['description']
         )
+
+        return self.new_task
+
+
+class CheckTaskForm(forms.ModelForm):
+
+    task_pk = forms.IntegerField()
+
+    class Meta:
+        model = Task
+        fields = [
+            'done'
+        ]
+
+        widgets = {
+            'done': forms.CheckboxInput(
+                attrs={
+                    'class': 'col-1 form-check-input checkbox-task task-hover'
+                }
+            )
+        }
+
+    def edit_task_check(self):
+        task_pk = self.cleaned_data['task_pk']
+        task = Task.objects.get(pk=task_pk)
+
+        task.done = self.cleaned_data['done']
+
+        task.save()
+
+
+class EditTaskForm(forms.ModelForm):
+
+    task_pk = forms.IntegerField()
+
+    class Meta:
+        model = Task
+        fields = [
+            'description'
+        ]
+
+        widgets = {
+            'description': forms.TextInput(
+                attrs={
+                    'class': 'col-10 form-control label-input-task task-hover display-none'
+                }
+            )
+        }
+
+    def edit_task_description(self):
+        task_pk = self.cleaned_data['task_pk']
+        task = Task.objects.get(pk=task_pk)
+
+        task.description = self.cleaned_data['description']
+
+        task.save()
+

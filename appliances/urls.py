@@ -6,6 +6,10 @@ from appliances import views
 urlpatterns = [
     path('', views.AppliancesHomeView.as_view(), name="appliances_home"),
     path('add_task', views.AddTaskFormView.as_view(), name="add_task"),
+    path('add_task_input/<int:appliance_pk>', views.add_task_input, name="add_task_input"),
+    path('check_task', views.check_task, name="check_task"),
+    path('edit_task_description', views.edit_task_description, name="edit_task_description"),
+    path('delete_task/<int:task_pk>', views.delete_task, name="delete_task"),
     path('edit_appliance', views.EditApplianceFormView.as_view(), name="edit_appliance"),
     path('edit_appliance_status', views.EditApplianceStatusFormView.as_view(), name="edit_appliance_status"),
     path('notation_chart/<int:appliance_pk>', views.get_notations_chart, name='chart_notations'),

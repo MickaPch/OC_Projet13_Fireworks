@@ -72,3 +72,11 @@ html, body, main, .app-section {
     color: unset;
     text-decoration: unset;
 }
+
+.display-none {
+    display: none;
+}
+
+.display-reset {
+    display: unset;
+}

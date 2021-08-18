@@ -238,7 +238,7 @@ class Appliance(models.Model):
         tasks_done = Task.objects.filter(
             appliance=self.pk,
             user=self.user,
-            is_open=False
+            done=True
         ).count()
 
         return f"{tasks_done} / {total_tasks}"
@@ -274,5 +274,5 @@ class Task(models.Model):
 
     user = models.ForeignKey(User, on_delete=CASCADE, null=True)
     appliance = models.ForeignKey('appliances.Appliance', on_delete=CASCADE, blank=True, null=True)
-    description = models.TextField(null=False, blank=False)
-    is_open = models.BooleanField(default=True, null=False)
+    description = models.CharField(max_length=255, null=False, blank=False)
+    done = models.BooleanField(default=False, null=False)
