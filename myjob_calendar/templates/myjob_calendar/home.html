@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load tags_appliances %}
+
+{% block title %}Calendar{% endblock  %}
+{% block app_title %}My calendar{% endblock  %}
+
+{% block meta %}
+    <script src="{% static 'myjob_calendar/js/calendar.js' %}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'myjob_calendar/css/calendar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'appliances/css/timeline.css' %}">
+
+{% endblock  %}
+
+{% block content %}
+
+    <div class="container-fluid calendar-content">
+        <div class="row calendar-content justify-content-center">
+            <div class="col-8 calendar-full">
+                {{html_calendar}}
+            </div>
+
+            <div class="col-1 col-vertical" data-url="{% url 'get_events_to_come' %}">
+                <div class="h5 text-vertical">Events to come</div>
+            </div>
+
+            <div class="col-4 timeline-day col-events-to-display display-none">
+
+                <div class='row my-3 event-timeline-header align-items-center justify-content-between'>
+                    <div class="h5 col-events-title">Events for </div>
+                    <button type="button" class="close close-event-timeline" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <hr>
+
+                <div class="vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock  %}

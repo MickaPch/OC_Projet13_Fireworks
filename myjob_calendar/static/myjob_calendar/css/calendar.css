@@ -1,0 +1,160 @@
+.app-section, .container-app, .calendar-content {
+    height: 100%;
+    width: 99%;
+}
+
+.page-content {
+    height: 90%;
+    padding-right: 1%;
+}
+
+.calendar {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    font-size: 1rem;
+}
+
+.calendar tr, .calendar td {
+    border: 1px solid lightslategray;
+    width: auto;
+    height: 13%;
+}
+
+.calendar th {
+    padding: 10px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.month {
+    font-size: 2rem;
+}
+
+.month-tr, .weekday-tr {
+    height: 9% !important;
+}
+
+.month-tr, .month-tr th {
+    border: 1px transparent !important;
+}
+
+.date {
+    font-size: 1.2rem;
+    position: absolute;
+    top: 3%;
+    left: 3%;
+}
+
+.event-list {
+    position: absolute;
+    overflow-x: hidden;
+    top: 0;
+    left: 0;
+    width: 90%;
+    height: 100%;
+    padding-top: 15px;
+    padding-left: 35px;
+}
+
+.event {
+    font-size: 0.9rem;
+    align-items: center;
+}
+
+.event-badge {
+    width: 10px;
+}
+
+.noday {
+    background-color: lightslategray;
+}
+
+.past {
+    opacity: 0.6;
+}
+
+.today .date {
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    font-size: 15px;
+    text-align: center;
+    background-color: rgb(0,123,255);
+    color: white;
+    border-radius: 13px;
+}
+
+li {
+    list-style-type: none;
+}
+
+.day {
+    /* display: block;
+    text-decoration: none; */
+    width: 100%;
+    height: 100%;
+    /* cursor: pointer; */
+    position: relative;
+}
+
+.event-item:hover, .event-item-others:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+}
+
+.timeline-day {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.col-vertical {
+    position: fixed;
+    right: 0%;
+    height: 90%;
+    cursor: pointer;
+}
+
+.col-vertical-hover {
+    background-color: rgba(33, 37, 41, 0.2);
+}
+
+.text-vertical {
+    position: relative;
+    top: 45%;
+    right: -80%;
+    writing-mode: vertical-rl;
+    text-orientation: sideways;
+    transform: rotate(-180deg);
+}
+
+.animatein {
+    animation: translate_x_in 1s 1;
+}
+
+.animateout {
+    animation: translate_x_out 1s 1;
+}
+
+/* .col-events-to-come {
+    animation-iteration-count: 1;
+} */
+
+@keyframes translate_x_in {
+    from {
+      right: -30%;
+    }
+
+    to {
+      right: 0%;
+    }
+}
+@keyframes translate_x_out {
+    from {
+      right: 0%;
+    }
+
+    to {
+      right: -30%;
+    }
+}
