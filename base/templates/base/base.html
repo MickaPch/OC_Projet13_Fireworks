@@ -78,10 +78,10 @@
                             <span class="text-icon text-icon-leftbar text-icon-hidden">Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
+                    <li class="nav-item {% if active_page == 'calendar' %}active{% endif %}">
+                        <a href="{% url 'calendar_home' %}" class="nav-link">
                             <i class="far fa-calendar-alt fa-lg mr-2 bar-icon"></i>
-                            <span class="text-icon text-icon-leftbar text-icon-hidden">Agenda</span>
+                            <span class="text-icon text-icon-leftbar text-icon-hidden">Calendar</span>
                         </a>
                     </li>
                     <li class="nav-item {% if active_page == 'appliances' %}active{% endif %}">
@@ -123,6 +123,7 @@
                         {% block content %}
                         {% endblock %}
                         {% include 'base/messages.html' %}
+
                     </div> <!-- App content -->
 
 

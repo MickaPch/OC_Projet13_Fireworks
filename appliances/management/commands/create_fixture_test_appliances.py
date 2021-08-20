@@ -18,8 +18,9 @@ class Command(BaseCommand):
         appliances = self.generate_appliances(companies)
         skills, skills_per_type = self.get_skills()
         missions = self.generate_missions(skills_per_type, appliances)
+        tasks = self.generate_tasks(appliances)
 
-        appliance_datas = appliances + skills + missions
+        appliance_datas = appliances + skills + missions + tasks
 
         print('File creation ...')
 
@@ -196,3 +197,29 @@ class Command(BaseCommand):
                 missions.append(mission)
         
         return missions
+
+    def generate_tasks(self, appliances):
+        
+        tasks = []
+        model = "appliances.Task"
+        task_pk = 0
+        for appliance in appliances:
+            for i in range(random.randint(0, 10)):
+                task_pk += 1
+                mission_description = lorem.sentence()[:255]
+                random_done = random.choice([True, False])
+
+                task = {
+                    "model": model,
+                    "pk": task_pk,
+                    "fields": {
+                        "user": appliance['fields']['user'],
+                        "appliance": appliance['pk'],
+                        "description": mission_description,
+                        "done": random_done
+                    }
+                }
+
+                tasks.append(task)
+        
+        return tasks

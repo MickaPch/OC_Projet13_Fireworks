@@ -218,9 +218,9 @@ class Appliance(models.Model):
 
         events = Event.objects.filter(
             appliance=self.pk
-        ).order_by('date')
+        ).order_by('-start_time')
 
-        return events[:3]
+        return reversed(events[:3])
 
     def get_tasks(self):
 
@@ -242,6 +242,16 @@ class Appliance(models.Model):
         ).count()
 
         return f"{tasks_done} / {total_tasks}"
+
+    def get_all_choice(self):
+
+        choices = []
+        for appliance in self.objects.all():
+            choices.append(
+                (appliance.pk, appliance.company.name)
+            )
+        
+        return choices
 
 
 class Skill(models.Model):

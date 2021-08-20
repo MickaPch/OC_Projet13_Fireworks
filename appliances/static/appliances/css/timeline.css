@@ -41,7 +41,7 @@
     position: relative
 }
 
-.badge:empty {
+.badge-timline:empty {
     display: none
 }
 

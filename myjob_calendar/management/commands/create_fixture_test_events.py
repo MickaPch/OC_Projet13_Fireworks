@@ -55,8 +55,8 @@ class Command(BaseCommand):
                 'Technical test to send',
             ]
         }
-        start_date = datetime.date(2021, 6, 1)
-        end_date = datetime.date.today()
+        start_date = datetime.datetime(2021, 6, 1)
+        end_date = datetime.datetime.today()
 
         time_between_dates = end_date - start_date
         days_between_dates = time_between_dates.days
@@ -70,8 +70,18 @@ class Command(BaseCommand):
                 type = random.choice(list(event_types.keys()))
                 title = random.choice(event_types[type])
                 descrition = random.choice(['', lorem.paragraph()])
-                random_number_of_days = random.randrange(days_between_dates)
-                date = start_date + datetime.timedelta(days=random_number_of_days)
+                start_date_event = start_date + datetime.timedelta(
+                    days=random.randrange(days_between_dates),
+                    hours=random.randrange(23),
+                    minutes=random.randrange(59)
+                )
+                days_between_event = datetime.datetime(2021, 12, 31) - start_date_event
+                end_date_event = start_date_event + datetime.timedelta(
+                    days=random.randrange(days_between_event.days),
+                    hours=random.randrange(23),
+                    minutes=random.randrange(59)
+                )
+
 
                 event = {
                     "model": model,
@@ -80,7 +90,8 @@ class Command(BaseCommand):
                         "appliance": appliance_pk,
                         "title": title,
                         "description": descrition,
-                        "date": str(date),
+                        "start_time": str(start_date_event),
+                        "end_time": str(end_date_event),
                         "type": type
                     }
                 }
