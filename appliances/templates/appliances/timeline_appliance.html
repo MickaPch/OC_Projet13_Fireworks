@@ -6,7 +6,7 @@
             <div> <span class="vertical-timeline-element-icon bounce-in"> <i class="badge badge-timeline {% badge_event event %}"></i> </span>
                 <div class="vertical-timeline-element-content bounce-in">
                     <div class="timeline-title">{{ event.title }}</div>
-                    <p>{{ event.description }}</p> <span class="vertical-timeline-element-date">{{ event.date }}</span>
+                    <p>{{ event.description }}</p> <span class="vertical-timeline-element-date">{{ event.get_formatted_date }}</span>
                 </div>
             </div>
         </div>

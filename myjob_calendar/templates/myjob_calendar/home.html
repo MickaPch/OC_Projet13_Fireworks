@@ -6,6 +6,13 @@
 {% block app_title %}My calendar{% endblock  %}
 
 {% block meta %}
+    <!-- Moment.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js" integrity="sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA=" crossorigin="anonymous"></script>
+    
+    <!-- Tempus Dominus Bootstrap 4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-XPTBwC3SBoWHSmKasAk01c08M6sIA5gF5+sRxqak2Qs=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4=" crossorigin="anonymous"></script>
+
     <script src="{% static 'myjob_calendar/js/calendar.js' %}"></script>
 
     <link rel="stylesheet" type="text/css" href="{% static 'myjob_calendar/css/calendar.css' %}">
@@ -17,6 +24,7 @@
 
     <div class="container-fluid calendar-content">
         <div class="row calendar-content justify-content-center">
+
             <div class="col-8 calendar-full">
                 {{html_calendar}}
             </div>
@@ -35,15 +43,27 @@
                 </div>
                 <hr>
 
-                <div class="vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                <div class="vertical-timeline vertical-timeline--animate vertical-timeline--one-column"></div>
+            </div>
+
+        </div>
+    </div>
 
 
+    <div class="modal fade" id="modal_event" tabindex="-1" role="dialog" aria-labelledby="modal_event_label" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_event_label">Add event</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-
+                {% include 'myjob_calendar/form_add_event.html' %}
             </div>
         </div>
-
     </div>
+
 
 
 {% endblock  %}

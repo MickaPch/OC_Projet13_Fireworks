@@ -44,6 +44,15 @@
     position: absolute;
     top: 3%;
     left: 3%;
+    cursor: pointer;
+    z-index: 1;
+    color: black;
+    text-decoration: none;
+}
+
+.date:hover {
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .event-list {
@@ -53,8 +62,8 @@
     left: 0;
     width: 90%;
     height: 100%;
-    padding-top: 15px;
-    padding-left: 35px;
+    padding-top: 35px;
+    padding-left: 25px;
 }
 
 .event {
@@ -115,8 +124,15 @@ li {
     cursor: pointer;
 }
 
-.col-vertical-hover {
+.link-month {
+    color: black;
+    text-decoration: none;
+}
+
+.col-vertical-hover, .link-month:hover {
     background-color: rgba(33, 37, 41, 0.2);
+    color: black;
+    text-decoration: none;
 }
 
 .text-vertical {

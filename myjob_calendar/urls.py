@@ -4,9 +4,11 @@ from myjob_calendar import views
 
 
 urlpatterns = [
-    path('', views.CalendarHomeView.as_view(), name="calendar_home"),
+    path('', views.CalendarView.as_view(), name="calendar_home"),
+    path('<int:month>/<int:year>', views.CalendarView.as_view(), name="month_view"),
     path('get_events_day/<str:day>', views.get_events_day, name="get_events_day"),
     path('get_events_to_come', views.get_events_to_come, name="get_events_to_come"),
+    path('add_event', views.AddEventFormView.as_view(), name="add_event"),
     # path('add_task', views.AddTaskFormView.as_view(), name="add_task"),
     # path('check_task', views.check_task, name="check_task"),
     # path('edit_task_description', views.edit_task_description, name="edit_task_description"),

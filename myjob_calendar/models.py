@@ -1,10 +1,12 @@
 from calendar import month_name
+from myjob_calendar.utils.time import format_time
 from django.db import models
 from django.db.models.deletion import CASCADE
+from django.utils import timezone
 
 
 class Event(models.Model):
-    
+
     PHONE_CALL = 'PHC'
     MEETING = 'MEE'
     OFFER = 'OFR'
@@ -12,7 +14,7 @@ class Event(models.Model):
     TEST = 'TES'
 
 
-    EVENT_TYPES = [
+    TYPES = [
         (PHONE_CALL, 'Phone call'),
         (MEETING, 'Meeting'),
         (OFFER, 'Offer'),
@@ -23,9 +25,9 @@ class Event(models.Model):
     appliance = models.ForeignKey('appliances.Appliance', on_delete=CASCADE)
     title = models.CharField(max_length=100, blank=False, null=False)
     description = models.TextField(blank=True, null=False, default="")
-    start_time = models.DateTimeField(auto_now=True, null=False)
-    end_time = models.DateTimeField(auto_now=True, null=False)
-    type = models.CharField(max_length=3, choices=EVENT_TYPES)
+    start_time = models.DateTimeField(default=timezone.now, null=False)
+    end_time = models.DateTimeField(default=timezone.now, null=False)
+    type = models.CharField(max_length=3, choices=TYPES)
 
     def get_badge(self):
         
@@ -63,13 +65,8 @@ class Event(models.Model):
 
     def get_time_formatted(self):
 
-        hours = str(self.start_time.hour)
-        if len(hours) == 1:
-            hours = '0' + hours
-        
-        minutes = str(self.start_time.minute)
-        if len(minutes) == 1:
-            minutes = '0' + minutes
+        hours = format_time(self.start_time.hour)
+        minutes = format_time(self.start_time.minute)
 
         return f'{hours}:{minutes}'
 

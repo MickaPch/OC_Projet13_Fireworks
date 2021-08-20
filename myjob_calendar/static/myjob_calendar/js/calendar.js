@@ -1,11 +1,3 @@
-$(document).on('click', '.event-item', function(e) {
-    e.preventDefault();
-
-    console.log($(this));
-    console.log('click to open event');
-});
-
-
 function handlerInVerticalCol(element) {
     element.addClass('col-vertical-hover');
 }
@@ -53,6 +45,13 @@ function formatDiv(event) {
 
 }
 
+function putDateInForm(day) {
+    var date = day.find('.date-format').html();
+    var datetime = date + ' 10:00';
+    $(".datetimepicker-input").val(datetime);
+}
+
+
 function showEventItemsThisDay(element) {
     $(".col-vertical").addClass('display-none').removeClass('display-reset');
     
@@ -62,7 +61,7 @@ function showEventItemsThisDay(element) {
 
     var col_name = $(".col-events-to-display").find('.col-events-title');
 
-    var month_year = $('.month').html().split(' ');
+    var month_year = $('.month-title').html().split(' ');
     var date_string = month_year[0] + " " + element.find('.date').html() + ", " + month_year[1]
     col_name.html(date_string);
     $(".vertical-timeline").html('');
@@ -105,6 +104,13 @@ $(document).on('click', '.close-event-timeline', function() {
 
 $(document).on({
     click: function () {
-        showEventItemsThisDay($(this))
+        showEventItemsThisDay($(this));
+        putDateInForm($(this));
     }
 }, ".day");
+
+$(function() {
+    $(".datetime-picker").datetimepicker({
+        format: 'YYYY-MM-DD HH:mm',
+    });
+});

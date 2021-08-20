@@ -3,6 +3,7 @@ from calendar import HTMLCalendar, month_name
 
 from django.urls.base import reverse
 from myjob_calendar.models import Event
+from myjob_calendar.utils.time import format_time
 
 
 class CustomCalendar(HTMLCalendar):
@@ -22,14 +23,17 @@ class CustomCalendar(HTMLCalendar):
 
             event_badge = event.get_badge_bg()
 
-            event_time = f"{str(event.start_time.hour)}:{str(event.start_time.minute)}"
+            hour = format_time(event.start_time.hour)
+            minutes = format_time(event.start_time.minute)
 
-            day_events += f'<li class="event row align-items-center"><a class="event-item {event_badge} mb-1">{event_time} {event.title}</a></li>'
+            event_time = f"{hour}:{minutes}"
 
-        if len(events_this_day) > 0:
-            nb_others = len(events_this_day)
+            day_events += f'<li class="event row align-items-center"><div class="event-item {event_badge} mb-1">{event_time} {event.title}</div></li>'
 
-            day_events += f'<li class="event row mt-2"><a class="event-item-others badge badge-light mb-1">{str(nb_others)} others ...</a></li>'
+        if len(events_this_day) > 2:
+            nb_others = len(events_this_day) - 2
+
+            day_events += f'<li class="event row mt-2"><div class="event-item-others badge badge-light mb-1">{str(nb_others)} others ...</div></li>'
 
         if day != 0:
             today = datetime.today().day
@@ -40,10 +44,13 @@ class CustomCalendar(HTMLCalendar):
             else:
                 class_day = "future"
 
-            str_day = str(self.year) + "-" + str(self.month) + "-" + str(day)
+            month = format_time(self.month)
+            format_day = format_time(day)
+
+            str_day = str(self.year) + "-" + month + "-" + format_day
             url_get_events = reverse('get_events_day', kwargs={'day': str_day})
 
-            return f'<td class="{class_day} day"data-url="{url_get_events}"><div class="date">{day}</div><div class="date-format display-none">{self.year}-{self.month}-{day}</div><ul class="event-list">{day_events}</ul></td>'
+            return f'<td class="{class_day} day" data-url="{url_get_events}"><a class="date" href="#" data-toggle="modal" data-target="#modal_event">{day}</a><div class="date-format display-none">{str_day}</div><ul class="event-list">{day_events}</ul></td>'
 
         return "<td class='noday'></td>"
     
@@ -63,8 +70,29 @@ class CustomCalendar(HTMLCalendar):
             s = '%s %s' % (month_name[themonth], theyear)
         else:
             s = '%s' % month_name[themonth]
-        return '<tr class="month-tr"><th colspan="7" class="%s">%s</th></tr>' % (
-            self.cssclass_month_head, s)
+        
+
+
+        format_month_name = '<tr class="month-tr container-fluid">' # open tr
+        format_month_name += f'<th colspan="7" class="{self.cssclass_month_head}">' # open th
+        format_month_name += '<div class="row align-items-center justify-content-between">' # open row
+
+        previous_month = themonth - 1
+        url_previous_month = reverse('month_view', kwargs={'month': previous_month, 'year': theyear})
+        format_month_name += f'<a class="col-2 link-month" href="{url_previous_month}">'
+        format_month_name += '<i class="fas fa-chevron-left"></i></a>'
+        format_month_name += f'<div class="col-4 month-title">{s}</div>'
+
+        next_month = themonth + 1
+        url_next_month = reverse('month_view', kwargs={'month': next_month, 'year': theyear})
+        format_month_name += f'<a class="col-2 link-month" href="{url_next_month}">'
+        format_month_name += '<i class="fas fa-chevron-right"></i></a>'
+
+        format_month_name += '</div>' # close row
+        format_month_name += '</th>' # close th
+        format_month_name += '</tr>' # close tr
+
+        return format_month_name
 
     def formatweekheader(self):
         """

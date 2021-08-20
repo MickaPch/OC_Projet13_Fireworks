@@ -1,18 +1,21 @@
 from datetime import datetime
+from myjob_calendar.forms import AddEventForm
 
 from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
+from django.urls.base import reverse, reverse_lazy
+from django.views.generic.edit import FormView
 
 from myjob_calendar.models import Event
-from myjob_calendar.utils import CustomCalendar
+from myjob_calendar.utils.calendar import CustomCalendar
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic.base import TemplateView
 from django.utils.safestring import mark_safe
 
 
-class CalendarHomeView(LoginRequiredMixin, TemplateView):
-    """Calendar Home view"""
+class CalendarView(LoginRequiredMixin, TemplateView):
+    """Calendar view"""
 
     template_name = "myjob_calendar/home.html"
 
@@ -20,21 +23,67 @@ class CalendarHomeView(LoginRequiredMixin, TemplateView):
 
         context = super().get_context_data(**kwargs)
 
-        # events = self.get_events()
+        today = datetime.today()
+
+        if 'month' in self.kwargs:
+            month = self.kwargs['month']
+        else:
+            month = today.month
+        if 'year' in self.kwargs:
+            year = self.kwargs['year']
+        else:
+            year = today.year
+
         context['active_page'] = 'calendar'
-        context["html_calendar"] = self.get_html_calendar()
+        context["html_calendar"] = self.get_html_calendar(month, year)
+        context['add_event_form'] = AddEventForm(self.request.user)
 
         return context
 
-    def get_html_calendar(self):
+    def get_html_calendar(self, month, year):
 
-        today = datetime.today()
-
-        cal = CustomCalendar(year=today.year, month=today.month, user=self.request.user)
+        cal = CustomCalendar(year=year, month=month, user=self.request.user)
 
         html_cal = cal.formatmonth()
 
         return mark_safe(html_cal)
+
+
+class AddEventFormView(FormView):
+    template_name = 'myjob_calendar/form_add_event.html'
+    form_class = AddEventForm
+    success_url = reverse_lazy('calendar_home')
+
+    def form_valid(self, form):
+
+        form.add_event()
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+
+        print('\n\nFORM INVALID\n\n')
+        print(form)
+        print('\n\nFORM INVALID\n\n')
+
+        # error_message = self.format_error(form)
+        # messages.error(self.request, error_message)
+
+        return redirect(reverse('appliances_home'))
+
+    def format_error(self, *args):
+
+        message = 'An error occured :\n'
+
+        for form in args:
+            error_data = form.errors.as_data()
+            for error_field, error_types in error_data.items():
+                message += f'  {error_field} :\n'
+                for list_error_type in error_types:
+                    for error_message in list_error_type:
+                        message += error_message
+
+        return message
 
 
 @login_required
@@ -80,7 +129,7 @@ def get_events_to_come(request):
 
     events = Event.objects.filter(
         appliance__user=request.user,
-        # start_time__gte=today
+        start_time__gte=today
     ).order_by('start_time')
 
 

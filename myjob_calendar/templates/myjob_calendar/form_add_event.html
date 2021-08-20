@@ -1,0 +1,71 @@
+{% load crispy_forms_tags %}
+
+<form method="post" action={% url 'add_event' %} id="id_form_add_event" >
+    {% csrf_token %}
+    <div class="modal-body">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col-8">
+                            {{ add_event_form.title|as_crispy_field }}
+                        </div>
+                        <div class="col-4">
+                            {{ add_event_form.type|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            {{ add_event_form.appliance|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            {{ add_event_form.description|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div id="div_id_start_date" class="form-group">
+                                <div class="row">
+                                    {{ add_event_form.start_time.label_tag }}
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-10">
+                                        <div class="input-group datetime-picker" id="datetimepicker_start" data-target-input="nearest">
+                                            {{ add_event_form.start_time }}
+                                            <div class="input-group-append" data-target="#datetimepicker_start" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div id="div_id_end_date" class="form-group">
+                                <div class="row">
+                                    {{ add_event_form.end_time.label_tag }}
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-10">
+                                        <div class="input-group datetime-picker" id="datetimepicker_end" data-target-input="nearest">
+                                            {{ add_event_form.end_time }}
+                                            <div class="input-group-append" data-target="#datetimepicker_end" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Add event</button>
+    </div>
+</form>
