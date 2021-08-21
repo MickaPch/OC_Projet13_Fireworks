@@ -1,0 +1,155 @@
+{% load crispy_forms_tags %}
+{% load tags_contacts %}
+
+<button type="button"
+        class="btn btn-info btn-card-company-footer btn-edit-company"
+        title="Edit company"
+        data-toggle="modal"
+        data-target="#modal_company_{{ edit_company_form.company_pk.value }}">
+    <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+</button>
+
+<div class="modal fade text-dark modal-company" id="modal_company_{{ edit_company_form.company_pk.value }}" tabindex="-1" role="dialog" aria-labelledby="modal_companyLabel_{{ edit_company_form.company_pk.value }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <!-- Form edit company -->
+            <form method="post" action={% url 'edit_company' %} class="edit_form_company" >
+                {% csrf_token %}
+                <div class="modal-header">
+                    <div class="modal-title container-fluid" id="modal_companyLabel_{{ edit_company_form.company_pk.value }}">
+                        {% company_title company edit_company_form %}
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-company-infos container-fluid">
+                    <div class="row company-text justify-content-center">
+                        <div class="col-10">
+                            {{company.description}}
+                        </div>
+                    </div>
+                    <div class="row mt-5 justify-content-center">
+                        <div class="col-10">
+                            <div class="row align-items-center justify-content-center">
+                                <div class="col-1">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="col-11 company-text">
+                                    {% if company.address1 != '' %}
+                                        <div class="row">{{company.address1}}</div>
+                                        {% if company.address2 != '' %}
+                                            <div class="row">{{company.address2}}</div>
+                                        {% endif %}
+                                    {% endif %}
+                                    <div class="row mt-2">{% if company.zipcode != "" %}{{company.zipcode}}  {% endif %}{{company.city}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mt-2 mb-4 w-50"></hr>
+                    <div class="row justify-content-center">
+                        <div class="col-10">
+                            <div class="row justify-content-center">
+                                {% for activity in company.business.all %}
+                                    <div class="col-4 mb-4">
+                                        <div class="row align-items-center">
+                                            <div class="col-3">
+                                                <i class="{{activity.fa_icon}} fa-2x mr-4" title="{{activity.name}}"></i>
+                                            </div>
+                                            <div class="col-9">{{activity.name}}</div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body modal-company-edit display-none">
+                    {{ edit_company_form.company_pk.as_hidden }}
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-10">
+                                <div class="row">
+                                    <div class="col-5">
+                                        {{ edit_company_form.name|as_crispy_field }}
+                                    </div>
+                                    <div class="col-3">
+                                        {{ edit_company_form.zipcode|as_crispy_field }}
+                                    </div>
+                                    <div class="col-4">
+                                        {{ edit_company_form.city|as_crispy_field }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                {{ edit_company_form.description.label_tag }}
+                                            </div>
+                                            <div class="row justify-content-center">
+                                                {{ edit_company_form.description }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                {{ edit_company_form.address1.label_tag }}
+                                            </div>
+                                            <div class="row justify-content-center">
+                                                {{ edit_company_form.address1 }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                {{ edit_company_form.address2.label_tag }}
+                                            </div>
+                                            <div class="row justify-content-center">
+                                                {{ edit_company_form.address2 }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                {{ edit_company_form.business.label_tag }}
+                                            </div>
+                                            <div class="row justify-content-center">
+                                                {{ edit_company_form.business }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white modal-company-fill"></div>
+                <div class="modal-footer modal-company-footer container-fluid">
+                    <div class="row m-auto w-100 justify-content-start row-edit-company">
+                        <button type="button" class="btn btn-outline-primary btn-edit-company">
+                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="row m-auto w-100 justify-content-between row-submit-company display-none">
+                        <button type="button" class="btn btn-outline-secondary btn-reset-company">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <button type="submit" class="btn btn-success btn-submit-company">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

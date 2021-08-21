@@ -21,24 +21,27 @@ def form_add_company(context, user):
     
     return context_add_company
 
-@register.inclusion_tag('contacts/form_edit_company.html', takes_context=True)
-def form_edit_company(context, company_to_edit):
+@register.inclusion_tag('contacts/form_company.html', takes_context=True)
+def form_company(context, company):
     data = {
-        'company_pk': company_to_edit.pk,
-        'name': company_to_edit.name,
-        'address1': company_to_edit.address1,
-        'address2': company_to_edit.address2,
-        'zipcode': company_to_edit.zipcode,
-        'city': company_to_edit.city
+        'company_pk': company.pk,
+        'name': company.name,
+        'address1': company.address1,
+        'address2': company.address2,
+        'zipcode': company.zipcode,
+        'description': company.description,
+        'city': company.city,
+        'type': company.type,
+        'business': company.business.all()
     }
     edit_company_form = EditCompanyForm(
-        auto_id=f'form_edit_company_%s_{str(company_to_edit.pk)}',
+        auto_id=f'form_edit_company_%s_{str(company.pk)}',
         data=data
     )
     
     return {
         'edit_company_form': edit_company_form,
-        'company_to_edit': company_to_edit
+        'company': company
     }
 
 
@@ -157,7 +160,7 @@ def form_delete_contact(context, contact_pk, user):
 
 
 @register.inclusion_tag('contacts/company_title.html', takes_context=True)
-def company_title(context, company, user):
+def company_title(context, company, edit_company_form=None):
 
     if company.type == 'ESN':
         company_icon = 'fas fa-desktop'
@@ -172,11 +175,15 @@ def company_title(context, company, user):
     else:
         company_icon = 'fas fa-building'
 
-    return {
+    title_context = {
         'company': company,
-        'company_icon': company_icon,
-        'user': user
+        'company_icon': company_icon
     }
+
+    if edit_company_form is not None:
+        title_context['edit_company_form'] = edit_company_form
+
+    return title_context
 
 
 @register.inclusion_tag('contacts/activity_icons.html', takes_context=True)

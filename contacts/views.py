@@ -86,7 +86,7 @@ class ContactsAddCompanyFormView(FormView):
 
 
 class ContactsEditCompanyFormView(FormView):
-    template_name = 'contacts/form_edit_company.html'
+    template_name = 'contacts/form_company.html'
     form_class = EditCompanyForm
     success_url = reverse_lazy('contacts_home')
 

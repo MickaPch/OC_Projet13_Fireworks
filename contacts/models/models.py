@@ -22,6 +22,12 @@ class Business(models.Model):
     name = models.CharField(max_length=250, blank=False, null=False)
     fa_icon = models.CharField(max_length=250, blank=True, null=False)
 
+    class Meta:
+        ordering = ['pk']
+
+    def __str__(self):
+        return self.name
+
 class Company(models.Model):
     name = models.CharField(max_length=250, default="", null=False)
     type = models.CharField(choices=COMPANY_TYPE, max_length=4, blank=False, null=False)

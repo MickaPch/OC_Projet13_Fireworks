@@ -2,7 +2,7 @@
 from appliances.models import Appliance
 from django import forms
 
-from contacts.models.models import Company, Contact
+from contacts.models.models import Business, Company, Contact
 
 
 class CompanyAddForm(forms.ModelForm):
@@ -17,9 +17,11 @@ class CompanyAddForm(forms.ModelForm):
         model = Company
         fields = [
             'name',
+            'description',
             'address1',
             'address2',
             'zipcode',
+            'type',
             'city'
         ]
 
@@ -39,6 +41,8 @@ class CompanyAddForm(forms.ModelForm):
             self.new_company.address1 = self.cleaned_data['address1']
             self.new_company.address2 = self.cleaned_data['address2']
             self.new_company.zipcode = self.cleaned_data['zipcode']
+            self.new_company.description = self.cleaned_data['description']
+            self.new_company.type = self.cleaned_data['type']
         
         if (
             self.new_company.address1 == ""
@@ -55,6 +59,16 @@ class CompanyAddForm(forms.ModelForm):
             and self.cleaned_data['zipcode'] != ""
         ):
             self.new_company.zipcode = self.cleaned_data['zipcode']
+        if (
+            self.new_company.description == ""
+            and self.cleaned_data['description'] != ""
+        ):
+            self.new_company.description = self.cleaned_data['description']
+        if (
+            self.new_company.type == ""
+            and self.cleaned_data['type'] != ""
+        ):
+            self.new_company.type = self.cleaned_data['type']
 
     def add_appliance(self, user):
         new_appliance, created = Appliance.objects.get_or_create(
@@ -80,19 +94,52 @@ class EditCompanyForm(forms.ModelForm):
         self.fields['address1'].required = False
         self.fields['address2'].required = False
         self.fields['zipcode'].required = False
+        self.fields['business'].required = False
 
     class Meta:
         model = Company
         fields = [
             'name',
+            'description',
             'address1',
             'address2',
             'zipcode',
-            'city'
+            'city',
+            'type',
+            'business'
         ]
 
         widgets = {
-            'company_pk': forms.HiddenInput()
+            'company_pk': forms.HiddenInput(),
+            'type': forms.Select(
+                attrs={
+                    'class': 'form-control select-company-type',
+                    'disabled': True
+                }
+            ),
+            'description': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'rows': 3
+                }
+            ),
+            'address1': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'rows': 2
+                }
+            ),
+            'address2': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'rows': 2
+                }
+            ),
+            'business': forms.CheckboxSelectMultiple(
+                attrs={
+                    'class': 'form-group company-select-business'
+                }
+            )
         }
 
     def edit_company(self):
@@ -109,6 +156,11 @@ class EditCompanyForm(forms.ModelForm):
         company.address1 = self.cleaned_data['address1']
         company.address2 = self.cleaned_data['address2']
         company.zipcode = self.cleaned_data['zipcode']
+        company.description = self.cleaned_data['description']
+        company.type = self.cleaned_data['type']
+
+        for business in self.cleaned_data['business']:
+            company.business.add(business)
 
         company.save()
 
