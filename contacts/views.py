@@ -168,7 +168,7 @@ class ContactsAddContactFormView(FormView):
         return message
 
 class ContactsEditContactFormView(FormView):
-    template_name = 'contacts/form_edit_contact.html'
+    template_name = 'contacts/form_contact.html'
     form_class = EditContactForm
     success_url = reverse_lazy('contacts_home')
 

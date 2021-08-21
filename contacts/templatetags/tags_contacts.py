@@ -50,6 +50,18 @@ def form_delete_company(context, company, user):
         'user': user
     }
 
+@register.inclusion_tag('contacts/card_contact.html', takes_context=True)
+def card_contact(context, contact):
+    data = {
+        # 'company_pk': company.pk,
+        # 'user': user
+    }
+    # delete_company_form = CompanyDeleteForm(data=data)
+    
+    return {
+        'contact': contact
+    }
+
 
 @register.inclusion_tag('contacts/form_add_contact.html', takes_context=True)
 def form_add_contact(context, user, company=None):
@@ -68,8 +80,8 @@ def form_add_contact(context, user, company=None):
         'user': user
     }
 
-@register.inclusion_tag('contacts/form_edit_contact.html', takes_context=True)
-def form_edit_contact(context, contact_to_edit):
+@register.inclusion_tag('contacts/form_contact.html', takes_context=True)
+def form_contact(context, contact_to_edit):
     data = {
         'contact_pk': contact_to_edit.pk,
         'first_name': contact_to_edit.first_name,
@@ -130,19 +142,6 @@ def form_delete_contact(context, contact_pk, user):
 #         'user': user
 #     }
 
-@register.inclusion_tag('contacts/add_btn.html', takes_context=True)
-def add_to_company_btn(context, company, user):
-    data = {
-        'company': company,
-        'user': user
-    }
-    # delete_mission_form = MissionDeleteForm(data=data)
-    
-    return {
-        # 'delete_mission_form': delete_mission_form,
-        'company': company,
-        'user': user
-    }
 
 @register.inclusion_tag('contacts/company_title.html', takes_context=True)
 def company_title(context, company, user):

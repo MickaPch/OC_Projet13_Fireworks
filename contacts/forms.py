@@ -208,7 +208,13 @@ class EditContactForm(forms.ModelForm):
         ]
 
         widgets = {
-            'contact_pk': forms.HiddenInput()
+            'contact_pk': forms.HiddenInput(),
+            'company': forms.Select(
+                attrs={
+                    'class': 'form-control contact-company',
+                    'disabled': True
+                }
+            )
         }
 
     def edit_contact(self):
@@ -224,6 +230,7 @@ class EditContactForm(forms.ModelForm):
         contact.last_name = last_name
         contact.phone_number = self.cleaned_data['phone_number']
         contact.email = self.cleaned_data['email']
+        contact.company = self.cleaned_data['company']
 
         contact.save()
 

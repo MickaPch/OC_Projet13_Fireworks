@@ -1,6 +1,16 @@
 {% load crispy_forms_tags %}
 
-<div class="modal fade" id="modal_contact_{{add_contact_form.company.value}}" tabindex="-1" role="dialog" aria-labelledby="modal_add_contactLabel_{{add_contact_form.company.value}}" aria-hidden="true">
+
+<button type="button"
+        class="btn btn-outline-primary add-contact-to-company"
+        data-toggle="modal"
+        data-target="#modal_add_contact_{{add_contact_form.company.value}}"
+        title="Add contact">
+    <i class="fas fa-user-plus"></i>
+</button>
+
+
+<div class="modal fade" id="modal_add_contact_{{add_contact_form.company.value}}" tabindex="-1" role="dialog" aria-labelledby="modal_add_contactLabel_{{add_contact_form.company.value}}" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">

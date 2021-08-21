@@ -61,3 +61,67 @@
 .company-text, .company-type {
     font-size: 0.9rem;
 }
+
+.modal-contact {
+    height: 40rem;
+}
+
+.modal-contact .modal-dialog, .modal-contact .modal-content, .form-contact {
+    height: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.contact-modal-header {
+    height: 40%;
+}
+
+.contact-modal-header .modal-title {
+    height: 100%;
+}
+
+.contact-modal-div {
+    height: 45%;
+}
+
+.modal-contact-infos {
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 0 1 auto;
+}
+
+.modal-contact-form-edit {
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1 1 auto;
+}
+
+.modal-company-fill {
+    overflow: hidden;
+    flex: 0 1 auto;
+}
+
+.modal-contact-footer {
+    height: 15%;
+    justify-content: unset;
+}
+
+.contact-company, .contact-company:disabled, .contact-company:focus {
+    font-size: 0.8rem;
+    background-color: transparent;
+    color: inherit;
+    border: unset;
+    text-align-last: center;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.contact-company:disabled {
+    appearance: none;
+}
+
+.close-contact {
+    position: absolute;
+    top: 3%;
+    right: 4%;
+}

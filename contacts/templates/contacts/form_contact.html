@@ -1,0 +1,104 @@
+{% load crispy_forms_tags %}
+
+
+<div class="modal fade modal-contact"
+     id="modal_contact_{{ edit_contact_form.contact_pk.value }}"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="modal_edit_contactLabel_{{ edit_contact_form.contact_pk.value }}"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Form edit contact -->
+            <form method="post" action={% url 'edit_contact' %} class="form-contact" id="id_form_contact" >
+                <div class="modal-header contact-modal-header">
+                    <div class="modal-title container-fluid"
+                        id="modal_edit_contactLabel_{{ edit_contact_form.contact_pk.value }}">
+                        <div class="row mt-3 justify-content-center">
+                            <i class="fas fa-user-circle fa-7x"></i>
+                        </div>
+                        <div class="row h3 mt-3 justify-content-center">
+                            {{contact_to_edit.first_name}} {{contact_to_edit.last_name}}
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                {{ edit_contact_form.company }}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="close close-contact" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% csrf_token %}
+                <div class="modal-body contact-modal-div">
+                    <div class="container">
+                        <div class="modal-contact-infos mt-5">
+                            {% if contact_to_edit.phone_number != '' %}
+                                <div class="row justify-content-center">
+                                    <div class="col-8">
+                                        <div class="row align-items-center">
+                                            <div class="col-2"><i class="fas fa-phone-alt"></i></div>
+                                            <div class="col-10 contact-phonenumber">{{ contact_to_edit.phone_number }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if contact_to_edit.email != '' %}
+                                <div class="row justify-content-center">
+                                    <div class="col-8">
+                                        <div class="row align-items-center">
+                                            <div class="col-2"><i class="fas fa-envelope"></i></div>
+                                            <div class="col-10 contact-email">{{ contact_to_edit.email }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="modal-contact-form-edit display-none">
+                            {{ edit_contact_form.contact_pk.as_hidden }}
+                            <div class="row justify-content-center">
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            {{ edit_contact_form.first_name|as_crispy_field }}
+                                        </div>
+                                        <div class="col-6">
+                                            {{ edit_contact_form.last_name|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            {{ edit_contact_form.phone_number|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            {{ edit_contact_form.email|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white modal-company-fill"></div>
+                    </div>
+                </div>
+                <div class="modal-footer modal-contact-footer container-fluid">
+                    <div class="row m-auto w-100 justify-content-start row-edit-contact">
+                        <button type="button" class="btn btn-outline-primary btn-edit-contact">
+                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="row m-auto w-100 justify-content-between row-submit-contact display-none">
+                        <button type="button" class="btn btn-outline-secondary btn-reset-contact">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <button type="submit" class="btn btn-success btn-submit-contact">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

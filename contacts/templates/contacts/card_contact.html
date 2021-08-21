@@ -1,0 +1,41 @@
+{% load tags_contacts %}
+
+
+<div class="col-12 card overflow-auto">
+    <div class="card-body">
+        <div class="container">
+            <div class="row align-items-center">
+                <a class="col-4 contact-item"
+                   href="#"
+                   title="{{ contact.first_name }} {{ contact.last_name }}"
+                   data-toggle="modal"
+                   data-target="#modal_contact_{{contact.pk}}">
+
+                    <div class="row contact-name justify-content-center mb-1"><i class="fas fa-user-circle fa-2x"></i></div>
+                    <div class="row contact-name justify-content-center">
+                        {{ contact.first_name }} {{ contact.last_name }}
+                    </div>
+                </a>
+                <div class="col-6 contact-infos">
+                    {% if contact.phone_number != '' %}
+                        <div class="row align-items-center">
+                            <div class="col-2"><i class="fas fa-phone-alt"></i></div>
+                            <div class="col-10 contact-phonenumber">{{ contact.phone_number }}</div>
+                        </div>
+                    {% endif %}
+                    {% if contact.email != '' %}
+                        <div class="row align-items-center">
+                            <div class="col-2"><i class="fas fa-envelope"></i></div>
+                            <div class="col-10 contact-email">{{ contact.email }}</div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-2">
+                    <div>{% form_delete_contact contact.pk user %}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% form_contact contact %}
