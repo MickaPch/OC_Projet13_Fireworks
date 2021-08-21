@@ -1,5 +1,14 @@
 {% load tags_contacts %}
 
+<button type="button"
+        class="btn btn-outline-primary add-contact-to-company"
+        data-toggle="modal"
+        data-target="#modal_contact_{{company.pk}}"
+        title="Add contact">
+    <i class="fas fa-user-plus"></i>
+</button>
+
+{% comment %} 
 <!-- dropup button -->
 <div class="btn-group dropup add-to-company-btn">
     <button type="button" class="btn btn-light" id="dropupMenuButtonCompany_{{company.pk}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -10,7 +19,7 @@
         <button type="button" class="dropdown-item add-contact-to-company" data-toggle="modal" data-target="#modal_contact_{{company.pk}}">new contact</button>
         <button type="button" class="dropdown-item add-mission-to-company" data-toggle="modal" data-target="#modal_mission_{{company.pk}}">new mission</button>
     </div>
-</div>
+</div> {% endcomment %}
 
 <!-- Modal contact_member -->
 {% form_add_contact user company %}
