@@ -23,63 +23,78 @@
             {% for company in companies %}
                 <div class="col-lg-4 col-md-6 col-sm-12 col-contact mb-4">
                     <!-- Card Company -->
-                    <div class="card card-company my-2 bg-secondary text-white">
-                        <div class="card-body card-company-title">
-                            {% company_title company user %}
-                        </div>
-                        <div class="card-body pt-0 bg-white text-dark card-company-infos">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-12 mt-1 text-muted company-text">{{company.description}}</div>
-                                </div>
-                                <div class="row justify-content-center mt-3 business-list">{% activity_icons company %}</div>
+                    <div class="card card-company my-2 bg-lighblue">
+                        <div class="card-company-body">
+                            <div class="card-body card-company-title">
+                                {% company_title company user %}
                             </div>
-                        </div>
-                        <div class="card-body bg-white text-dark card-company-contacts">
-                            <div class="container">
-                                <div class="row">
-                                    {% for contact in contacts %}
-                                        {% if contact.company == company %}
-                                            <div class="col-12 card overflow-auto">
-                                                <div class="card-body">
-                                                    <div class="container">
-                                                        <div class="row align-items-center">
-                                                            <a class="col-4 contact-item" href="#">
-                                                                <div class="row contact-name justify-content-center mb-1"><i class="fas fa-user-circle fa-2x"></i></div>
-                                                                <div class="row contact-name justify-content-center">
-                                                                    {{ contact.first_name }} {{ contact.last_name }}
+                            <div class="card-body pt-0 bg-white text-dark card-company-infos">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-12 mt-1 text-muted company-text">{{company.description}}</div>
+                                    </div>
+                                    <div class="row justify-content-center mt-3 business-list">{% activity_icons company %}</div>
+                                </div>
+                            </div>
+                            <div class="card-body bg-white text-dark card-company-contacts">
+                                <div class="container">
+                                    <div class="row">
+                                        {% for contact in contacts %}
+                                            {% if contact.company == company %}
+                                                <div class="col-12 card overflow-auto">
+                                                    <div class="card-body">
+                                                        <div class="container">
+                                                            <div class="row align-items-center">
+                                                                <a class="col-4 contact-item" href="#">
+                                                                    <div class="row contact-name justify-content-center mb-1"><i class="fas fa-user-circle fa-2x"></i></div>
+                                                                    <div class="row contact-name justify-content-center">
+                                                                        {{ contact.first_name }} {{ contact.last_name }}
+                                                                    </div>
+                                                                </a>
+                                                                <div class="col-6 contact-infos">
+                                                                    {% if contact.phone_number != '' %}
+                                                                        <div class="row align-items-center">
+                                                                            <div class="col-2"><i class="fas fa-phone-alt"></i></div>
+                                                                            <div class="col-10 contact-phonenumber">{{ contact.phone_number }}</div>
+                                                                        </div>
+                                                                    {% endif %}
+                                                                    {% if contact.email != '' %}
+                                                                        <div class="row align-items-center">
+                                                                            <div class="col-2"><i class="fas fa-envelope"></i></div>
+                                                                            <div class="col-10 contact-email">{{ contact.email }}</div>
+                                                                        </div>
+                                                                    {% endif %}
                                                                 </div>
-                                                            </a>
-                                                            <div class="col-6 contact-infos">
-                                                                {% if contact.phone_number != '' %}
-                                                                    <div class="row align-items-center">
-                                                                        <div class="col-2"><i class="fas fa-phone-alt"></i></div>
-                                                                        <div class="col-10 contact-phonenumber">{{ contact.phone_number }}</div>
-                                                                    </div>
-                                                                {% endif %}
-                                                                {% if contact.email != '' %}
-                                                                    <div class="row align-items-center">
-                                                                        <div class="col-2"><i class="fas fa-envelope"></i></div>
-                                                                        <div class="col-10 contact-email">{{ contact.email }}</div>
-                                                                    </div>
-                                                                {% endif %}
-                                                            </div>
-                                                            <div class="col-2">
-                                                                {% comment %} <div>{% form_edit_contact contact %}</div> {% endcomment %}
-                                                                <div>{% form_delete_contact contact.pk user %}</div>
+                                                                <div class="col-2">
+                                                                    {% comment %} <div>{% form_edit_contact contact %}</div> {% endcomment %}
+                                                                    <div>{% form_delete_contact contact.pk user %}</div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
+                            <div class="card-body pt-0 bg-white card-company-fill"></div>
                         </div>
                         {% comment %} <div class="card-footer">
                         </div> {% endcomment %}
+
+                        <div class="card-footer bg-white text-dark card-company-footer">
+                            <div class="row justify-content-end">
+                                <div class="col-6 justify-content-center btn-group" role="group" aria-label="Company button group">
+                                    {% add_to_company_btn company user %}
+                                    {% form_edit_company company %}
+                                    {% form_delete_company company user %}
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+
 
 
                 </div>
