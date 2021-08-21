@@ -19,10 +19,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
             <!-- Form add contact -->
-            <form method="post" action={% url 'add_contact' %} id="id_form_contact" >
-                {% csrf_token %}
+            <form method="post" action={% url 'add_contact' %} id="id_form_add_contact_{{add_contact_form.company.value}}" >
+            {% csrf_token %}
+            <div class="modal-body">
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-10">
@@ -54,12 +54,12 @@
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Add contact</button>
-        </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add contact</button>
+            </div>
+        </form>
       </div>
     </div>
 </div>

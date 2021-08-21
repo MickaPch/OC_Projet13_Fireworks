@@ -10,7 +10,9 @@ register = template.Library()
 @register.inclusion_tag('contacts/form_add_company.html', takes_context=True)
 def form_add_company(context, user):
 
-    company_form = CompanyAddForm()
+    company_form = CompanyAddForm(
+        auto_id=f'form_add_company_%s_{str(user.pk)}',
+    )
 
     context_add_company = {
         'company_form': company_form,
@@ -29,7 +31,10 @@ def form_edit_company(context, company_to_edit):
         'zipcode': company_to_edit.zipcode,
         'city': company_to_edit.city
     }
-    edit_company_form = EditCompanyForm(data=data)
+    edit_company_form = EditCompanyForm(
+        auto_id=f'form_edit_company_%s_{str(company_to_edit.pk)}',
+        data=data
+    )
     
     return {
         'edit_company_form': edit_company_form,
@@ -43,20 +48,19 @@ def form_delete_company(context, company, user):
         'company_pk': company.pk,
         'user': user
     }
-    delete_company_form = CompanyDeleteForm(data=data)
+    delete_company_form = CompanyDeleteForm(
+        auto_id=f'form_delete_company_%s_{str(company.pk)}',
+        data=data
+    )
     
     return {
         'delete_company_form': delete_company_form,
+        'company': company,
         'user': user
     }
 
 @register.inclusion_tag('contacts/card_contact.html', takes_context=True)
 def card_contact(context, contact):
-    data = {
-        # 'company_pk': company.pk,
-        # 'user': user
-    }
-    # delete_company_form = CompanyDeleteForm(data=data)
     
     return {
         'contact': contact
@@ -69,9 +73,12 @@ def form_add_contact(context, user, company=None):
     data = {}
     if company is not None:
         data['company'] = company.pk
+        id_form = f'form_add_contact_%s_{str(company.pk)}'
+    else:
+        id_form = f'form_add_contact_user_%s_{str(user.pk)}'
 
     add_contact_form = AddContactForm(
-        auto_id=False,
+        auto_id=id_form,
         data=data
     )
     
@@ -90,7 +97,10 @@ def form_contact(context, contact_to_edit):
         'email': contact_to_edit.email,
         'company': contact_to_edit.company.pk
     }
-    edit_contact_form = EditContactForm(data=data)
+    edit_contact_form = EditContactForm(
+        auto_id=f'form_edit_contact_%s_{str(contact_to_edit.pk)}',
+        data=data
+    )
     
     return {
         'edit_contact_form': edit_contact_form,
@@ -103,7 +113,10 @@ def form_delete_contact(context, contact_pk, user):
         'contact_pk': contact_pk,
         'user': user
     }
-    delete_contact_form = DeleteContactForm(data=data)
+    delete_contact_form = DeleteContactForm(
+        auto_id=f'form_delete_contact_%s_{str(contact_pk)}',
+        data=data
+    )
     
     return {
         'delete_contact_form': delete_contact_form,

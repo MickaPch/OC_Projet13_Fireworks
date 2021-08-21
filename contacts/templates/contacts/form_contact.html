@@ -10,7 +10,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <!-- Form edit contact -->
-            <form method="post" action={% url 'edit_contact' %} class="form-contact" id="id_form_contact" >
+            <form method="post" action={% url 'edit_contact' %} class="form-contact" id="id_form_contact_{{ contact_to_edit.pk }}" >
                 <div class="modal-header contact-modal-header">
                     <div class="modal-title container-fluid"
                         id="modal_edit_contactLabel_{{ edit_contact_form.contact_pk.value }}">

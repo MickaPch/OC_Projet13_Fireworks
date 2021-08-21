@@ -2,7 +2,7 @@
     height: 40em;
 }
 
-.bg-lighblue {
+.bg-lightblue {
     background-color: rgb(173, 216, 230);
 }
 
@@ -16,9 +16,15 @@
     flex-flow: column;
 }
 
-.card-company-title {
+.card-company-title, .card-company-title:hover {
     height: 15%;
     flex: 0 1 auto;
+    color: black;
+    text-decoration: none;
+}
+
+.card-company-hover {
+    background-color: rgb(212,235,242) !important;
 }
 
 .card-company-infos {
