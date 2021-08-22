@@ -95,10 +95,16 @@
 
 /* USER */
 
-.header-profile, .header-profile:hover {
+.dropdown-user {
     height: 100%;
     width: 10%;
+}
+
+
+.header-profile, .header-profile:hover {
     background-color: rgb(43,48,53);
+    height: 100%;
+    width: 100%;
     color: whitesmoke;
     text-decoration: unset;
     display: inline-flex;
@@ -109,6 +115,41 @@
     display: inline-flex;
     align-items: center;
     margin: auto;
+}
+
+.dropdown-user-menu {
+    position: relative;
+    top: 0;
+    right: 0;
+    background-color: rgb(62,69,76);
+}
+
+.dropdown-user-list {
+    list-style: none;
+    padding: 0;
+}
+
+.dropdown-user-item {
+    height: 3rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-item-hover {
+    background-color: rgb(43,48,53);
+}
+
+/* .dropdown-user-link {} */
+
+/* .dropdown-user-item, .dropdown-user-link {
+    vertical-align: middle;
+} */
+
+.dropdown-user-link, .dropdown-user-link:hover {
+    color: whitesmoke;
+    text-decoration: none;
 }
 
 

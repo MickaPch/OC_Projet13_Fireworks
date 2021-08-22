@@ -15,7 +15,7 @@ class Command(BaseCommand):
         print('User fixture creation ...')
 
         users = []
-        model = "auth.User"
+        model = "accounts.User"
         is_superuser = True
         is_staff = True
         for i in range(1, random.randint(4, 11)):

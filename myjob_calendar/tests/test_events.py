@@ -1,8 +1,8 @@
-from django.contrib.auth.models import User
 from contacts.models.models import Company, Contact
 from django.test import TestCase
 from django.urls.base import reverse
 
+from accounts.models import User
 from appliances.models import Appliance
 from myjob_calendar.models import Event
 

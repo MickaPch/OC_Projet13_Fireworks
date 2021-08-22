@@ -58,12 +58,30 @@
                 <input type="text" name="header_searchbar" class="header-searchbar form-control" placeholder="Search..." />
                 <button class="btn-reset btn-search" name="btn_searchbar"><i class="fas fa-search"></i></button>
             </div>
-            <a href="#" class="header-profile">
-                <div class="header-profile-items">
-                    <i class="far fa-user-circle fa-2x pr-2"></i>
-                    <div class="header-username">{{ user.username }}</div>
+            <div class="dropdown-user">
+                <a href="{% if request.user.is_authenticated %}#{% else %}{% url 'accounts_home_page' %}{% endif %}" class="header-profile dropdown-user-show">
+                    <div class="header-profile-items">
+                        <i class="far fa-user-circle fa-2x pr-2"></i>
+                        <div class="header-username">
+                            {% if request.user.is_authenticated %}
+                                {{ user.username }}
+                            {% else %}
+                                Log in
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+                <div class="dropdown-user-menu dropdown-user-show display-none">
+                    <ul class="dropdown-user-list">
+                        <a href="{% url 'accounts_profile_page' %}" class="dropdown-user-link">
+                            <li class="dropdown-user-item">My profile</li>
+                        </a>
+                        <a href="#" class="dropdown-user-link">
+                            <li class="dropdown-user-item">Log out</li>
+                        </a>
+                    </ul>
                 </div>
-            </a>
+            </div>
         </div> <!-- Top row -->
     </header>
 

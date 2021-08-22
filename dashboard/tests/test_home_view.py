@@ -1,10 +1,10 @@
 """Test accounts views"""
-from django.contrib.auth.models import User
 from django.contrib.auth import SESSION_KEY
 from django.http import response
 from django.test import TestCase
 from django.urls import reverse
 
+from accounts.models import User
 
 class DashboardViewTest(TestCase):
     """Testing dashboard view"""

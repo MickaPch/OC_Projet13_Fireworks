@@ -1,8 +1,9 @@
 
 
-from django.contrib.auth.models import User
 from django.urls.base import reverse
 from contacts.tests.test_contacts_views import ContactsTest
+
+from accounts.models import User
 
 
 class UserCanAddContactToCompanyTest(ContactsTest):

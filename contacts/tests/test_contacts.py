@@ -1,6 +1,6 @@
-from django.contrib.auth.models import User
 from django.urls import reverse
 
+from accounts.models import User
 from contacts.models.models import Company, Contact
 from contacts.tests.test_contacts_views import ContactsTest
 

@@ -1,9 +1,9 @@
 from myjob_calendar.models import Event
 from django.db import models
-from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE, SET_NULL
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+from accounts.models import User
 
 
 NOTATIONS_LIST = [

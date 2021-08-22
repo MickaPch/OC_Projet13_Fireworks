@@ -1,8 +1,8 @@
-from django.contrib.auth.models import User
 from django.db.models import fields
 from appliances.models import Appliance, STATUS_CHOICES, Task
 from django import forms
 
+from accounts.models import User
 
 class EditApplianceForm(forms.ModelForm):
 

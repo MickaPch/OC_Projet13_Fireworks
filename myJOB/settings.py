@@ -167,3 +167,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirects to default profile page
 LOGIN_REDIRECT_URL = "accounts_profile_page"
+
+AUTH_USER_MODEL = 'accounts.User'
