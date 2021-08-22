@@ -1,0 +1,22 @@
+.user-link, .user-link:hover {
+    color: rgb(33, 37, 41);
+    text-decoration: none;
+}
+
+.display-inline {
+    display: inline-flex;
+}
+
+.user-username-input, .user-username-input:focus {
+    background-color: transparent;
+    border: 1px transparent;
+}
+
+.btn-username-edit {
+    position: relative;
+    right: 15%;
+}
+
+.btn-form-submit:hover {
+    filter: brightness(0.8);
+}
