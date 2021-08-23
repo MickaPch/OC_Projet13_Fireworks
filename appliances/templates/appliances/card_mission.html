@@ -1,0 +1,59 @@
+{% load tags_appliances %}
+
+<a class="row card card-mission overflow-auto bg-light link-reset"
+   href="#"
+   data-toggle="modal"
+   data-target="#modal_mission_{{mission.pk}}">
+    <div class="card-title text-center mb-0">{{ mission.title }}</div>
+    <div class="card-body">
+        <div class="row">
+            {{mission.description|truncatechars:150}}
+        </div>
+    </div>
+</a>
+
+
+<div class="modal modal-tasks text-dark"
+     id="modal_mission_{{ mission.pk }}"
+     tabindex="-2"
+     role="dialog"
+     aria-labelledby="modal_mission_label_{{ mission.pk }}"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_mission_label_{{ mission.pk }}">{{ mission.title }} tasks</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        {{mission.description}}
+                    </div>
+                </div>
+                <div class="container">
+                    <hr class="my-4">
+                    <div class="row w-100 mt-2">
+                    {% for type_skill, skills in mission.get_skills.items %}
+                        <div class="col-4">
+                            <div class="row h6">{{type_skill}}</div>
+                            <div class="row">
+                                <ul>
+                                {% for skill in skills %}
+                                    <li>{{skill}}</li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

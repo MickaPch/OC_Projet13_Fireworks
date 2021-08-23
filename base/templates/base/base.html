@@ -59,7 +59,7 @@
                 <button class="btn-reset btn-search" name="btn_searchbar"><i class="fas fa-search"></i></button>
             </div>
             <div class="dropdown-user">
-                <a href="{% if request.user.is_authenticated %}#{% else %}{% url 'accounts_home_page' %}{% endif %}" class="header-profile dropdown-user-show">
+                <a href="{% if request.user.is_authenticated %}{% url 'accounts_profile_page' %}{% else %}{% url 'accounts_home_page' %}{% endif %}" class="header-profile dropdown-user-show">
                     <div class="header-profile-items">
                         <i class="far fa-user-circle fa-2x pr-2"></i>
                         <div class="header-username">
@@ -76,7 +76,7 @@
                         <a href="{% url 'accounts_profile_page' %}" class="dropdown-user-link">
                             <li class="dropdown-user-item">My profile</li>
                         </a>
-                        <a href="#" class="dropdown-user-link">
+                        <a href="{% url 'logout' %}" class="dropdown-user-link">
                             <li class="dropdown-user-item">Log out</li>
                         </a>
                     </ul>
