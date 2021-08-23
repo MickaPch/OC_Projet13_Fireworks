@@ -1,6 +1,16 @@
 {% if user.is_authenticated %}
-    <h2>Hi {{ user.username }} !</h2>
-    <a href="{% url 'logout' %}">Log Out</a>
+    <div class="container">
+        <div class="row">
+            <h2>Hi {{ user.username }} !</h2>
+        </div>
+        <div class="row">
+            <a href="{% url 'logout' %}">Log Out</a>
+        </div>
+    </div>
 {% else %}
-    <a href="{% url 'login' %}">Log In</a>
+    <div class="container">
+        <div class="row">
+            <a href="{% url 'login' %}">Log In</a>
+        </div>
+    </div>
 {% endif %}
