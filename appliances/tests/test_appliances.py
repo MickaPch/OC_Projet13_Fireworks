@@ -1,9 +1,9 @@
-from django.contrib.auth.models import User
 from contacts.models.models import Company
 from django.urls.base import reverse
 
 from appliances.tests.test_home_view import AppliancesTest
 from appliances.models import Appliance
+from accounts.models import User
 
 class AppliancesCompanyRelationTest(AppliancesTest):
 

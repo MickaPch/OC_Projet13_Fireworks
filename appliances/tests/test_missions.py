@@ -1,8 +1,8 @@
 # from django.urls import reverse
-# from django.contrib.auth.models import User
 # from appliances.models import Appliance
 # from contacts.models.models import Company
 # from contacts.tests.test_contacts_views import ContactsTest
+# from accounts.models import User
 
 
 # class AddMissionTest(ContactsTest):

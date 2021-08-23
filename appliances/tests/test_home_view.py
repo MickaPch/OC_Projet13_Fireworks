@@ -1,5 +1,4 @@
 """Test accounts views"""
-from django.contrib.auth.models import User
 from django.contrib.auth import SESSION_KEY
 from django.core.exceptions import ValidationError
 from django.http import response
@@ -8,6 +7,7 @@ from django.urls import reverse
 
 from contacts.models.models import Company, Contact
 from appliances.models import Appliance, Mission
+from accounts.models import User
 
 
 class AppliancesTest(TestCase):

@@ -54,16 +54,30 @@
             <div class="header-title">
                 <h2>{% block app_title %}{% endblock %}</h2>
             </div> <!-- App title -->
-            <div class="header-search">
-                <input type="text" name="header_searchbar" class="header-searchbar form-control" placeholder="Search..." />
-                <button class="btn-reset btn-search" name="btn_searchbar"><i class="fas fa-search"></i></button>
-            </div>
-            <a href="#" class="header-profile">
-                <div class="header-profile-items">
-                    <i class="far fa-user-circle fa-2x pr-2"></i>
-                    <div class="header-username">{{ user.username }}</div>
+            <div class="dropdown-user">
+                <a href="{% if request.user.is_authenticated %}{% url 'accounts_profile_page' %}{% else %}{% url 'accounts_home_page' %}{% endif %}" class="header-profile dropdown-user-show">
+                    <div class="header-profile-items">
+                        <i class="far fa-user-circle fa-2x pr-2"></i>
+                        <div class="header-username">
+                            {% if request.user.is_authenticated %}
+                                {{ user.username }}
+                            {% else %}
+                                Log in
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+                <div class="dropdown-user-menu dropdown-user-show display-none">
+                    <ul class="dropdown-user-list">
+                        <a href="{% url 'accounts_profile_page' %}" class="dropdown-user-link">
+                            <li class="dropdown-user-item">My profile</li>
+                        </a>
+                        <a href="{% url 'logout' %}" class="dropdown-user-link">
+                            <li class="dropdown-user-item">Log out</li>
+                        </a>
+                    </ul>
                 </div>
-            </a>
+            </div>
         </div> <!-- Top row -->
     </header>
 
@@ -72,12 +86,6 @@
         <div class="container-fluid main_page">
             <nav class='leftbar show-leftbar leftbar-hidden h-100'>
                 <ul class="nav navbar-nav mt-5">
-                    <li class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
-                        <a href="{% url 'home' %}" class="nav-link">
-                            <i class="fas fa-columns fa-lg mr-2 bar-icon"></i>
-                            <span class="text-icon text-icon-leftbar text-icon-hidden">Dashboard</span>
-                        </a>
-                    </li>
                     <li class="nav-item {% if active_page == 'calendar' %}active{% endif %}">
                         <a href="{% url 'calendar_home' %}" class="nav-link">
                             <i class="far fa-calendar-alt fa-lg mr-2 bar-icon"></i>
@@ -109,7 +117,6 @@
                             <div class="container-fluid p-0">
                                 <button type="button" class="row row-add-btn btn-reset add-btn-item" data-toggle="modal" data-target="#modal_company">new company</button>
                                 <button type="button" class="row row-add-btn btn-reset add-btn-item" data-toggle="modal" data-target="#modal_contact_None">new contact</button>
-                                <button type="button" class="row row-add-btn btn-reset add-btn-item" data-toggle="modal" data-target="#modal_mission_None">new mission</button>
                             </div>
                         </div>
                     {% endif %}

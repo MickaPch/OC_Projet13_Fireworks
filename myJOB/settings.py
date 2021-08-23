@@ -152,6 +152,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_files')
 
 STATICFILES_DIRS = [
     os.path.join("static"),
@@ -167,3 +168,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirects to default profile page
 LOGIN_REDIRECT_URL = "accounts_profile_page"
+LOGOUT_REDIRECT_URL = "home"
+
+AUTH_USER_MODEL = 'accounts.User'

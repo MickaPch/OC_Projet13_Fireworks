@@ -1,9 +1,97 @@
-{% extends 'base/base.html' %}
 
-{% block title %}Profile{% endblock %}
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}{{user.username}}{% endblock  %}
+{% block app_title %}My profile{% endblock  %}
+
+{% block meta %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/user.css' %}">
+
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'appliances/css/appliances.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'appliances/css/details.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'appliances/css/checkbox_task.css' %}"> {% endcomment %}
+
+{% endblock  %}
 
 {% block content %}
-<h2>Welcome {{user.username}} </h2>
 
-<a href={% url 'home' %}>Home</a>
-{% endblock %}
+    <div class="container-fluid">
+
+        <div class="row justify-content-center mb-3">
+            <i class="far fa-user-circle fa-9x"></i>
+        </div>
+
+        <div class="row justify-content-center mb-3">
+            <div class="h3">
+                <span class="user-title-prefix">Welcome </span>
+                <a href="#" title="click to edit" class="user-link user-username-link">{{user.username}}</a>
+                <form class="form-group-inline user-username-form display-none" data-url={% url "edit_username" %} data-type="username" method="post">
+                    {% csrf_token %}
+                    {{ form_username.user_pk.as_hidden }}
+                    {{ form_username.username }}
+                    <button class="col-1 btn-reset form-element btn-form-submit btn-username btn-username-edit text-success" type="submit" name="btn_edit_username">
+                        <i class="fa fa-check"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class='col-6'>
+
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="row justify-content-center mb-2">
+                            <div class="col-1"><i class="far fa-id-card"></i></div>
+                            <div class="col-8 user-name"><span class="user-first_name mr-2">{{user.first_name}}</span><span class="user-last_name">{{user.last_name}}</span></div>
+                            <form class="col-9 form-group-inline user-name-form display-none" data-url={% url "edit_name" %} data-type="name" method="post">
+                                {% csrf_token %}
+                                {{ form_name.user_pk.as_hidden }}
+                                {{ form_name.first_name }}
+                                {{ form_name.last_name }}
+                                <button class="col-1 btn-reset form-element btn-form-submit btn-name btn-name-edit text-success" type="submit" name="btn_edit_name">
+                                    <i class="fa fa-check"></i>
+                                </button>
+                            </form>
+                            <button class="col-1 btn-reset btn-name btn-name-edit text-info" type="button" name="btn_edit_name">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="row justify-content-center mb-2">
+                            <div class="col-1"><i class="fas fa-envelope"></i></div>
+                            <div class="col-8 user-email">{{user.email}}</div>
+                            <form class="col-9 form-group-inline user-email-form display-none" data-url={% url "edit_email" %} data-type="email" method="post">
+                                {% csrf_token %}
+                                {{ form_email.user_pk.as_hidden }}
+                                {{ form_email.email }}
+                                <button class="col-1 btn-reset form-element btn-form-submit btn-email btn-email-edit text-success" type="submit" name="btn_edit_email">
+                                    <i class="fa fa-check"></i>
+                                </button>
+                            </form>
+                            <button class="col-1 btn-reset btn-email btn-email-edit text-info" type="button" name="btn_edit_email">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+{% endblock  %}
+
+{% block scripts %}
+
+    <script src="{% static 'accounts/js/user.js' %}"></script>
+    {% comment %} <script src="{% static 'appliances/js/appliances.js' %}"></script>
+    <script src="{% static 'appliances/js/checkbox_task.js' %}"></script>
+    <script src="{% static 'appliances/js/add_task_to_list.js' %}"></script> {% endcomment %}
+
+
+{% endblock  %}

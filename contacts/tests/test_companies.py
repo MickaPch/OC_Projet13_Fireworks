@@ -1,7 +1,7 @@
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 
+from accounts.models import User
 from contacts.models.models import Company
 from contacts.tests.test_contacts_views import ContactsTest
 from contacts.validators.validator_contacts import validate_zipcode

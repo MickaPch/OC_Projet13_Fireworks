@@ -1,11 +1,11 @@
 """Test accounts views"""
-from django.contrib.auth.models import User
 from django.contrib.auth import SESSION_KEY
 from django.core.exceptions import ValidationError
 from django.http import response
 from django.test import TestCase
 from django.urls import reverse
 
+from accounts.models import User
 from contacts.models.models import Company, Contact
 
 
